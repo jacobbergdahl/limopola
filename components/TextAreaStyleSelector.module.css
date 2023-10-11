@@ -1,0 +1,15 @@
+.textAreaStyleSelectorButtonWrapper {
+  margin-top: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.textAreaStyleSelectorButtonWrapper input {
+  margin-right: 5px;
+  height: 32px;
+}
+
+.textAreaStyleSelectorButtonWrapper input:last-of-type {
+  margin-right: 0;
+}

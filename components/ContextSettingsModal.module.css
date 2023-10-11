@@ -1,0 +1,90 @@
+.modalOverlay {
+  position: fixed;
+  z-index: 3;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modalOverlay .modalContent {
+  background: var(--primary-color);
+  padding: 20px;
+  border-radius: 8px;
+  position: relative;
+  max-width: 700px;
+  width: 100%;
+  max-height: 80%;
+  height: 100%;
+  overflow-y: auto;
+}
+.modalOverlay .closeButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+.modalOverlay .buttonWrapper {
+  display: flex;
+  justify-content: space-between;
+}
+.modalOverlay .buttonWrapper input {
+  flex-grow: 2;
+  margin-right: 5px;
+  height: 28px;
+}
+.modalOverlay .buttonWrapper input:last-of-type {
+  margin-right: 0;
+}
+
+.modalOverlay h2 {
+  text-align: center;
+  width: 100%;
+}
+.modalOverlay .buttonWrapper,
+.modalOverlay textarea,
+.modalOverlay h3 {
+  margin: 0 50px 10px 50px;
+}
+.modalOverlay textarea {
+  padding: 10px;
+  display: block;
+  background: #2d2f36;
+  outline: 1px solid #232323;
+  border-radius: 10px;
+  box-shadow: 0px -5px 10px 0px rgba(0, 0, 0, 0.4);
+  box-sizing: border-box;
+  border: none;
+  pointer-events: all;
+}
+.modalOverlay .largeTextarea {
+  height: 25%;
+  width: calc(100% - 100px);
+}
+.modalOverlay .smallTextarea {
+  width: calc(100% - 100px);
+}
+.modalOverlay .contextListItem {
+  background: #182045;
+}
+.modalOverlay .contextListItemOdd {
+  background: #25357b;
+}
+.modalOverlay .contextListItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+}
+.modalOverlay .contextListItemButtons input {
+  margin-right: 5px;
+}
+.modalOverlay .contextListItemButtons input:last-of-type {
+  margin-right: 0;
+}

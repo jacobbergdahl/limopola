@@ -1,0 +1,13 @@
+.sectionInner {
+  display: flex;
+  flex-direction: column;
+}
+.sectionInner span {
+  margin-bottom: 10px;
+}
+.sectionInner a {
+  color: white;
+}
+.sectionInner a:hover {
+  color: #bfbfbf;
+}

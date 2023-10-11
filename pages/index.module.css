@@ -1,0 +1,204 @@
+@font-face {
+  font-family: "ColfaxAI";
+  src: url(https://cdn.openai.com/API/fonts/ColfaxAIRegular.woff2)
+      format("woff2"),
+    url(https://cdn.openai.com/API/fonts/ColfaxAIRegular.woff) format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "ColfaxAI";
+  src: url(https://cdn.openai.com/API/fonts/ColfaxAIBold.woff2) format("woff2"),
+    url(https://cdn.openai.com/API/fonts/ColfaxAIBold.woff) format("woff");
+  font-weight: bold;
+  font-style: normal;
+}
+.conversationContainer,
+.conversationContainer input {
+  font-size: 16px;
+  line-height: 24px;
+  font-family: var(--primary-font);
+}
+.conversationContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+}
+.conversationContainer .icon {
+  width: 34px;
+}
+.conversationContainer h3 {
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: bold;
+  color: #202123;
+  margin: 16px 0 40px;
+}
+.conversationContainer form {
+  display: flex;
+  flex-direction: column;
+  width: 320px;
+}
+.chatContainer input[type="text"],
+.chatContainer .textAreaContainer {
+  position: fixed;
+  margin-top: 10px;
+  width: 100%;
+  bottom: 0;
+  background: none;
+  z-index: 2;
+  pointer-events: none;
+}
+.modeSelectionContainer {
+  position: fixed;
+  width: 100%;
+  margin-top: 30px;
+}
+.modeSelectionContainer .modeSelectionContainerInner {
+  margin-left: auto;
+  margin-right: auto;
+  width: 320px;
+  display: flex;
+  flex-direction: row;
+}
+.modeSelectionContainer .modeSelectionContainerInner input {
+  width: 50%;
+  margin-bottom: 0;
+  margin-right: 3px;
+}
+.modeSelectionContainer .modeSelectionContainerInner input:last-of-type {
+  margin-right: 0;
+}
+.conversationContainer textarea {
+  padding: 10px;
+  display: block;
+  background: #2d2f36;
+  outline: 1px solid #232323;
+  border-radius: 10px;
+  box-shadow: 0px -5px 10px 0px rgba(0, 0, 0, 0.4);
+  box-sizing: border-box;
+  border: none;
+  pointer-events: all;
+}
+.chatContainer textarea {
+  margin-bottom: 10px;
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.editorContainer .textAreaContainer {
+  height: 100vh;
+  margin-bottom: 30px;
+  margin-top: 80px;
+}
+.editorContainer textarea {
+  height: 70vh;
+}
+.conversationContainer textarea:focus {
+  outline: 1px solid #606060;
+}
+.conversationContainer textarea:disabled {
+  background: disabled-background-color;
+}
+.conversationContainer .spacing {
+  height: 100px;
+  width: 100%;
+  display: block;
+  min-height: 100px;
+}
+.conversationContainer ::placeholder {
+  color: var(--placeholder-color);
+  opacity: 1;
+}
+.conversationContainer input[type="submit"] {
+  padding: 12px 0;
+  color: #fff;
+  background-color: var(--submit-button-color);
+  border: none;
+  border-radius: 4px;
+  text-align: center;
+  cursor: pointer;
+}
+.conversationContainer textarea {
+  width: 250px;
+}
+.textAreaCode textarea {
+  font-family: var(--code-font);
+}
+.pageBottomColor,
+.pageTopColor {
+  background: var(--primary-color);
+  height: 40px;
+  position: fixed;
+  width: 100%;
+}
+.pageBottomColor {
+  bottom: 0;
+}
+.pageTopColor {
+  height: 80px;
+  top: 0;
+}
+.editorContainer .editorSpinner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.editorContainer .editorSpinner i {
+  display: none;
+}
+@media screen and (min-width: 1000px) {
+  .conversationContainer textarea {
+    width: 540px;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .conversationContainer textarea {
+    width: 700px;
+  }
+}
+@media screen and (min-width: 1400px) {
+  .conversationContainer textarea {
+    width: 860px;
+  }
+}
+.sidebar {
+  width: 200px;
+  position: fixed;
+  top: 10px;
+  overflow-y: auto;
+  height: 100vh;
+}
+.leftSidebar {
+  left: 20px;
+}
+.rightSidebar {
+  right: 20px;
+}
+.sidebar .section {
+  display: flex;
+  flex-direction: column;
+}
+.sidebar h4 {
+  margin-top: 10px;
+  margin-bottom: 4px;
+  font-weight: normal;
+}
+.sidebar .spacing {
+  height: 30px;
+}
+.conversationContainer code {
+  color: var(--secondary-color);
+  background-color: var(--tertiary-color);
+  padding: 10px;
+  border-radius: 6px;
+  width: calc(100% - 20px);
+  display: block;
+  font-family: var(--code-font);
+}
+.hidden {
+  display: none;
+}

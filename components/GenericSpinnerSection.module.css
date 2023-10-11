@@ -1,0 +1,12 @@
+.checkBox {
+  margin-bottom: 10px;
+  margin-left: 4px;
+}
+.checkBox input {
+  margin-right: 10px;
+  transform: scale(1.5);
+  vertical-align: middle;
+}
+.checkBox span {
+  vertical-align: middle;
+}

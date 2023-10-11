@@ -1,0 +1,12 @@
+.memoryButtonWrapper {
+  display: flex;
+  justify-content: space-between;
+}
+.memoryButtonWrapper input {
+  flex-grow: 2;
+  margin-right: 5px;
+  height: 28px;
+}
+.memoryButtonWrapper input:last-of-type {
+  margin-right: 0;
+}

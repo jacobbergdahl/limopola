@@ -1,0 +1,25 @@
+:root {
+  --primary-font: "ColfaxAI", Helvetica, sans-serif;
+  --code-font: "Consolas", "Roboto Mono", "Source Code Pro", "ColfaxAI",
+    Helvetica, sans-serif, Arial, monospace;
+  --primary-color: #353740;
+  --secondary-color: #eaeff4;
+  --tertiary-color: #1b2129;
+  --placeholder-color: #8e8ea0;
+  --submit-button-color: #10a37f;
+  --disabled-background-color: #393939;
+}
+
+body {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+/** Needs to be in the global CSS due to being used in the parsed API responses */
+main .inline-code {
+  color: #eaeff4;
+  background-color: #1b2129;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-family: var(--code-font);
+}

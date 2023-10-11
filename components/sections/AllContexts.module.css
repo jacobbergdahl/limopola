@@ -1,0 +1,9 @@
+.modalButtonWrapper {
+  margin-top: 5px;
+  width: 100%;
+}
+.modalButtonWrapper input {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}

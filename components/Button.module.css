@@ -1,0 +1,25 @@
+.button {
+  margin-bottom: 2px;
+  background: none;
+  border: 1px solid white;
+  border-radius: 4px;
+  padding: 4px 5px;
+}
+.button:last-of-type {
+  margin-bottom: 0;
+}
+.button:hover,
+.button.selected {
+  background: white;
+  color: var(--primary-color);
+}
+.subtleButton {
+  border: none;
+}
+.subtleButton:hover,
+.subtleButton.selected {
+  background: none;
+  color: white;
+  border-bottom: 1px solid white;
+  border-radius: 0;
+}

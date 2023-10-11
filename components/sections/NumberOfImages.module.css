@@ -1,0 +1,12 @@
+.fourButtonsContainer {
+  display: flex;
+  justify-content: space-between;
+}
+.fourButtonsContainer input {
+  flex-grow: 4;
+  margin-right: 5px;
+  height: 32px;
+}
+.fourButtonsContainer input:last-of-type {
+  margin-right: 0;
+}

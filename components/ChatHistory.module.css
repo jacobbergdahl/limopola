@@ -1,0 +1,90 @@
+.chatHistory {
+  margin-top: 80px;
+  margin-bottom: 10px;
+}
+.chatHistory .emptyChat {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  color: #bfbfbf;
+}
+.chatHistory {
+  width: 240px;
+}
+.chatHistory .message {
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  white-space: pre-wrap;
+}
+.chatHistory .message .imageWrapper {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+.chatHistory .message .imageWrapper a {
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+.chatHistory .message .imageWrapper img {
+  max-width: 300px;
+}
+.chatHistory .message .imageWrapper a:last-of-type {
+  margin-right: 0;
+  margin-bottom: 0;
+}
+.chatHistory .messageSender {
+  color: #adafc4;
+}
+.chatHistory .userMessage {
+  background: #182045;
+}
+.chatHistory .chatGptMessage {
+  background: #25357b;
+}
+.chatHistory .errorMessage {
+  background: #3c0000;
+}
+.chatHistory .loadingMessage {
+  background: #25357b;
+}
+.chatHistory .loadingMessage img {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  width: 50px;
+}
+.chatHistory .scrollAnchor {
+  height: 1px;
+  margin-bottom: 330px;
+}
+.chatHistory video,
+.chatHistory audio {
+  width: 100%;
+}
+.selectableMessage .textMessage:hover {
+  cursor: pointer;
+  user-select: none;
+  background: #0065a2;
+}
+.chatHistory pre {
+  margin: 0;
+}
+@media screen and (min-width: 1000px) {
+  .chatHistory {
+    width: 500px;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .chatHistory {
+    width: 650px;
+  }
+  .chatHistory .message .imageWrapper img {
+    max-width: 500px;
+  }
+}
+@media screen and (min-width: 1400px) {
+  .chatHistory {
+    width: 800px;
+  }
+}
