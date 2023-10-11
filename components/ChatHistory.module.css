@@ -6,7 +6,7 @@
   margin-left: auto;
   margin-right: auto;
   display: block;
-  color: #bfbfbf;
+  color: var(--font-color-faded);
 }
 .chatHistory {
   width: 240px;
@@ -34,19 +34,19 @@
   margin-bottom: 0;
 }
 .chatHistory .messageSender {
-  color: #adafc4;
+  color: var(--font-color-faded);
 }
 .chatHistory .userMessage {
-  background: #182045;
+  background: var(--accent-color);
 }
 .chatHistory .chatGptMessage {
-  background: #25357b;
+  background: var(--accent-color-secondary);
 }
 .chatHistory .errorMessage {
-  background: #3c0000;
+  background: var(--error-color);
 }
 .chatHistory .loadingMessage {
-  background: #25357b;
+  background: var(--accent-color-secondary);
 }
 .chatHistory .loadingMessage img {
   margin-left: auto;
@@ -65,7 +65,7 @@
 .selectableMessage .textMessage:hover {
   cursor: pointer;
   user-select: none;
-  background: #0065a2;
+  background: var(--accent-color-tertiary);
 }
 .chatHistory pre {
   margin: 0;

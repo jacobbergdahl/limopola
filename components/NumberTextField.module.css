@@ -1,7 +1,7 @@
 .textField {
-  color: black;
+  color: var(--font-color-textfield);
   border: none;
-  outline: 1px solid #232323;
+  outline: 1px solid var(--textfield-background-color);
   border-radius: 2px;
   border-radius: 10px;
   box-shadow: 0px -5px 10px 0px rgba(0, 0, 0, 0.4);
@@ -9,5 +9,5 @@
   pointer-events: all;
 }
 .textField:focus {
-  outline: 1px solid #606060;
+  outline: 1px solid var(--textarea-focus-color);
 }

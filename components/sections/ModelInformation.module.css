@@ -6,8 +6,8 @@
   margin-bottom: 10px;
 }
 .sectionInner a {
-  color: white;
+  color: var(--link-color);
 }
 .sectionInner a:hover {
-  color: #bfbfbf;
+  color: var(--link-hover-color);
 }

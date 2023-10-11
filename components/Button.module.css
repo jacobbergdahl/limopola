@@ -1,7 +1,7 @@
 .button {
   margin-bottom: 2px;
   background: none;
-  border: 1px solid white;
+  border: 1px solid var(--contrast-color);
   border-radius: 4px;
   padding: 4px 5px;
 }
@@ -10,8 +10,8 @@
 }
 .button:hover,
 .button.selected {
-  background: white;
-  color: var(--primary-color);
+  background: var(--contrast-color);
+  color: var(--background-color);
 }
 .subtleButton {
   border: none;
@@ -19,7 +19,7 @@
 .subtleButton:hover,
 .subtleButton.selected {
   background: none;
-  color: white;
-  border-bottom: 1px solid white;
+  color: var(--contrast-color);
+  border-bottom: 1px solid var(--contrast-color);
   border-radius: 0;
 }

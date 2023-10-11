@@ -74,8 +74,8 @@
 .conversationContainer textarea {
   padding: 10px;
   display: block;
-  background: #2d2f36;
-  outline: 1px solid #232323;
+  background: var(--textarea-background-color);
+  outline: 1px solid var(--textarea-outline-color);
   border-radius: 10px;
   box-shadow: 0px -5px 10px 0px rgba(0, 0, 0, 0.4);
   box-sizing: border-box;
@@ -97,10 +97,10 @@
   height: 70vh;
 }
 .conversationContainer textarea:focus {
-  outline: 1px solid #606060;
+  outline: 1px solid var(--textfield-focus-color);
 }
 .conversationContainer textarea:disabled {
-  background: disabled-background-color;
+  background: var(--disabled-textarea-color);
 }
 .conversationContainer .spacing {
   height: 100px;
@@ -109,17 +109,8 @@
   min-height: 100px;
 }
 .conversationContainer ::placeholder {
-  color: var(--placeholder-color);
+  color: var(--font-color-faded-extra);
   opacity: 1;
-}
-.conversationContainer input[type="submit"] {
-  padding: 12px 0;
-  color: #fff;
-  background-color: var(--submit-button-color);
-  border: none;
-  border-radius: 4px;
-  text-align: center;
-  cursor: pointer;
 }
 .conversationContainer textarea {
   width: 250px;
@@ -129,7 +120,7 @@
 }
 .pageBottomColor,
 .pageTopColor {
-  background: var(--primary-color);
+  background: var(--background-color);
   height: 40px;
   position: fixed;
   width: 100%;
@@ -191,8 +182,8 @@
   height: 30px;
 }
 .conversationContainer code {
-  color: var(--secondary-color);
-  background-color: var(--tertiary-color);
+  color: var(--font-color);
+  background-color: var(--background-inner-color);
   padding: 10px;
   border-radius: 6px;
   width: calc(100% - 20px);

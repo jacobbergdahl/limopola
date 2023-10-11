@@ -2,16 +2,29 @@
   --primary-font: "ColfaxAI", Helvetica, sans-serif;
   --code-font: "Consolas", "Roboto Mono", "Source Code Pro", "ColfaxAI",
     Helvetica, sans-serif, Arial, monospace;
-  --primary-color: #353740;
-  --secondary-color: #eaeff4;
-  --tertiary-color: #1b2129;
-  --placeholder-color: #8e8ea0;
-  --submit-button-color: #10a37f;
-  --disabled-background-color: #393939;
+  --background-color: #353740;
+  --background-inner-color: #1b2129;
+  --contrast-color: #fff;
+  --font-color: #fff;
+  --font-color-faded: #bfbfbf;
+  --font-color-faded-extra: #8e8ea0;
+  --font-color-textfield: #000;
+  --textarea-background-color: #2d2f36;
+  --textarea-outline-color: #232323;
+  --textfield-outline-color: #232323;
+  --disabled-textarea-background-color: #393939;
+  --textfield-focus-color: #606060;
+  --textarea-focus-color: #606060;
+  --accent-color: #182045;
+  --accent-color-secondary: #25357b;
+  --accent-color-tertiary: #0065a2;
+  --error-color: #3c0000;
+  --link-color: #fff;
+  --link-hover-color: #bfbfbf;
 }
 
 body {
-  background: var(--primary-color);
+  background: var(--background-color);
   color: #fff;
 }
 
