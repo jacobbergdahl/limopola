@@ -57,7 +57,7 @@ $ npm run dev
 
 ## Models
 
-| Model               | API Key    |
+| Model               | API Source |
 | ------------------- | ---------- |
 | gpt-4               | OpenAI     |
 | gpt-4-32k           | OpenAI     |
