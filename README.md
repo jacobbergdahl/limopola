@@ -2,7 +2,7 @@
 
 ![Banner](./public/banner.png)
 
-Limopola is an AI interface to interact with various large language models. It is built with NextJS (a meta-framework of ReactJS). It uses TypeScript for typing and Jotai for state management. It has an SQLite database, although most information is stored in the client's local storage.
+Limopola is an AI interface to interact with various large language models (LLMs). It is built with NextJS (a meta-framework of ReactJS). It uses TypeScript for typing and Jotai for state management. It has a tiny SQLite database that is only used for one table of information. Most information is stored in the client's local storage.
 
 The name is a silly portmanteau of the words link, model, portal, and language. Limopola is indeed a portal or a link that allows you to communicate with a wide range of AI's.
 
@@ -11,6 +11,8 @@ It allows you to communicate with text, image, video, and audio AI through both 
 Limopola is made to be run locally, but in the future it might be hosted online on a platform like Netlify.
 
 Originally (regrettably) based on a [simple starter repository by OpenAI](https://github.com/openai/openai-quickstart-node) that grew bigger than planned. Hence the license is inherited from that project.
+
+- [Planned updates to this repository](https://github.com/jacobbergdahl/limopola/blob/main/TODO.md).
 
 ## Set-up
 
@@ -92,11 +94,11 @@ _And other local/custom versions of these models._
 
 ## Upcoming features
 
-This is a work in progress. You can find a list of planned features and updates in the [TODO.md](https://github.com/jacobbergdahl/limopola/blob/main/TODO.md). Please let me know if there are other features you'd like to see added or if you run into any issues. Feel free to open a pull request with any changes you'd like to make.
+This is a work in progress. You can find a list of planned features and updates in the [TODO.md](https://github.com/jacobbergdahl/limopola/blob/main/TODO.md) file. Please let me know if there are other features you'd like to see added or if you run into any issues. Feel free to open a pull request through a fork with any changes you'd like to make.
 
 ## Screenshots
 
-These are example screenshots of the application.
+These are example screenshots of the application taken on 2023-10-11.
 
 ### Chat UI
 
