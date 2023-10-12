@@ -1,4 +1,6 @@
-# Limopola: An AI Interface
+#
+
+: An AI Interface
 
 ![Banner](./public/banner.png)
 
@@ -28,7 +30,7 @@ $ npm i
 
 Create a `.env` file from the `.env.example` file, and add API keys. There are instructions in the file for where to get the keys.
 
-Note that OpenAI will charge money from the first API call you make, while both Replicate and ElevenLabs are free for a while and does not require any payment information during that initial period. Hence, if you just want to try this project out a little bit, then you can start by just adding the Replicate and/or Eleven Labs API keys. They don't ask you for your billing information until you reach a certain quota.
+Note that OpenAI will charge money from the first API call you make, while both Replicate and ElevenLabs are free for a while and do not require any billing information until you reach a certain quota. Hence, if you just want to try this project out a little bit, then you can start by just adding the Replicate and/or Eleven Labs API keys.
 
 Be careful when using the `animate-diff` model as it will likely burn through your free period of Replicate quickly.
 
