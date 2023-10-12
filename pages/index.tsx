@@ -700,9 +700,9 @@ export default function Home() {
   );
 
   // This if-statement exists because of the state management used in Jotai.
-  // This affects performance and can cause flickering on page load. One
-  // wouldn't normally do this, but because this project is only used locally
-  // by developers, it doesn't really matter. It's related to how SSR affects hydration.
+  // One would normally avoid doing this, but because this project is only used locally
+  // by developers, it doesn't really matter. The issue is related to how SSR affects hydration,
+  // given that state is stored in localStorage.
   if (!hasMounted) {
     return null;
   }
