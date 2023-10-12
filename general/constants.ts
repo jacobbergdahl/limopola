@@ -178,7 +178,7 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
       };
     case MODEL.Maintainer:
       return {
-        status: MODEL_STATUS.Partial,
+        status: MODEL_STATUS.Poor,
         information: `This model runs locally on your machine and is trained to maintain this repository's codebase. It is not yet fully operational.`,
         learnMoreUrl: "https://llama-node.vercel.app/docs/start",
       };
@@ -217,14 +217,14 @@ export const ALL_TEXT_MODELS = [
   MODEL.Gpt4_32k,
   MODEL.Gpt3_5_turbo,
   MODEL.Gpt3_5_turbo_16k,
+  MODEL.FactChecker,
   MODEL.Llama2_70b,
   MODEL.Llama2_13b,
   MODEL.Llama2_70b_chat,
   MODEL.Llama2_13b_chat,
   MODEL.CodeLlama_13b,
   MODEL.LocalLlama,
-  MODEL.Maintainer,
-  MODEL.FactChecker,
+  //MODEL.Maintainer,
   MODEL.Debug,
 ];
 
