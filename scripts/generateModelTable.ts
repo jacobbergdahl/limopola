@@ -6,7 +6,7 @@ import {
 } from "../general/constants";
 
 const generateModelTable = () => {
-  let table = "| Model | API Type | API Source |\n| --- | --- | --- |\n";
+  let table = "| Model | Type | API Source |\n| --- | --- | --- |\n";
 
   for (const model in MODEL) {
     if (

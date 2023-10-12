@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var constants_1 = require("../general/constants");
 var generateModelTable = function () {
-    var table = "| Model | API Type | API Source |\n| --- | --- | --- |\n";
+    var table = "| Model | Type | API Source |\n| --- | --- | --- |\n";
     for (var model in constants_1.MODEL) {
         if (constants_1.MODEL[model] === constants_1.MODEL.Debug ||
             constants_1.MODEL[model] === constants_1.MODEL.Maintainer ||
