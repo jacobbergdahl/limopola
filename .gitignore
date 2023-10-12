@@ -30,3 +30,9 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
+
+# auto-generated JS files
+/general/*.js
+/scripts/*.js
+/general/**/*.js
+/scripts/**/*.js
