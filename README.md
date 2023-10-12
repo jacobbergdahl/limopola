@@ -36,6 +36,8 @@ Be careful when using the `animate-diff` model as it will likely burn through yo
 - `REPLICATE_API_KEY`: Used for several API's. These API's are free to use for a while, but eventually you'll be asked to pay to continue using them. Generate the API key for free at [https://replicate.com/account](https://replicate.com/account).
 - `ELEVEN_LABS_API_KEY`: Used to generate text-to-speech. This API is also free to use for a while. Generate the API key at [https://docs.elevenlabs.io/api-reference/quick-start/authentication](https://docs.elevenlabs.io/api-reference/quick-start/authentication).
 
+In the future, this project will likely also give you the option of adding an API key to HuggingFace.
+
 ### Set up a local LLM
 
 You can easily use [llama](https://ai.meta.com/resources/models-and-libraries/llama/) locally on your machine in this project.
