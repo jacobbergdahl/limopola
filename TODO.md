@@ -27,6 +27,7 @@ This is a list of features, updates, and bug fixes that should be implemented in
 - Add a streaming option.
 - Add API to describe images. From that, can also make it possible to make another image from the description of the first.
 - Add a "fact-checker" option to all text API's. Call the API twice; the second time asking it to rate the accuracy of the previous message. Show the accurate next to the name (e.g. `Gpt-3.5-turbo (in 1.92s, 90% accurate)`).
+- Add many more models provided by Replicate and/or HuggingFace.
 
 ## Core
 
