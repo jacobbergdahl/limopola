@@ -21,6 +21,7 @@ This is a list of features, updates, and bug fixes that should be implemented in
 - Add the ability to choose the number of replies from the the OpenAI text generation API's.
 - Add ability to request number of tokens from text generating AI's.
 - Add more options to OpenAI's text API's, including embeddings and more.
+- All text generating API's should support temperature.
 - Fix local-maintainer (LLaMa).
 - Improve and speed up local (LLaMa).
 - Add a streaming option.
@@ -35,6 +36,22 @@ This is a list of features, updates, and bug fixes that should be implemented in
 - Add button to quickly copy code from code blocks.
 - Improve the "code style" mode with syntax highlighting.
 - Add syntax highlighting to code returned from the API.
+
+## Next major feature: Agents
+
+Agents is a new mode (e.g., on the same level as Chat and Editor), which allows users to create autonomous agents, like Auto-GPT.
+
+### MVP
+
+Create a new full-screen component which features a textarea at the top. The user enters a mission into the textarea, such as "Create a children's book about bears" or "Write a personal website for me." The textarea is disabled, as the AI gets to work. It first creates a list of tasks to accomplish, and what API it should use to fulfill that task. It then prints a message, similar to the chat layout, each time it completes a task.
+
+This will require prompt engineering, instructing the AI to create the list of tasks and helping it decide what API to use. Prompts might grow big as it continues to go through tasks, so it'll need to know when to use models with more contextual capabilities.
+
+There should be a button at the bottom of the screen that the user can press to stop the AI.
+
+At first, it might only use GPT-3.5, GPT-4, and DALL-E, but it can later gain access to all API's. At first, the user will not be able to choose what API's it has access to, or any other options, but such choices should be added later.
+
+### Later features
 
 ## Nice-to-have
 
