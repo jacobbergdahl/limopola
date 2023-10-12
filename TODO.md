@@ -41,17 +41,13 @@ This is a list of features, updates, and bug fixes that should be implemented in
 
 Agents is a new mode (e.g., on the same level as Chat and Editor), which allows users to create autonomous agents, like Auto-GPT.
 
-### MVP
-
-Create a new full-screen component which features a textarea at the top. The user enters a mission into the textarea, such as "Create a children's book about bears" or "Write a personal website for me." The textarea is disabled, as the AI gets to work. It first creates a list of tasks to accomplish, and what API it should use to fulfill that task. It then prints a message, similar to the chat layout, each time it completes a task.
+Agents will feature a new full-screen component with a textarea at the top. The user enters a mission into the textarea, such as "Create a children's book about bears" or "Write a personal website for me." The textarea is disabled, as the AI gets to work. It first creates a list of tasks to accomplish, and what API it should use to fulfill that task. It then prints a message, similar to the chat layout, each time it completes a task.
 
 This will require prompt engineering, instructing the AI to create the list of tasks and helping it decide what API to use. Prompts might grow big as it continues to go through tasks, so it'll need to know when to use models with more contextual capabilities.
 
 There should be a button at the bottom of the screen that the user can press to stop the AI.
 
 At first, it might only use GPT-3.5, GPT-4, and DALL-E, but it can later gain access to all API's. At first, the user will not be able to choose what API's it has access to, or any other options, but such choices should be added later.
-
-### Later features
 
 ## Nice-to-have
 
