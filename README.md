@@ -1,6 +1,4 @@
-#
-
-: An AI Interface
+# Limopola: An AI Interface
 
 ![Banner](./public/banner.png)
 
