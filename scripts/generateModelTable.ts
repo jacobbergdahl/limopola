@@ -2,22 +2,24 @@ import {
   MODEL,
   MODEL_API_KEY,
   getModelInformation,
+  getModelType,
 } from "../general/constants";
 
 const generateModelTable = () => {
-  let table = "| Model | API Source |\n| --- | --- |\n";
+  let table = "| Model | API Type | API Source |\n| --- | --- | --- |\n";
 
   for (const model in MODEL) {
     if (
-      model === MODEL.Debug ||
-      model === MODEL.Maintainer ||
-      model === MODEL.Midjourney ||
-      model === MODEL.FactChecker
+      MODEL[model] === MODEL.Debug ||
+      MODEL[model] === MODEL.Maintainer ||
+      MODEL[model] === MODEL.Midjourney ||
+      MODEL[model] === MODEL.FactChecker
     ) {
       continue;
     }
     const modelInfo = getModelInformation(MODEL[model]);
-    table += `| ${MODEL[model]} | ${
+    const modelType = getModelType(MODEL[model]);
+    table += `| ${MODEL[model]} | ${modelType} | ${
       modelInfo.apiKey || MODEL_API_KEY.None
     } |\n`;
   }

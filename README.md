@@ -61,23 +61,25 @@ $ npm run dev
 
 ## Models
 
-| Model               | API Source |
-| ------------------- | ---------- |
-| gpt-4               | OpenAI     |
-| gpt-4-32k           | OpenAI     |
-| gpt-3.5-turbo       | OpenAI     |
-| gpt-3.5-turbo-16k   | OpenAI     |
-| dall-e              | OpenAI     |
-| stable-diffusion-xl | Replicate  |
-| llama-2-70b         | Replicate  |
-| llama-2-13b         | Replicate  |
-| llama-2-70b-chat    | Replicate  |
-| llama-2-13b-chat    | Replicate  |
-| codellama-34b       | Replicate  |
-| text-to-pokemon     | Replicate  |
-| animate-diff        | Replicate  |
-| local               | None       |
-| eleven-labs         | ElevenLabs |
+This is a list of models currently included in this AI interface. More models will be added in the future.
+
+| Model               | API Type | API Source |
+| ------------------- | -------- | ---------- |
+| gpt-4               | Text     | OpenAI     |
+| gpt-4-32k           | Text     | OpenAI     |
+| gpt-3.5-turbo       | Text     | OpenAI     |
+| gpt-3.5-turbo-16k   | Text     | OpenAI     |
+| dall-e              | Image    | OpenAI     |
+| stable-diffusion-xl | Image    | Replicate  |
+| llama-2-70b         | Text     | Replicate  |
+| llama-2-13b         | Text     | Replicate  |
+| llama-2-70b-chat    | Text     | Replicate  |
+| llama-2-13b-chat    | Text     | Replicate  |
+| codellama-34b       | Text     | Replicate  |
+| text-to-pokemon     | Image    | Replicate  |
+| animate-diff        | Video    | Replicate  |
+| eleven-labs         | Audio    | ElevenLabs |
+| local-llama         | Text     | None       |
 
 _And other local/custom versions of these models._
 

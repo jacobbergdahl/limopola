@@ -28,11 +28,11 @@ export enum MODEL {
   CodeLlama_13b = "codellama-34b",
   TextToPokemon = "text-to-pokemon",
   AnimateDiff = "animate-diff",
-  LocalLlama = "local",
   Maintainer = "local-maintainer",
   ElevenLabs = "eleven-labs",
   FactChecker = "gpt-4-fact-checker",
   Midjourney = "midjourney-imagine",
+  LocalLlama = "local-llama",
   Debug = "debug",
 }
 
