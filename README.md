@@ -100,6 +100,8 @@ _And other local/custom versions of these models._
 
 This is a work in progress. You can find a list of planned features and updates in the [TODO.md](https://github.com/jacobbergdahl/limopola/blob/main/TODO.md) file. Please let me know if there are other features you'd like to see added or if you run into any issues. Feel free to open a pull request through a fork with any changes you'd like to make.
 
+The next major feature will likely be the ability to create autonomous agents.
+
 ## Screenshots
 
 These are example screenshots of the application taken on 2023-10-11.
@@ -111,3 +113,17 @@ These are example screenshots of the application taken on 2023-10-11.
 ### Editor UI
 
 ![Screenshot of the editor UI](./public/screenshot2.png)
+
+## Limopola artworks
+
+The logo for Limopola by Midjourney v5:
+
+<img src="./public/logo.png" width="400" height="400">
+
+Limopola in text by DALL-E 3:
+
+<img src="./public/limopola.png" width="200" height="200">
+<img src="./public/limopola2.png" width="200" height="200">
+<img src="./public/limopola3.png" width="200" height="200">
+<img src="./public/limopola4.png" width="200" height="200">
+<img src="./public/limopola5.png" width="200" height="200">
