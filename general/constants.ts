@@ -28,7 +28,6 @@ export enum MODEL {
   CodeLlama_13b = "codellama-34b",
   TextToPokemon = "text-to-pokemon",
   AnimateDiff = "animate-diff",
-  Maintainer = "local-maintainer",
   ElevenLabs = "eleven-labs",
   FactChecker = "gpt-4-fact-checker",
   Midjourney = "midjourney-imagine",
@@ -176,12 +175,6 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
         information: `This model runs locally on your machine. If you have have opted to show all logs, then you can see its progress in the NodeJS console. End your message with "Answer:" to get an answer, otherwise you might get a continuation.`,
         learnMoreUrl: "https://llama-node.vercel.app/docs/start",
       };
-    case MODEL.Maintainer:
-      return {
-        status: MODEL_STATUS.Poor,
-        information: `This model runs locally on your machine and is trained to maintain this repository's codebase. It is not yet fully operational.`,
-        learnMoreUrl: "https://llama-node.vercel.app/docs/start",
-      };
     case MODEL.ElevenLabs:
       return {
         status: MODEL_STATUS.Full,
@@ -224,7 +217,6 @@ export const ALL_TEXT_MODELS = [
   MODEL.Llama2_13b_chat,
   MODEL.CodeLlama_13b,
   MODEL.LocalLlama,
-  //MODEL.Maintainer,
   MODEL.Debug,
 ];
 
@@ -247,7 +239,6 @@ export const ALL_OPEN_AI_MODELS = [
   MODEL.Dalle,
 ];
 
-// Excludes MODEL.Maintainer
 export const ALL_LLAMA_MODELS = [
   MODEL.Llama2_70b,
   MODEL.Llama2_13b,
@@ -263,7 +254,6 @@ export const ALL_SLOW_MODELS = [
   MODEL.Llama2_70b_chat,
   MODEL.AnimateDiff,
   MODEL.LocalLlama,
-  MODEL.Maintainer,
 ];
 
 export enum MEMORY {

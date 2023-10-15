@@ -34,64 +34,11 @@ const config = {
   nGpuLayers: 0,
 };
 
-// Learn more about labeling: https://huggingface.co/TheBloke/airoboros-13b-gpt4-GGML
-const getPrompt = async (
-  prompt: string,
-  isMaintainer: boolean,
-  requestedNumberOfTokens: number
-) => {
-  const hasRequestedANumberOfTokens = requestedNumberOfTokens > 0;
-  const commonInstructions =
-    "# Instructions: Please answer the question in English. Don't make up answers if you don't know." +
-    (hasRequestedANumberOfTokens
-      ? ` Make your answer around ${requestedNumberOfTokens} tokens in length.\n`
-      : "\n");
-
-  const processedUserInput =
-    "BEGININSTRUCTION\n" +
-    "USER: " +
-    prompt +
-    "\nENDINSTRUCTION\n" +
-    "ASSISTANT:\n";
-
-  const getProcessedInstructions = (
-    additionalContext: string = "",
-    additionalInput: string = ""
-  ) => {
-    return (
-      "BEGININPUT\n" +
-      "BEGINCONTEXT\n" +
-      commonInstructions +
-      additionalContext +
-      "\nENDCONTEXT\n" +
-      additionalInput +
-      "\nENDINPUT\n"
-    );
-  };
-
-  if (isMaintainer) {
-    SHOULD_SHOW_ALL_LOGS && console.log("Reading codebase...");
-    // TODO: Throw if codebase is nullish
-    const codeBase = await fs.readFile(txtCodePath, "utf8");
-    SHOULD_SHOW_ALL_LOGS && console.log("Finished reading codebase.");
-
-    return (
-      getProcessedInstructions(
-        "Below is a copy of the codebase.\n" + "```" + codeBase + "```",
-        `You are a programming assistant with access to the entire code base for this repository. You are an expert in JavaScript, TypeScript, and CSS, as well as ReactJS and NextJS specifically. As you can tell, the codebase all JavaScript, TypeScript, and CSS.`
-      ) + processedUserInput
-    );
-  }
-
-  return getProcessedInstructions() + processedUserInput;
-};
-
 export const llamaLocal = async (
   res,
   message,
   temperature,
-  requestedNumberOfTokens,
-  isMaintainer = false
+  requestedNumberOfTokens
 ) => {
   console.log(
     `The backend is calling your local machine learning model at ${modelPath}.`
@@ -104,16 +51,6 @@ export const llamaLocal = async (
   }, Number(process.env.LOCAL_MODEL_TIMEOUT_LENGTH) || 20 * 60 * 1000);
 
   try {
-    const prompt = await getPrompt(
-      message,
-      isMaintainer,
-      requestedNumberOfTokens
-    );
-    if (SHOULD_SHOW_ALL_LOGS) {
-      console.log("Final prompt:");
-      console.log(prompt);
-    }
-
     await llama.load(config);
 
     const response = await llama.createCompletion(
@@ -122,7 +59,7 @@ export const llamaLocal = async (
         nTokPredict:
           requestedNumberOfTokens > 0 ? requestedNumberOfTokens : 200,
         temp: temperature,
-        prompt: prompt || "",
+        prompt: message,
       },
       (response) => {
         // This API will generate one token at a time, and you can view it in real-time in your console as it is generating new tokens

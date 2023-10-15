@@ -22,7 +22,6 @@ This is a list of features, updates, and bug fixes that should be implemented in
 - Add ability to request number of tokens from text generating AI's.
 - Add more options to OpenAI's text API's, including embeddings and more.
 - All text generating API's should support temperature.
-- Fix local-maintainer (LLaMa).
 - Improve and speed up local (LLaMa).
 - Add a streaming option.
 - Add API to describe images. From that, can also make it possible to make another image from the description of the first.
@@ -31,6 +30,7 @@ This is a list of features, updates, and bug fixes that should be implemented in
 
 ## Core
 
+- Change the Options into Quick Links, create a modal for resetting data, and also add options for setting themes
 - Improve the UI of managing contexts.
 - Make it possible to retroactively create memory (click on posts to add to memory).
 - Make it possible to use contexts in Editor mode.

@@ -113,15 +113,8 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     if (model === MODEL.ElevenLabs) {
       return elevenLabs(res, message, voiceSimilarityBoost, voiceStability);
     }
-    if (model === MODEL.LocalLlama || model === MODEL.Maintainer) {
-      return llamaLocal(
-        res,
-        message,
-        // Not sure yet if the maintainer will use a hardcoded temperature or not
-        model === MODEL.Maintainer ? 0.2 : temperature,
-        model === MODEL.Maintainer ? 0 : requestedNumberOfTokens,
-        model === MODEL.Maintainer
-      );
+    if (model === MODEL.LocalLlama) {
+      return llamaLocal(res, message, temperature, requestedNumberOfTokens);
     }
     if (model === MODEL.FactChecker) {
       return factChecker(res, openai, message);

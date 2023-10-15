@@ -150,24 +150,20 @@ export default function Home() {
   const isFactChecking = model === MODEL.FactChecker;
   const shouldShowTemperature =
     selectedModelType === MODEL_TYPE.Text &&
-    model !== MODEL.Maintainer &&
     (ALL_LLAMA_MODELS.includes(model) || ALL_OPEN_AI_MODELS.includes(model)) &&
     !isFactChecking;
   const shouldShowTopP =
     selectedModelType === MODEL_TYPE.Text &&
-    model !== MODEL.Maintainer &&
     model !== MODEL.LocalLlama &&
     (ALL_LLAMA_MODELS.includes(model) || ALL_OPEN_AI_MODELS.includes(model)) &&
     !isFactChecking;
   const shouldShowFrequencyPenalty =
     selectedModelType === MODEL_TYPE.Text &&
-    model !== MODEL.Maintainer &&
     ALL_OPEN_AI_MODELS.includes(model) &&
     !isFactChecking;
   const shouldShowPresencePenalty =
     selectedModelType === MODEL_TYPE.Text &&
     ALL_OPEN_AI_MODELS.includes(model) &&
-    model !== MODEL.Maintainer &&
     !isFactChecking;
   const shouldShowVoiceSettings = selectedModelType === MODEL_TYPE.Audio;
   const shouldShowRequestedNumberOfTokens = model === MODEL.LocalLlama;
@@ -245,10 +241,7 @@ export default function Home() {
         `${message.sender.replace("You", "User")}: ${message.content}\n\n`
     );
 
-    const modelNameOrEmpty =
-      model !== MODEL.LocalLlama && model !== MODEL.Maintainer
-        ? `${model}:`
-        : "";
+    const modelNameOrEmpty = model !== MODEL.LocalLlama ? `${model}:` : "";
 
     return `${finalMessage.join(
       ""

@@ -11,7 +11,6 @@ const generateModelTable = () => {
   for (const model in MODEL) {
     if (
       MODEL[model] === MODEL.Debug ||
-      MODEL[model] === MODEL.Maintainer ||
       MODEL[model] === MODEL.Midjourney ||
       MODEL[model] === MODEL.FactChecker
     ) {
