@@ -19,6 +19,7 @@ import { elevenLabs } from "./aiModels/elevenLabs";
 import { factChecker } from "./aiModels/factChecker";
 import midjourney from "./aiModels/midjourney";
 import { NextApiRequest, NextApiResponse } from "next";
+import { palm } from "./aiModels/palm";
 
 export type ProcessedBody = {
   numberOfImages: number;
@@ -121,6 +122,9 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     }
     if (model === MODEL.Midjourney) {
       return midjourney(res, message);
+    }
+    if (model === MODEL.PalmChatBison001 || model === MODEL.PalmTextBison001) {
+      return palm(res, message, model, temperature);
     }
 
     // Accepts all versions of GPT 3.5 and GPT 4

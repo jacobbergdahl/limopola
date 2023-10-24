@@ -35,6 +35,7 @@ Be careful when using the `animate-diff` model as it will likely burn through yo
 - `OPENAI_API_KEY`: Used for all versions of GPT and DALL-E. Using OpenAI costs money. Generate the API key at [https://platform.openai.com/account/api-keys](https://platform.openai.com/account/api-keys).
 - `REPLICATE_API_KEY`: Used for several API's. These API's are free to use for a while, but eventually you'll be asked to pay to continue using them. Generate the API key for free at [https://replicate.com/account](https://replicate.com/account).
 - `ELEVEN_LABS_API_KEY`: Used to generate text-to-speech. This API is also free to use for a while. Generate the API key at [https://docs.elevenlabs.io/api-reference/quick-start/authentication](https://docs.elevenlabs.io/api-reference/quick-start/authentication).
+- `GOOGLE_API_KEY`: Used for Google's text-to-speech LLMs (PaLM). This API is also free to use for a while, but may be region-locked. Generate the API key at [https://makersuite.google.com/app/apikey](https://makersuite.google.com/app/apikey).
 
 In the future, this project will likely also give you the option of adding an API key to HuggingFace.
 
@@ -79,6 +80,8 @@ This is a list of models currently included in this AI interface. More models wi
 | text-to-pokemon     | Image | Replicate  |
 | animate-diff        | Video | Replicate  |
 | eleven-labs         | Audio | ElevenLabs |
+| text-bison-001      | Text  | Google     |
+| chat-bison-001      | Text  | Google     |
 | local-llama         | Text  | None       |
 
 _And other local/custom versions of these models._

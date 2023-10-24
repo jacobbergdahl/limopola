@@ -29,6 +29,8 @@ export enum MODEL {
   TextToPokemon = "text-to-pokemon",
   AnimateDiff = "animate-diff",
   ElevenLabs = "eleven-labs",
+  PalmTextBison001 = "text-bison-001",
+  PalmChatBison001 = "chat-bison-001",
   FactChecker = "gpt-4-fact-checker",
   Midjourney = "midjourney-imagine",
   LocalLlama = "local-llama",
@@ -47,6 +49,7 @@ export enum MODEL_API_KEY {
   Replicate = "Replicate",
   ElevenLabs = "ElevenLabs",
   HuggingFace = "HuggingFace",
+  Google = "Google",
   None = "None",
 }
 
@@ -197,6 +200,20 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
         learnMoreUrl:
           "https://docs.midjourneyapi.io/midjourney-api/midjourney-api/imagine",
       };
+    case MODEL.PalmChatBison001:
+      return {
+        status: MODEL_STATUS.Partial,
+        information: `Google PaLM model for chatting. Optimized for multi-turn chats (dialogues). Not using the API fully correctly yet, but the memory still seems to work well.`,
+        learnMoreUrl: "https://developers.generativeai.google/models/language",
+        apiKey: MODEL_API_KEY.Google,
+      };
+    case MODEL.PalmTextBison001:
+      return {
+        status: MODEL_STATUS.Full,
+        information: `Google PaLM model for generating text. Does not work well with multi-turn chats (e.g., the memory feature), but is great for accomplishing tasks like writing code.`,
+        learnMoreUrl: "https://developers.generativeai.google/models/language",
+        apiKey: MODEL_API_KEY.Google,
+      };
   }
 
   return {
@@ -217,6 +234,8 @@ export const ALL_TEXT_MODELS = [
   MODEL.Llama2_13b_chat,
   MODEL.CodeLlama_13b,
   MODEL.LocalLlama,
+  MODEL.PalmTextBison001,
+  MODEL.PalmChatBison001,
   MODEL.Debug,
 ];
 

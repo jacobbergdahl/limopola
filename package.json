@@ -9,8 +9,10 @@
     "generate-api-table": "tsc scripts/generateModelTable.ts --outDir . && node scripts/generateModelTable.js"
   },
   "dependencies": {
+    "@google-ai/generativelanguage": "^1.1.0",
     "@llama-node/llama-cpp": "^0.1.6",
     "@types/sqlite3": "^3.1.8",
+    "google-auth-library": "^9.1.0",
     "jotai": "^2.4.2",
     "llama-node": "^0.1.6",
     "next": "^13.1.1",
