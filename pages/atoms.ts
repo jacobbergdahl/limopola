@@ -121,3 +121,7 @@ export const isPresencePenaltyDefaultAtom = atomWithStorage(
   "IS_PRESENCE_PENALTY_DEFAULT",
   true
 );
+export const agentMessagesAtom = atomWithStorage(
+  "AGENT_MESSAGES",
+  [] as Message[]
+);

@@ -5,6 +5,7 @@ type ButtonProps = {
   value: any;
   onClick: MouseEventHandler<HTMLInputElement> | undefined;
   isSelected?: boolean;
+  disabled?: boolean;
   className?: string;
 };
 
@@ -13,6 +14,7 @@ export const Button = ({
   onClick,
   className,
   isSelected = false,
+  disabled = false,
 }: ButtonProps) => {
   const classnames = `${styles.button}${className ? ` ${className}` : ""}${
     isSelected ? ` ${styles.selected}` : ""
@@ -23,6 +25,7 @@ export const Button = ({
       value={value.toString()}
       onClick={onClick}
       className={classnames}
+      disabled={disabled}
     />
   );
 };

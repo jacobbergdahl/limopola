@@ -332,6 +332,7 @@ export const getDefaultModel = (): MODEL => {
 export enum INPUT_MODE {
   Chat = "Chat",
   Editor = "Editor",
+  Agent = "Agent",
 }
 
 export enum TEXTAREA_STYLE {
@@ -359,3 +360,16 @@ export enum STATUS_CODE {
   MethodNotAllowed = 405,
   InternalServerError = 500,
 }
+
+export enum AGENT_TASK_STATUS {
+  Pending = "Pending",
+  InProgress = "In-progress",
+  Completed = "Completed",
+}
+
+export type AgentTask = {
+  id: number;
+  description: string;
+  status: AGENT_TASK_STATUS;
+  api: MODEL;
+};

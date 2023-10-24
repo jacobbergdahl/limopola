@@ -79,6 +79,7 @@ import { TopP } from "../components/sections/TopP";
 import { FrequencyPenalty } from "../components/sections/FrequencyPenalty";
 import { PresencePenalty } from "../components/sections/PresencePenalty";
 import { MaxNumberOfTokens } from "../components/sections/MaxNumberOfTokens";
+import TextArea from "../components/TextArea";
 
 // I know, I know, this file is too long. It should, and will, be refactored 🙏
 // ... (maybe)
@@ -568,7 +569,8 @@ export default function Home() {
     }
   }
 
-  const handleKeyPress = (event) => {
+  // make separate for each textarea?
+  const handleTextareaKeyPress = (event) => {
     const isChatModeAndPressedEnterWithoutHoldingShift =
       inputMode === INPUT_MODE.Chat && !event.shiftKey && event.key === "Enter";
     const isEditorModeAndPressedEControlEnter =
@@ -733,6 +735,13 @@ export default function Home() {
               }
             }}
           />
+          <Button
+            value="Agent"
+            isSelected={inputMode === INPUT_MODE.Agent}
+            onClick={() => {
+              setInputMode(INPUT_MODE.Agent);
+            }}
+          />
         </div>
       </div>
 
@@ -763,7 +772,7 @@ export default function Home() {
           }${isContextModalOpen ? " " + styles.hidden : ""}`}
         >
           {/* Should probably just render two different textareas for each mode now */}
-          <textarea
+          <TextArea
             rows={4}
             name="message"
             placeholder={
@@ -774,18 +783,18 @@ export default function Home() {
             value={
               inputMode === INPUT_MODE.Chat ? currentInput : currentEditorText
             }
-            onChange={(e) =>
+            handleChange={(e) =>
               inputMode === INPUT_MODE.Chat
                 ? setCurrentInput(e.target.value)
                 : setCurrentEditorText(e.target.value)
             }
-            onKeyDown={handleKeyPress}
+            handleKeyDown={handleTextareaKeyPress}
             ref={textareaRef}
             disabled={
               (inputMode === INPUT_MODE.Editor && isLoading) ||
               isContextModalOpen
             }
-            spellCheck={
+            shouldSpellCheck={
               textAreaStyle !== TEXTAREA_STYLE.Code &&
               inputMode === INPUT_MODE.Editor
             }

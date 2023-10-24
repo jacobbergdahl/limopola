@@ -4,6 +4,7 @@ import { useAtom } from "jotai";
 import { currentContextsAtom, isContextModalOpenAtom } from "../pages/atoms";
 import styles from "./ContextSettingsModal.module.css";
 import { Button } from "./Button";
+import TextArea from "./TextArea";
 
 export const ContextSettingsModal = () => {
   const [contexts, setContexts] = useAtom(currentContextsAtom);
@@ -132,17 +133,20 @@ export const ContextSettingsModal = () => {
         </button>
         <h2>Manage Contexts</h2>
         <h3>{selectedContext !== null ? "Save context" : "Add context"}</h3>
-        <textarea
+        <TextArea
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          handleChange={(e) => setTitle(e.target.value)}
           className={styles.smallTextarea}
           placeholder="Title"
+          name="title"
+          rows={1}
         />
-        <textarea
+        <TextArea
           value={content}
-          onChange={(e) => setContent(e.target.value)}
+          handleChange={(e) => setContent(e.target.value)}
           className={styles.largeTextarea}
           placeholder="Content"
+          name="content"
         />
         {selectedContext !== null && (
           <div className={styles.buttonWrapper}>

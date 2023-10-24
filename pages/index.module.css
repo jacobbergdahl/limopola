@@ -71,17 +71,6 @@
 .modeSelectionContainer .modeSelectionContainerInner input:last-of-type {
   margin-right: 0;
 }
-.conversationContainer textarea {
-  padding: 10px;
-  display: block;
-  background: var(--textarea-background-color);
-  outline: 1px solid var(--textarea-outline-color);
-  border-radius: 10px;
-  box-shadow: 0px -5px 10px 0px rgba(0, 0, 0, 0.4);
-  box-sizing: border-box;
-  border: none;
-  pointer-events: all;
-}
 .chatContainer textarea {
   margin-bottom: 10px;
   margin-top: 10px;
@@ -95,12 +84,6 @@
 }
 .editorContainer textarea {
   height: 70vh;
-}
-.conversationContainer textarea:focus {
-  outline: 1px solid var(--textfield-focus-color);
-}
-.conversationContainer textarea:disabled {
-  background: var(--disabled-textarea-color);
 }
 .conversationContainer .spacing {
   height: 100px;

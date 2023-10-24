@@ -1,0 +1,17 @@
+.textarea {
+  padding: 10px;
+  display: block;
+  background: var(--textarea-background-color);
+  outline: 1px solid var(--textarea-outline-color);
+  border-radius: 10px;
+  box-shadow: 0px -5px 10px 0px rgba(0, 0, 0, 0.4);
+  box-sizing: border-box;
+  border: none;
+  pointer-events: all;
+}
+.textarea:focus {
+  outline: 1px solid var(--textfield-focus-color);
+}
+.textarea:disabled {
+  background: var(--disabled-textarea-color);
+}
