@@ -61,6 +61,24 @@ export const palm = async (
           });
 
     if (
+      !response ||
+      !response[0] ||
+      !response[0].candidates ||
+      !response[0].candidates[0]
+    ) {
+      console.log(response);
+      if (
+        response &&
+        response[0] &&
+        response[0].candidates &&
+        response[0].candidates.length === 0
+      ) {
+        throw new Error("The AI did not return a response for the question.");
+      }
+      throw new Error("An unexpected error occurred.");
+    }
+
+    if (
       model === MODEL.PalmTextBison001 &&
       "output" in response[0].candidates[0]
     ) {
@@ -86,7 +104,7 @@ export const palm = async (
     console.error("An error occurred:", error);
     res
       .status(STATUS_CODE.InternalServerError)
-      .json({ error: { message: error?.details || error } });
+      .json({ error: { message: error?.details || error?.message || error } });
     return;
   }
 };

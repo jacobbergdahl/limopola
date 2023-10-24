@@ -419,8 +419,7 @@ export default function Home() {
           currentlySelectedContext.title !== DEFAULT_CONTEXT.title
             ? ` (as ${currentlySelectedContext.title} ${timeToGenerate})`
             : ` (${timeToGenerate})`;
-        const sender =
-          model.charAt(0).toUpperCase() + model.slice(1) + formattedContext;
+        const sender = model + formattedContext;
 
         const apiMessage: Message = {
           content: data.result,
