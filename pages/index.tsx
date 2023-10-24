@@ -150,7 +150,10 @@ export default function Home() {
   const isFactChecking = model === MODEL.FactChecker;
   const shouldShowTemperature =
     selectedModelType === MODEL_TYPE.Text &&
-    (ALL_LLAMA_MODELS.includes(model) || ALL_OPEN_AI_MODELS.includes(model)) &&
+    (ALL_LLAMA_MODELS.includes(model) ||
+      ALL_OPEN_AI_MODELS.includes(model) ||
+      model === MODEL.PalmChatBison001 ||
+      model === MODEL.PalmTextBison001) &&
     !isFactChecking;
   const shouldShowTopP =
     selectedModelType === MODEL_TYPE.Text &&
