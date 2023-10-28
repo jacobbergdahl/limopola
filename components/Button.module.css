@@ -23,3 +23,40 @@
   border-bottom: 1px solid var(--contrast-color);
   border-radius: 0;
 }
+
+/**
+TODO: Use proper colors and add them as CSS variables
+*/
+.button.positive {
+  background: green;
+  border: 1px solid green;
+  color: white;
+}
+.button.positive:hover,
+.button.positive.selected {
+  background: darkgreen;
+  border: 1px solid darkgreen;
+  color: white;
+}
+.button.negative {
+  background: red;
+  border: 1px solid red;
+  color: white;
+}
+.button.negative:hover,
+.button.negative.selected {
+  background: darkred;
+  border: 1px solid darkred;
+  color: white;
+}
+.button.neutral {
+  background: yellow;
+  border: 1px solid yellow;
+  color: black;
+}
+.button.neutral:hover,
+.button.neutral.selected {
+  background: darkorange;
+  border: 1px solid darkorange;
+  color: black;
+}

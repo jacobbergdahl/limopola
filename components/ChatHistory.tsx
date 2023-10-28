@@ -9,8 +9,9 @@ type ChatHistoryType = {
   chatRef: MutableRefObject<any>;
   scrollAnchorRef: MutableRefObject<any>;
   model: MODEL;
-  handleAutoMessage: (prompt: string) => void;
+  handleAutoMessage?: (prompt: string) => void;
   timer: number;
+  emptyHistoryMessage?: string;
 };
 
 export const ChatHistory = ({
@@ -21,6 +22,7 @@ export const ChatHistory = ({
   model,
   handleAutoMessage,
   timer,
+  emptyHistoryMessage = "The chat history is empty",
 }: ChatHistoryType) => {
   const hasCurrentlySelectedAudioModel =
     getModelType(model) === MODEL_TYPE.Audio;
@@ -54,13 +56,18 @@ export const ChatHistory = ({
           <div className={getMessageStyle(message.sender)} key={message.id}>
             <>
               <span className={styles.messageSender}>{message.sender}</span>
+              {message.header && (
+                <h4 className={styles.header}>{message.header}</h4>
+              )}
               {isTextMessage && !isClickable && (
                 <div dangerouslySetInnerHTML={{ __html: message.content }} />
               )}
               {isTextMessage && isClickable && (
                 <div
                   dangerouslySetInnerHTML={{ __html: message.content }}
-                  onClick={() => handleAutoMessage(message.content)}
+                  onClick={() =>
+                    handleAutoMessage && handleAutoMessage(message.content)
+                  }
                 />
               )}
               {message.imageUrls && (
@@ -83,15 +90,29 @@ export const ChatHistory = ({
               {message.videoUrl && (
                 <video src={message.videoUrl} controls loop></video>
               )}
+              {message.videoUrls && (
+                <>
+                  {message.videoUrls.map((videoUrl) => (
+                    <video src={videoUrl} key={videoUrl} controls loop></video>
+                  ))}
+                </>
+              )}
               {message.audioUrl && (
                 <audio src={message.audioUrl} controls></audio>
+              )}
+              {message.audioUrls && (
+                <>
+                  {message.audioUrls.map((audioUrl) => (
+                    <audio src={audioUrl} key={audioUrl} controls></audio>
+                  ))}
+                </>
               )}
             </>
           </div>
         );
       })}
-      {messages.length === 0 && (
-        <span className={styles.emptyChat}>The chat history is empty</span>
+      {messages.length === 0 && !isLoading && (
+        <span className={styles.emptyChat}>{emptyHistoryMessage}</span>
       )}
       <Spinner
         show={isLoading}

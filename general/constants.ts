@@ -288,7 +288,10 @@ export type Message = {
   content?: string;
   imageUrls?: string[];
   videoUrl?: string;
+  videoUrls?: string[];
   audioUrl?: string;
+  audioUrls?: string[];
+  header?: string;
 };
 
 export enum MODEL_TYPE {
@@ -367,9 +370,17 @@ export enum AGENT_TASK_STATUS {
   Completed = "Completed",
 }
 
+export enum AGENT_TASK_INDICATION {
+  Context = "context",
+  Narration = "narration",
+  Image = "image",
+  Video = "video",
+}
+
 export type AgentTask = {
   id: number;
   description: string;
   status: AGENT_TASK_STATUS;
   api: MODEL;
+  indication?: AGENT_TASK_INDICATION;
 };

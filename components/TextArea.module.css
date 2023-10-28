@@ -13,5 +13,5 @@
   outline: 1px solid var(--textfield-focus-color);
 }
 .textarea:disabled {
-  background: var(--disabled-textarea-color);
+  background: var(--disabled-textarea-background-color);
 }

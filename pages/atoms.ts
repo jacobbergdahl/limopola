@@ -1,5 +1,6 @@
 import { atomWithStorage } from "jotai/utils";
 import {
+  AgentTask,
   Context,
   DEFAULT_CONTEXT,
   DEFAULT_FREQUENCY_PENALTY,
@@ -56,7 +57,7 @@ export const requestedNumberOfTokensAtom = atomWithStorage(
   0
 );
 export const maxNumberOfTokensAtom = atomWithStorage("MAX_NUMBER_OF_TOKENS", 0);
-export const inputModeAtom = atomWithStorage("INPUT_MODE", INPUT_MODE.Chat);
+export const inputModeAtom = atomWithStorage("INPUT_MODE", INPUT_MODE.Agent);
 export const textAreaStyleAtom = atomWithStorage(
   "TEXTAREA_STYLE",
   TEXTAREA_STYLE.Default
@@ -121,7 +122,28 @@ export const isPresencePenaltyDefaultAtom = atomWithStorage(
   "IS_PRESENCE_PENALTY_DEFAULT",
   true
 );
+
 export const agentMessagesAtom = atomWithStorage(
   "AGENT_MESSAGES",
   [] as Message[]
 );
+export const agentMissionAtom = atomWithStorage("AGENT_MISSION", "");
+export const agentTasksAtom = atomWithStorage("AGENT_TASKS", [] as AgentTask[]);
+export const agentContextsAtom = atomWithStorage(
+  "AGENT_CONTEXTS",
+  [] as string[]
+);
+export const agentToNarrateAtom = atomWithStorage(
+  "AGENT_TO_NARRATE",
+  [] as string[]
+);
+export const agentImagePromptsAtom = atomWithStorage(
+  "AGENT_IMAGE_PROMPTS",
+  [] as string[]
+);
+export const agentVideoPromptsAtom = atomWithStorage(
+  "AGENT_VIDEO_PROMPTS",
+  [] as string[]
+);
+export const isAgentRunningAtom = atomWithStorage("AGENT_RUNNING", false);
+export const wasAgentStoppedAtom = atomWithStorage("AGENT_STOPPED", false);

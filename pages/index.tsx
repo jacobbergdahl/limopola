@@ -80,6 +80,7 @@ import { FrequencyPenalty } from "../components/sections/FrequencyPenalty";
 import { PresencePenalty } from "../components/sections/PresencePenalty";
 import { MaxNumberOfTokens } from "../components/sections/MaxNumberOfTokens";
 import TextArea from "../components/TextArea";
+import { AgentOverview } from "../components/agents/AgentOverview";
 
 // I know, I know, this file is too long. It should, and will, be refactored 🙏
 // ... (maybe)
@@ -171,7 +172,8 @@ export default function Home() {
     !isFactChecking;
   const shouldShowVoiceSettings = selectedModelType === MODEL_TYPE.Audio;
   const shouldShowRequestedNumberOfTokens = model === MODEL.LocalLlama;
-  const shouldShowMaxNumberOfTokens = ALL_OPEN_AI_MODELS.includes(model);
+  const shouldShowMaxNumberOfTokens =
+    ALL_OPEN_AI_MODELS.includes(model) && selectedModelType === MODEL_TYPE.Text;
   const shouldShowMemory =
     selectedModelType === MODEL_TYPE.Text &&
     inputMode === INPUT_MODE.Chat &&
@@ -192,9 +194,18 @@ export default function Home() {
     const handleKeyDown = (event) => {
       const isNotFocusingOnTextArea =
         document.activeElement !== textareaRef?.current;
+
       const shouldHandleKeyDown =
-        isNotFocusingOnTextArea && !isContextModalOpen;
-      if (shouldHandleKeyDown && (event.key === "t" || event.key === "Enter")) {
+        !isContextModalOpen && inputMode !== INPUT_MODE.Agent;
+
+      if (!shouldHandleKeyDown) {
+        return;
+      }
+
+      if (
+        isNotFocusingOnTextArea &&
+        (event.key === "t" || event.key === "Enter")
+      ) {
         event.preventDefault();
         textareaRef.current.focus();
       } else if ((event.ctrlKey || event.metaKey) && event.key === "s") {
@@ -438,10 +449,7 @@ export default function Home() {
         const imageUrls = data.result;
         const apiMessage: Message = {
           imageUrls: imageUrls,
-          sender:
-            model.charAt(0).toUpperCase() +
-            model.slice(1) +
-            ` (${timeToGenerate})`,
+          sender: model + ` (${timeToGenerate})`,
           id: newChatHistory.length,
         };
 
@@ -449,10 +457,7 @@ export default function Home() {
       } else if (selectedModelType === MODEL_TYPE.Video) {
         const apiMessage: Message = {
           videoUrl: data.result,
-          sender:
-            model.charAt(0).toUpperCase() +
-            model.slice(1) +
-            ` (${timeToGenerate})`,
+          sender: model + ` (${timeToGenerate})`,
           id: newChatHistory.length,
         };
 
@@ -462,10 +467,7 @@ export default function Home() {
         const audioUrl = URL.createObjectURL(audioBlob);
         const apiMessage: Message = {
           audioUrl: audioUrl,
-          sender:
-            model.charAt(0).toUpperCase() +
-            model.slice(1) +
-            ` (${timeToGenerate})`,
+          sender: model + ` (${timeToGenerate})`,
           id: newChatHistory.length,
         };
 
@@ -745,257 +747,278 @@ export default function Home() {
         </div>
       </div>
 
-      <main
-        className={`${styles.conversationContainer} ${
-          inputMode === INPUT_MODE.Chat
-            ? styles.chatContainer
-            : styles.editorContainer
-        }`}
-      >
-        {inputMode === INPUT_MODE.Chat && (
-          <ChatHistory
-            messages={chatHistory}
-            isLoading={isLoading}
-            chatRef={chatRef}
-            scrollAnchorRef={scrollAnchorRef}
-            handleAutoMessage={handleAutoMessage}
-            model={model}
-            timer={timer}
-          />
-        )}
-        <div
-          className={`${styles.textAreaContainer}${
-            textAreaStyle === TEXTAREA_STYLE.Code &&
-            inputMode === INPUT_MODE.Editor
-              ? " " + styles.textAreaCode
-              : ""
-          }${isContextModalOpen ? " " + styles.hidden : ""}`}
+      {inputMode === INPUT_MODE.Agent ? (
+        <main className={`${styles.conversationContainer}`}>
+          <AgentOverview />
+        </main>
+      ) : (
+        <main
+          className={`${styles.conversationContainer} ${
+            inputMode === INPUT_MODE.Chat
+              ? styles.chatContainer
+              : styles.editorContainer
+          }`}
         >
-          {/* Should probably just render two different textareas for each mode now */}
-          <TextArea
-            rows={4}
-            name="message"
-            placeholder={
-              inputMode === INPUT_MODE.Chat
-                ? "Press T or enter to focus. Hold shift and press enter to add a new line. Press enter to send."
-                : "Press T or enter to focus. Hold CTRL / CMD and press enter to ask the AI to continue from the bottom of your text."
-            }
-            value={
-              inputMode === INPUT_MODE.Chat ? currentInput : currentEditorText
-            }
-            handleChange={(e) =>
-              inputMode === INPUT_MODE.Chat
-                ? setCurrentInput(e.target.value)
-                : setCurrentEditorText(e.target.value)
-            }
-            handleKeyDown={handleTextareaKeyPress}
-            ref={textareaRef}
-            disabled={
-              (inputMode === INPUT_MODE.Editor && isLoading) ||
-              isContextModalOpen
-            }
-            shouldSpellCheck={
-              textAreaStyle !== TEXTAREA_STYLE.Code &&
+          {inputMode === INPUT_MODE.Chat && (
+            <ChatHistory
+              messages={chatHistory}
+              isLoading={isLoading}
+              chatRef={chatRef}
+              scrollAnchorRef={scrollAnchorRef}
+              handleAutoMessage={handleAutoMessage}
+              model={model}
+              timer={timer}
+            />
+          )}
+          <div
+            className={`${styles.textAreaContainer}${
+              textAreaStyle === TEXTAREA_STYLE.Code &&
               inputMode === INPUT_MODE.Editor
-            }
-          />
-          {inputMode === INPUT_MODE.Editor && (
-            <TextAreaStyleSelector
-              textAreaStyle={textAreaStyle}
-              setTextAreaStyle={setTextAreaStyle}
+                ? " " + styles.textAreaCode
+                : ""
+            }${isContextModalOpen ? " " + styles.hidden : ""}`}
+          >
+            {/* Should probably just render two different textareas for each mode now */}
+            <TextArea
+              rows={4}
+              name="message"
+              placeholder={
+                inputMode === INPUT_MODE.Chat
+                  ? "Press T or enter to focus. Hold shift and press enter to add a new line. Press enter to send."
+                  : "Press T or enter to focus. Hold CTRL / CMD and press enter to ask the AI to continue from the bottom of your text."
+              }
+              value={
+                inputMode === INPUT_MODE.Chat ? currentInput : currentEditorText
+              }
+              handleChange={(e) =>
+                inputMode === INPUT_MODE.Chat
+                  ? setCurrentInput(e.target.value)
+                  : setCurrentEditorText(e.target.value)
+              }
+              handleKeyDown={handleTextareaKeyPress}
+              ref={textareaRef}
+              disabled={
+                (inputMode === INPUT_MODE.Editor && isLoading) ||
+                isContextModalOpen
+              }
+              shouldSpellCheck={
+                textAreaStyle !== TEXTAREA_STYLE.Code &&
+                inputMode === INPUT_MODE.Editor
+              }
             />
+            {inputMode === INPUT_MODE.Editor && (
+              <TextAreaStyleSelector
+                textAreaStyle={textAreaStyle}
+                setTextAreaStyle={setTextAreaStyle}
+              />
+            )}
+            <Spinner
+              show={inputMode === INPUT_MODE.Editor && isLoading}
+              model={model}
+              classNames={styles.editorSpinner}
+              timer={timer}
+            />
+          </div>
+          {!isContextModalOpen && (
+            <div className={styles.pageBottomColor}></div>
           )}
-          <Spinner
-            show={inputMode === INPUT_MODE.Editor && isLoading}
-            model={model}
-            classNames={styles.editorSpinner}
-            timer={timer}
-          />
-        </div>
-        {!isContextModalOpen && <div className={styles.pageBottomColor}></div>}
-      </main>
+        </main>
+      )}
 
-      <div className={`${styles.sidebar} ${styles.leftSidebar}`}>
-        <div className={styles.section}>
-          <AllTextModels model={model} handleModelChange={handleModelChange} />
-        </div>
-        {inputMode === INPUT_MODE.Chat && (
-          <>
+      {inputMode !== INPUT_MODE.Agent && (
+        <>
+          <div className={`${styles.sidebar} ${styles.leftSidebar}`}>
             <div className={styles.section}>
-              <AllImageModels
+              <AllTextModels
                 model={model}
                 handleModelChange={handleModelChange}
               />
             </div>
+            {inputMode === INPUT_MODE.Chat && (
+              <>
+                <div className={styles.section}>
+                  <AllImageModels
+                    model={model}
+                    handleModelChange={handleModelChange}
+                  />
+                </div>
+                <div className={styles.section}>
+                  <AllVideoModels
+                    model={model}
+                    handleModelChange={handleModelChange}
+                  />
+                </div>
+                <div className={styles.section}>
+                  <AllAudioModels
+                    model={model}
+                    handleModelChange={handleModelChange}
+                  />
+                </div>
+              </>
+            )}
             <div className={styles.section}>
-              <AllVideoModels
-                model={model}
-                handleModelChange={handleModelChange}
-              />
-            </div>
-            <div className={styles.section}>
-              <AllAudioModels
-                model={model}
-                handleModelChange={handleModelChange}
-              />
-            </div>
-          </>
-        )}
-        <div className={styles.section}>
-          <h3>Options</h3>
-          <Button
-            value={
-              getUserOperatingSystem() === OperatingSystem.Mac
-                ? "Download (CMD + S)"
-                : "Download (CTRL + S)"
-            }
-            onClick={() =>
-              downloadConversation(inputMode, chatHistory, currentEditorText)
-            }
-          />
-          {inputMode === INPUT_MODE.Chat && (
-            <Button value="Clear chat history" onClick={handleClearChat} />
-          )}
-          {inputMode === INPUT_MODE.Editor && (
-            <Button value="Clear text" onClick={handleClearEditorText} />
-          )}
-          <Button value="Reset settings" onClick={handleResetSettings} />
-          {inputMode === INPUT_MODE.Chat && (
-            <Button value="Scroll to bottom" onClick={scrollToBottom} />
-          )}
-        </div>
-        <div className={styles.spacing}></div>
-      </div>
-
-      <div className={`${styles.sidebar} ${styles.rightSidebar}`}>
-        <div className={styles.section}>
-          <ModelInformation model={model} />
-        </div>
-        {shouldShowMemory && (
-          <div className={styles.section}>
-            <Memory
-              memory={memory}
-              handleMemoryChange={handleMemoryChange}
-              messagesInMemory={messagesInMemory}
-              handleClearMemory={handleClearMemory}
-            />
-          </div>
-        )}
-        {shouldShowInstantMessages && (
-          <div className={styles.section}>
-            <InstantMessages
-              handleElaborate={handleElaborate}
-              handleRepeatLastMessage={handleRepeatLastMessage}
-              handleContinue={handleContinue}
-            />
-          </div>
-        )}
-        {shouldShowTemperature && (
-          <div className={styles.section}>
-            <Temperature
-              temperature={temperature}
-              technicalTemperature={technicalTemperature}
-              handleTemperatureChange={handleTemperatureChange}
-              isUsingDefault={isTemperatureDefault}
-              handleCheckboxChange={() =>
-                setIsTemperatureDefault(!isTemperatureDefault)
-              }
-            />
-          </div>
-        )}
-        {shouldShowTopP && (
-          <div className={styles.section}>
-            <TopP
-              topP={topP}
-              technicalTopP={technicalTopP}
-              handleTopPChange={handleTopPChange}
-              isUsingDefault={isTopPDefault}
-              handleCheckboxChange={() => setIsTopPDefault(!isTopPDefault)}
-            />
-          </div>
-        )}
-        {shouldShowFrequencyPenalty && (
-          <div className={styles.section}>
-            <FrequencyPenalty
-              frequencyPenalty={frequencyPenalty}
-              technicalFrequencyPenalty={technicalFrequencyPenalty}
-              handleFrequencyPenaltyChange={handleFrequencyPenaltyChange}
-              isUsingDefault={isFrequencyPenaltyDefault}
-              handleCheckboxChange={() =>
-                setIsFrequencyPenaltyDefault(!isFrequencyPenaltyDefault)
-              }
-            />
-          </div>
-        )}
-        {shouldShowPresencePenalty && (
-          <div className={styles.section}>
-            <PresencePenalty
-              presencePenalty={presencePenalty}
-              technicalPresencePenalty={technicalPresencePenalty}
-              handlePresencePenaltyChange={handlePresencePenaltyChange}
-              isUsingDefault={isPresencePenaltyDefault}
-              handleCheckboxChange={() =>
-                setIsPresencePenaltyDefault(!isPresencePenaltyDefault)
-              }
-            />
-          </div>
-        )}
-        {shouldShowRequestedNumberOfTokens && (
-          <div className={styles.section}>
-            <RequestedNumberOfTokens
-              requestedNumberOfTokens={requestedNumberOfTokens}
-              setRequestedNumberOfTokens={setRequestedNumberOfTokens}
-            />
-          </div>
-        )}
-        {shouldShowMaxNumberOfTokens && (
-          <div className={styles.section}>
-            <MaxNumberOfTokens
-              maxNumberOfTokens={maxNumberOfTokens}
-              setMaxNumberOfTokens={setMaxNumberOfTokens}
-            />
-          </div>
-        )}
-        {shouldShowNumberOfImages && (
-          <div className={styles.section}>
-            <NumberOfImages
-              numberOfImagesToGenerate={numberOfImagesToGenerate}
-              setNumberOfImagesToGenerate={setNumberOfImagesToGenerate}
-            />
-          </div>
-        )}
-        {shouldShowImageSize && (
-          <div className={styles.section}>
-            <ImageSize imageSize={imageSize} setImageSize={setImageSize} />
-          </div>
-        )}
-        {shouldShowVoiceSettings && (
-          <>
-            <div className={styles.section}>
-              <VoiceStability
-                voiceStability={voiceStability}
-                technicalVoiceStability={technicalVoiceStability}
-                handleVoiceStabilityChange={handleVoiceStabilityChange}
-              />
-            </div>
-            <div className={styles.section}>
-              <VoiceSimilarityBoost
-                voiceSimilarityBoost={voiceSimilarityBoost}
-                technicalVoiceSimilarityBoost={technicalVoiceSimilarityBoost}
-                handleVoiceSimilarityBoostChange={
-                  handleVoiceSimilarityBoostChange
+              <h3>Options</h3>
+              <Button
+                value={
+                  getUserOperatingSystem() === OperatingSystem.Mac
+                    ? "Download (CMD + S)"
+                    : "Download (CTRL + S)"
+                }
+                onClick={() =>
+                  downloadConversation(
+                    inputMode,
+                    chatHistory,
+                    currentEditorText
+                  )
                 }
               />
+              {inputMode === INPUT_MODE.Chat && (
+                <Button value="Clear chat history" onClick={handleClearChat} />
+              )}
+              {inputMode === INPUT_MODE.Editor && (
+                <Button value="Clear text" onClick={handleClearEditorText} />
+              )}
+              <Button value="Reset settings" onClick={handleResetSettings} />
+              {inputMode === INPUT_MODE.Chat && (
+                <Button value="Scroll to bottom" onClick={scrollToBottom} />
+              )}
             </div>
-          </>
-        )}
-        {shouldShowContexts && (
-          <div className={styles.section}>
-            <AllContexts />
+            <div className={styles.spacing}></div>
           </div>
-        )}
-        <div className={styles.spacing}></div>
-      </div>
+
+          <div className={`${styles.sidebar} ${styles.rightSidebar}`}>
+            <div className={styles.section}>
+              <ModelInformation model={model} />
+            </div>
+            {shouldShowMemory && (
+              <div className={styles.section}>
+                <Memory
+                  memory={memory}
+                  handleMemoryChange={handleMemoryChange}
+                  messagesInMemory={messagesInMemory}
+                  handleClearMemory={handleClearMemory}
+                />
+              </div>
+            )}
+            {shouldShowInstantMessages && (
+              <div className={styles.section}>
+                <InstantMessages
+                  handleElaborate={handleElaborate}
+                  handleRepeatLastMessage={handleRepeatLastMessage}
+                  handleContinue={handleContinue}
+                />
+              </div>
+            )}
+            {shouldShowTemperature && (
+              <div className={styles.section}>
+                <Temperature
+                  temperature={temperature}
+                  technicalTemperature={technicalTemperature}
+                  handleTemperatureChange={handleTemperatureChange}
+                  isUsingDefault={isTemperatureDefault}
+                  handleCheckboxChange={() =>
+                    setIsTemperatureDefault(!isTemperatureDefault)
+                  }
+                />
+              </div>
+            )}
+            {shouldShowTopP && (
+              <div className={styles.section}>
+                <TopP
+                  topP={topP}
+                  technicalTopP={technicalTopP}
+                  handleTopPChange={handleTopPChange}
+                  isUsingDefault={isTopPDefault}
+                  handleCheckboxChange={() => setIsTopPDefault(!isTopPDefault)}
+                />
+              </div>
+            )}
+            {shouldShowFrequencyPenalty && (
+              <div className={styles.section}>
+                <FrequencyPenalty
+                  frequencyPenalty={frequencyPenalty}
+                  technicalFrequencyPenalty={technicalFrequencyPenalty}
+                  handleFrequencyPenaltyChange={handleFrequencyPenaltyChange}
+                  isUsingDefault={isFrequencyPenaltyDefault}
+                  handleCheckboxChange={() =>
+                    setIsFrequencyPenaltyDefault(!isFrequencyPenaltyDefault)
+                  }
+                />
+              </div>
+            )}
+            {shouldShowPresencePenalty && (
+              <div className={styles.section}>
+                <PresencePenalty
+                  presencePenalty={presencePenalty}
+                  technicalPresencePenalty={technicalPresencePenalty}
+                  handlePresencePenaltyChange={handlePresencePenaltyChange}
+                  isUsingDefault={isPresencePenaltyDefault}
+                  handleCheckboxChange={() =>
+                    setIsPresencePenaltyDefault(!isPresencePenaltyDefault)
+                  }
+                />
+              </div>
+            )}
+            {shouldShowRequestedNumberOfTokens && (
+              <div className={styles.section}>
+                <RequestedNumberOfTokens
+                  requestedNumberOfTokens={requestedNumberOfTokens}
+                  setRequestedNumberOfTokens={setRequestedNumberOfTokens}
+                />
+              </div>
+            )}
+            {shouldShowMaxNumberOfTokens && (
+              <div className={styles.section}>
+                <MaxNumberOfTokens
+                  maxNumberOfTokens={maxNumberOfTokens}
+                  setMaxNumberOfTokens={setMaxNumberOfTokens}
+                />
+              </div>
+            )}
+            {shouldShowNumberOfImages && (
+              <div className={styles.section}>
+                <NumberOfImages
+                  numberOfImagesToGenerate={numberOfImagesToGenerate}
+                  setNumberOfImagesToGenerate={setNumberOfImagesToGenerate}
+                />
+              </div>
+            )}
+            {shouldShowImageSize && (
+              <div className={styles.section}>
+                <ImageSize imageSize={imageSize} setImageSize={setImageSize} />
+              </div>
+            )}
+            {shouldShowVoiceSettings && (
+              <>
+                <div className={styles.section}>
+                  <VoiceStability
+                    voiceStability={voiceStability}
+                    technicalVoiceStability={technicalVoiceStability}
+                    handleVoiceStabilityChange={handleVoiceStabilityChange}
+                  />
+                </div>
+                <div className={styles.section}>
+                  <VoiceSimilarityBoost
+                    voiceSimilarityBoost={voiceSimilarityBoost}
+                    technicalVoiceSimilarityBoost={
+                      technicalVoiceSimilarityBoost
+                    }
+                    handleVoiceSimilarityBoostChange={
+                      handleVoiceSimilarityBoostChange
+                    }
+                  />
+                </div>
+              </>
+            )}
+            {shouldShowContexts && (
+              <div className={styles.section}>
+                <AllContexts />
+              </div>
+            )}
+            <div className={styles.spacing}></div>
+          </div>
+        </>
+      )}
     </>
   );
 }

@@ -1,12 +1,20 @@
 import { MouseEventHandler } from "react";
 import styles from "./Button.module.css";
 
+export enum BUTTON_THEME {
+  Positive = "positive",
+  Negative = "negative",
+  Neutral = "neutral",
+  Default = "default",
+}
+
 type ButtonProps = {
   value: any;
   onClick: MouseEventHandler<HTMLInputElement> | undefined;
   isSelected?: boolean;
   disabled?: boolean;
   className?: string;
+  theme?: BUTTON_THEME;
 };
 
 export const Button = ({
@@ -15,10 +23,24 @@ export const Button = ({
   className,
   isSelected = false,
   disabled = false,
+  theme = BUTTON_THEME.Default,
 }: ButtonProps) => {
-  const classnames = `${styles.button}${className ? ` ${className}` : ""}${
+  let classnames = `${styles.button}${className ? ` ${className}` : ""}${
     isSelected ? ` ${styles.selected}` : ""
   }`;
+  switch (theme) {
+    case BUTTON_THEME.Positive:
+      classnames += ` ${styles.positive}`;
+      break;
+    case BUTTON_THEME.Negative:
+      classnames += ` ${styles.negative}`;
+      break;
+    case BUTTON_THEME.Neutral:
+      classnames += ` ${styles.neutral}`;
+      break;
+    default:
+      break;
+  }
   return (
     <input
       type="button"

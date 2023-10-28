@@ -1,0 +1,53 @@
+.fixedContentContainer {
+  position: fixed;
+  margin-top: 10px;
+  width: 100%;
+  bottom: 0;
+  background: none;
+  z-index: 2;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  left: 0;
+}
+
+.fixedContentContainer div {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  pointer-events: auto;
+}
+
+.fixedContentTopRow,
+.fixedContentSecondRow,
+.fixedContentThirdRow {
+  margin-bottom: 20px;
+}
+
+.fixedContentContainer input[type="button"] {
+  margin-bottom: 0;
+  margin-right: 5px;
+}
+
+.fixedContentContainer input[type="button"]:last-of-type {
+  margin-right: 0;
+}
+
+.pageBottomColor,
+.pageTopColor {
+  background: var(--background-color);
+  position: fixed;
+  width: 100%;
+}
+.pageBottomColor {
+  height: 120px;
+  bottom: 0;
+}
+.pageTopColor {
+  height: 80px;
+  top: 0;
+}

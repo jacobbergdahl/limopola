@@ -38,17 +38,18 @@ This is a list of features, updates, and bug fixes that should be implemented in
 - Improve the "code style" mode with syntax highlighting.
 - Add syntax highlighting to code returned from the API.
 
-## Next major feature: Agents
+## Agents
 
-Agents is a new mode (e.g., on the same level as Chat and Editor), which allows users to create autonomous agents, like Auto-GPT.
+Agents are still in a very early version, and unexpected bugs still occur. Many small things need to be tested and adjusted. Below are bigger features that are to be added.
 
-Agents will feature a new full-screen component with a textarea at the top. The user enters a mission into the textarea, such as "Create a children's book about bears" or "Write a personal website for me." The textarea is disabled, as the AI gets to work. It first creates a list of tasks to accomplish, and what API it should use to fulfill that task. It then prints a message, similar to the chat layout, each time it completes a task.
+- Allow the user to set what API's the agents have access to. This could be done with checkboxes. Not only does both the FE and BE need to handle this, but the prompt that creates the list of tasks need to be dynamically changed as well. The user should not need to supply as many API keys as they do now.
+- Check if the context is too long to process. If so, use Gpt4_32k and Gpt3_5_turbo_16k.
+- If the context is too long for both API's mentioned above, then create summaries of the arrays context that fall within the context limit.
+- After the agent has finished, perhaps the final product can be combined in a pleasant way?
 
-This will require prompt engineering, instructing the AI to create the list of tasks and helping it decide what API to use. Prompts might grow big as it continues to go through tasks, so it'll need to know when to use models with more contextual capabilities.
+Documentation:
 
-There should be a button at the bottom of the screen that the user can press to stop the AI.
-
-At first, it might only use GPT-3.5, GPT-4, and DALL-E, but it can later gain access to all API's. At first, the user will not be able to choose what API's it has access to, or any other options, but such choices should be added later.
+- Add example output alongside the example input.
 
 ## Nice-to-have
 
