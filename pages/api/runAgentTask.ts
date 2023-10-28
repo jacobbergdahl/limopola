@@ -13,6 +13,7 @@ import { appendContextToTextPrompt } from "../../components/agents/agentFunction
 import { dalle } from "./aiModels/dalle";
 import { animateDiff } from "./aiModels/animateDiff";
 import { elevenLabs } from "./aiModels/elevenLabs";
+import { stableDiffusionSdXl } from "./aiModels/stableDiffusionSdXl";
 
 const openAiConfiguration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -48,6 +49,8 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     const prompt = appendContextToTextPrompt(description, context);
     // Will use Gpt3_5_turbo_16k
     return gpt(res, openai, prompt, MODEL.Gpt3_5_turbo, body);
+  } else if (api === MODEL.StableDiffusionSdXl) {
+    return stableDiffusionSdXl(res, description, 1);
   } else if (api === MODEL.Dalle) {
     return dalle(res, openai, description, 1, IMAGE_SIZE.Large);
   } else if (api === MODEL.AnimateDiff) {

@@ -1,36 +1,42 @@
 import { MODEL } from "../../general/constants";
 
+const TEXT_GENERATING_AI = MODEL.Gpt4;
+const TEXT_SUMMARIZING_AI = MODEL.Gpt3_5_turbo;
+const IMAGE_GENERATING_AI = MODEL.StableDiffusionSdXl;
+const VIDEO_GENERATING_AI = MODEL.AnimateDiff;
+const VOICE_GENERATING_AI = MODEL.ElevenLabs;
+
 export const AGENT_PROMPT_TASK_LIST = `
 You will be given a mission, and must then create a list of tasks for that mission. You may assign an API to use for each task. These are the API's you have at your disposal:
 
-- [${MODEL.Gpt4}]: Used to write any form of text, including software code. Is also used to generate prompts for image, video, and audio generation.
-- [${MODEL.Gpt3_5_turbo}]: Used to summarize text. When you need to write new text, however, you should use ${MODEL.Gpt4}.
-- [${MODEL.Dalle}]: Used to generate images.
-- [${MODEL.AnimateDiff}]: Used to generate video.
-- [${MODEL.ElevenLabs}]: Used to generate voices.
+- [${TEXT_GENERATING_AI}]: Used to write any form of text, including software code. Is also used to generate prompts for image, video, and audio generation.
+- [${TEXT_SUMMARIZING_AI}]: Used to summarize text. When you need to write new text, however, you should use ${TEXT_GENERATING_AI}.
+- [${IMAGE_GENERATING_AI}]: Used to generate images.
+- [${VIDEO_GENERATING_AI}]: Used to generate video.
+- [${VOICE_GENERATING_AI}]: Used to generate voices.
 
-You are unable to generate music. If asked to generate music, or if you need to do so to complete a mission, then please use ${MODEL.Gpt4} to write notes or lyrics instead. You are also unable to read or understand images, although you can create them.
+You are unable to generate music. If asked to generate music, or if you need to do so to complete a mission, then please use ${TEXT_GENERATING_AI} to write notes or lyrics instead. You are also unable to read or understand images, although you can create them.
 
-In order to generate images, video, or voices, you must first generate the prompts using ${MODEL.Gpt4}. These steps are always done after each other.
+In order to generate images, video, or voices, you must first generate the prompts using ${TEXT_GENERATING_AI}. These steps are always done after each other.
 
 The output format must be a numbered list in the format delimited below in quadrupled quotation marks, with no additional text, questions, or suggestions. The output will be parsed by code. Unless there's a specific reason not to, then you should always generate text first, and any potential code, voice, or images later. Each task should be on a single line. You don't need to create voices/narration unless specifically asked for it, or if you're doing a task that obviously requires it (e.g., make a podcast or video).
 
-When using ${MODEL.Gpt4}, you can also use a second set of brackets to indicate if the result of the task will be used by a subsequent task. These are the brackets you can use for a secondary indication:
+When using ${TEXT_GENERATING_AI}, you can also use a second set of brackets to indicate if the result of the task will be used by a subsequent task. These are the brackets you can use for a secondary indication:
 
 - [context]: Indicates that this is the primary context for the work. This context will be used to help create images, narrate text, and more. There would typically only be one context and it is often the first task, but there could sometimes be multiple, as in example output 4. Context is information that is vital for other tasks to know about.
-- [narration]: If the context is not a story that can be obviously narrated, then you can write text specifically for narration. This is optional, if a context exists but narration doesn't exist, then context will be used instead. Only ${MODEL.Gpt4} can create text for narration.
-- [image]: Indicates that this task will create prompts to be used by ${MODEL.Dalle} in a subsequent task.
-- [video]: Indicates that this task will create prompts to be used by ${MODEL.AnimateDiff} in a subsequent task.
+- [narration]: If the context is not a story that can be obviously narrated, then you can write text specifically for narration. This is optional, if a context exists but narration doesn't exist, then context will be used instead. Only ${TEXT_GENERATING_AI} can create text for narration.
+- [image]: Indicates that this task will create prompts to be used by ${IMAGE_GENERATING_AI} in a subsequent task.
+- [video]: Indicates that this task will create prompts to be used by ${VIDEO_GENERATING_AI} in a subsequent task.
 
-Again, this secondary indications can only be used by ${MODEL.Gpt4}.
+Again, this secondary indications can only be used by ${TEXT_GENERATING_AI}.
 
 """"
-1. [${MODEL.Gpt4}][context] Write a story.
-2. [${MODEL.ElevenLabs}] Narrate the story created above.
-3. [${MODEL.Gpt4}][image] Create prompts for two images.
-4. [${MODEL.Dalle}] Create the two images.
-5. [${MODEL.Gpt4}][video] Create a prompt for generating a video.
-6. [${MODEL.AnimateDiff}] Make a video.
+1. [${TEXT_GENERATING_AI}][context] Write a story.
+2. [${VOICE_GENERATING_AI}] Narrate the story created above.
+3. [${TEXT_GENERATING_AI}][image] Create prompts for two images.
+4. [${IMAGE_GENERATING_AI}] Create the two images.
+5. [${TEXT_GENERATING_AI}][video] Create a prompt for generating a video.
+6. [${VIDEO_GENERATING_AI}] Make a video.
 """"
 
 # Example input 1
@@ -39,10 +45,10 @@ Create a short illustrated children's book about a young girl named Ellen who be
 
 # Example output 1
 
-1. [${MODEL.Gpt4}][context] Write the story for the children's book about Ellen who befriends a bird, spread across ten pages. Each page should have only one paragraph of text. The story should include the following: a. Ellen's early life, including her family, friends, and hobbies. b. Ellen's encounter with a bird, and how they become friends. c. Ellen's adventures with the bird, including their travels and experiences. d. Ellen's realization that she must let the bird go, and how she comes to terms with it. e. Ellen's life after the bird, including her new friends and hobbies.
-2. [${MODEL.ElevenLabs}] Create narration of the story.
-3. [${MODEL.Gpt4}][image] Create prompts for ten images corresponding to the ten pages of the story.
-4. [${MODEL.Dalle}] Generate images using the prompts.
+1. [${TEXT_GENERATING_AI}][context] Write the story for the children's book about Ellen who befriends a bird, spread across ten pages. Each page should have only one paragraph of text. The story should include the following: a. Ellen's early life, including her family, friends, and hobbies. b. Ellen's encounter with a bird, and how they become friends. c. Ellen's adventures with the bird, including their travels and experiences. d. Ellen's realization that she must let the bird go, and how she comes to terms with it. e. Ellen's life after the bird, including her new friends and hobbies.
+2. [${VOICE_GENERATING_AI}] Create narration of the story.
+3. [${TEXT_GENERATING_AI}][image] Create prompts for ten images corresponding to the ten pages of the story.
+4. [${IMAGE_GENERATING_AI}] Generate images using the prompts.
 
 # Example input 2
 
@@ -50,14 +56,14 @@ Build a fan website about Beethoven. The website should be a single-page applica
 
 # Example output 2
 
-1. [${MODEL.Gpt4}][context] Write a brief biography about Beethoven including his early life, major works, influence, and legacy.
-2. [${MODEL.Gpt4}][image] Create prompts for three modern-day scenarios featuring Beethoven. a. Beethoven giving a concert in a modern cityscape. b. Beethoven wearing headphones and listening to electronic music. c. Beethoven interacting with other famous composers at a modern music festival.
-3. [${MODEL.Dalle}] Generate images of Beethoven.
-4. [${MODEL.Gpt4}] Include a section on the website dedicated to Beethoven's most famous works, along with a brief description and significance of each.
-5. [${MODEL.Gpt4}] Write the HTML structure for the single-page application, ensuring it adheres to accessibility standards (using semantic elements, alt attributes for images, and aria roles where necessary).
-6. [${MODEL.Gpt4}] Write the CSS for styling the website to make it responsive across different screen sizes and ensure a performant load time.
-7. [${MODEL.Gpt4}] Write JavaScript to handle any interactivity, such as displaying additional information about Beethoven or toggling between images.
-8. [${MODEL.Gpt4}] Include optimization techniques for performance: a. Lazy-loading images. b. Minifying CSS and JavaScript files. c. Implement caching strategies.
+1. [${TEXT_GENERATING_AI}][context] Write a brief biography about Beethoven including his early life, major works, influence, and legacy.
+2. [${TEXT_GENERATING_AI}][image] Create prompts for three modern-day scenarios featuring Beethoven. a. Beethoven giving a concert in a modern cityscape. b. Beethoven wearing headphones and listening to electronic music. c. Beethoven interacting with other famous composers at a modern music festival.
+3. [${IMAGE_GENERATING_AI}] Generate images of Beethoven.
+4. [${TEXT_GENERATING_AI}] Include a section on the website dedicated to Beethoven's most famous works, along with a brief description and significance of each.
+5. [${TEXT_GENERATING_AI}] Write the HTML structure for the single-page application, ensuring it adheres to accessibility standards (using semantic elements, alt attributes for images, and aria roles where necessary).
+6. [${TEXT_GENERATING_AI}] Write the CSS for styling the website to make it responsive across different screen sizes and ensure a performant load time.
+7. [${TEXT_GENERATING_AI}] Write JavaScript to handle any interactivity, such as displaying additional information about Beethoven or toggling between images.
+8. [${TEXT_GENERATING_AI}] Include optimization techniques for performance: a. Lazy-loading images. b. Minifying CSS and JavaScript files. c. Implement caching strategies.
 
 # Example input 3
 
@@ -65,11 +71,11 @@ Create a short animated film about the frog Albert who befriends the gentle hors
 
 # Example output 3
 
-1. [${MODEL.Gpt4}][context] Write a story outline for the animated film about Albert the frog and Tampere the gentle horse, detailing their initial meeting, adventures, challenges, and the climax.
-2. [${MODEL.Gpt4}][video] Create prompts for key scenes in the story: a. Albert the frog encountering Tampere for the first time in a meadow. b. Albert and Tampere sharing a laugh while looking at the stars. c. The duo facing a challenge such as a river crossing. d. Albert and Tampere celebrating their friendship at the end.
-3. [${MODEL.AnimateDiff}] Generate animations for the scenes outlined above.
-4. [${MODEL.Gpt4}][narration] Write a narration script for the film to provide context and fill in gaps between animated scenes.
-5. [${MODEL.ElevenLabs}] Generate voice narration using the provided script.
+1. [${TEXT_GENERATING_AI}][context] Write a story outline for the animated film about Albert the frog and Tampere the gentle horse, detailing their initial meeting, adventures, challenges, and the climax.
+2. [${TEXT_GENERATING_AI}][video] Create prompts for key scenes in the story: a. Albert the frog encountering Tampere for the first time in a meadow. b. Albert and Tampere sharing a laugh while looking at the stars. c. The duo facing a challenge such as a river crossing. d. Albert and Tampere celebrating their friendship at the end.
+3. [${VIDEO_GENERATING_AI}] Generate animations for the scenes outlined above.
+4. [${TEXT_GENERATING_AI}][narration] Write a narration script for the film to provide context and fill in gaps between animated scenes.
+5. [${VOICE_GENERATING_AI}] Generate voice narration using the provided script.
 
 # Example input 4
 
@@ -77,28 +83,28 @@ Make a branding profile for an IT consultancy firm based in Stockholm. The prima
 
 # Example output 4
 
-1. [${MODEL.Gpt4}][context] Create a company name that reflects IT consultancy and its Stockholm origin. And define the company's mission statement and core values, emphasizing innovation, integrity, and client success.
-2. [${MODEL.Gpt4}][context] Write a brief description of the color palette, including: a. Primary color: Indigo (with HEX, RGB, and CMYK values). b. Secondary colors that complement indigo and enhance the brand's visual appeal.
-3. [${MODEL.Gpt4}][image] Design a logo concept using indigo as the primary color, incorporating elements that reflect IT, consultancy, and a touch of Stockholm's cultural or architectural identity.
-4. [${MODEL.Dalle}] Generate a logo based on the provided design concept.
-5. [${MODEL.Gpt4}][context] Recommend typography that pairs well with the logo and reflects the company's professional yet innovative identity. This should include a primary font for headings and a secondary font for body text.
-6. [${MODEL.Gpt4}][context] Describe brand imagery guidelines, suggesting the use of modern technology imagery, Stockholm landmarks, and collaborative workplace scenarios.
-7. [${MODEL.Gpt4}][context] Propose key messaging guidelines that emphasize the company's expertise, Stockholm roots, and commitment to client success.
-8. [${MODEL.Gpt4}][context] Outline a social media strategy, focusing on platforms relevant to B2B marketing such as LinkedIn and Twitter, detailing post frequency, content themes, and engagement tactics.
-9. [${MODEL.Gpt4}][image] Design a sample business card incorporating the company's name, logo, color palette, and typography.
-10. [${MODEL.Dalle}] Generate a visual of the business card based on the provided design.
-11. [${MODEL.Gpt4}][context] Provide guidelines for website design, ensuring it aligns with the branding profile, is user-friendly, and emphasizes the company's services and Stockholm base.
+1. [${TEXT_GENERATING_AI}][context] Create a company name that reflects IT consultancy and its Stockholm origin. And define the company's mission statement and core values, emphasizing innovation, integrity, and client success.
+2. [${TEXT_GENERATING_AI}][context] Write a brief description of the color palette, including: a. Primary color: Indigo (with HEX, RGB, and CMYK values). b. Secondary colors that complement indigo and enhance the brand's visual appeal.
+3. [${TEXT_GENERATING_AI}][image] Design a logo concept using indigo as the primary color, incorporating elements that reflect IT, consultancy, and a touch of Stockholm's cultural or architectural identity.
+4. [${IMAGE_GENERATING_AI}] Generate a logo based on the provided design concept.
+5. [${TEXT_GENERATING_AI}][context] Recommend typography that pairs well with the logo and reflects the company's professional yet innovative identity. This should include a primary font for headings and a secondary font for body text.
+6. [${TEXT_GENERATING_AI}][context] Describe brand imagery guidelines, suggesting the use of modern technology imagery, Stockholm landmarks, and collaborative workplace scenarios.
+7. [${TEXT_GENERATING_AI}][context] Propose key messaging guidelines that emphasize the company's expertise, Stockholm roots, and commitment to client success.
+8. [${TEXT_GENERATING_AI}][context] Outline a social media strategy, focusing on platforms relevant to B2B marketing such as LinkedIn and Twitter, detailing post frequency, content themes, and engagement tactics.
+9. [${TEXT_GENERATING_AI}][image] Design a sample business card incorporating the company's name, logo, color palette, and typography.
+10. [${IMAGE_GENERATING_AI}] Generate a visual of the business card based on the provided design.
+11. [${TEXT_GENERATING_AI}][context] Provide guidelines for website design, ensuring it aligns with the branding profile, is user-friendly, and emphasizes the company's services and Stockholm base.
 
 # Instruction
 
 `;
 
 export const AGENT_PROMPT_GENERATE_IMAGE_PROMPTS = `
-I need you to generate prompts for the image generating algorithm ${MODEL.Dalle}. At the bottom of this prompt is an instructed which will tell you exactly how many images you should create, and perhaps some information to use as a basis for the image prompts. If there is additional information for you on the prompt(s) you are supposed to create, then it will be wrapped in BEGINCONTEXT and ENDCONTEXT tags below. The final instructions are at the bottom, wrapped in BEGININSTRUCTION and ENDINSTRUCTION tags.
+I need you to generate prompts for the image generating algorithm ${IMAGE_GENERATING_AI}. At the bottom of this prompt is an instructed which will tell you exactly how many images you should create, and perhaps some information to use as a basis for the image prompts. If there is additional information for you on the prompt(s) you are supposed to create, then it will be wrapped in BEGINCONTEXT and ENDCONTEXT tags below. The final instructions are at the bottom, wrapped in BEGININSTRUCTION and ENDINSTRUCTION tags.
 
-The prompts you create will be given to ${MODEL.Dalle}. Unless the instruction below tells you otherwise, it is very important that all of the images you create have the same art style and are consistent. Please note that ${MODEL.Dalle} does not understand what art style it used for the previous image it created. Each image exists in a vacuum, so you can't tell it "please use the same art style as the previous image". It doesn't understand that. Therefore, please create as detailed prompts as possible. Don't just describe the image, but also use words describing the art style, colors, and more. You can use terms like "watercolor", "painting", "photography", "4k", "8k", and more to create a very precise prompt. No matter what, unless very specifically asked not to, your prompt should include terms like "best quality".
+The prompts you create will be given to ${IMAGE_GENERATING_AI}. Unless the instruction below tells you otherwise, it is very important that all of the images you create have the same art style and are consistent. Please note that ${IMAGE_GENERATING_AI} does not understand what art style it used for the previous image it created. Each image exists in a vacuum, so you can't tell it "please use the same art style as the previous image". It doesn't understand that. Therefore, please create as detailed prompts as possible. Don't just describe the image, but also use words describing the art style, colors, and more. You can use terms like "watercolor", "painting", "photography", "4k", "8k", and more to create a very precise prompt. No matter what, unless very specifically asked not to, your prompt should include terms like "best quality".
 
-Furthermore, ${MODEL.Dalle} does not understand what the previous image it created was. If you ask it to create a picture of Victoria, a red dragon, and then later just ask it to make another scene with Victoria, then you need to describe Victoria the exact same way again.
+Furthermore, ${IMAGE_GENERATING_AI} does not understand what the previous image it created was. If you ask it to create a picture of Victoria, a red dragon, and then later just ask it to make another scene with Victoria, then you need to describe Victoria the exact same way again.
 
 The prompts must be in this specific formula, delimited below in quadrupled quotation marks, with no additional text, questions, or suggestions. Do not include the quotation marks in your output, only the list. The output will be parsed by code. Note that sometimes, you only need to generate a single image, but it should still be a numbered list.
 
@@ -141,9 +147,9 @@ Create prompts for four images corresponding to the five pages of the story abou
 `;
 
 export const AGENT_PROMPT_GENERATE_VIDEO_PROMPTS = `
-I need you to generate prompts for the video generating algorithm ${MODEL.AnimateDiff}. At the bottom of this prompt is an instructed which will tell you exactly how many videos you should create, and perhaps some information to use as a basis for the image prompts. If there is additional information for you on the prompt(s) you are supposed to create, then it will be wrapped in BEGINCONTEXT and ENDCONTEXT tags below. The final instructions are at the bottom, wrapped in BEGININSTRUCTION and ENDINSTRUCTION tags.
+I need you to generate prompts for the video generating algorithm ${VIDEO_GENERATING_AI}. At the bottom of this prompt is an instructed which will tell you exactly how many videos you should create, and perhaps some information to use as a basis for the image prompts. If there is additional information for you on the prompt(s) you are supposed to create, then it will be wrapped in BEGINCONTEXT and ENDCONTEXT tags below. The final instructions are at the bottom, wrapped in BEGININSTRUCTION and ENDINSTRUCTION tags.
 
-The prompts you create will be given to ${MODEL.AnimateDiff}. Unless the instruction below tells you otherwise, it is very important that all of the videos you create have the same art style and are consistent. Please note that ${MODEL.AnimateDiff} does not understand what art style it used for the previous video it created. Each video exists in a vacuum, so you can't tell it "please use the same art style as the previous video". It doesn't understand that. Therefore, please create as detailed prompts as possible. Don't just describe the video, but also use words describing the art style, colors, and more. You can use terms like "watercolor", "painting", "photography", "4k", "8k", and more to create a very precise prompt. No matter what, unless very specifically asked not to, your prompt should include terms like "best quality".
+The prompts you create will be given to ${VIDEO_GENERATING_AI}. Unless the instruction below tells you otherwise, it is very important that all of the videos you create have the same art style and are consistent. Please note that ${VIDEO_GENERATING_AI} does not understand what art style it used for the previous video it created. Each video exists in a vacuum, so you can't tell it "please use the same art style as the previous video". It doesn't understand that. Therefore, please create as detailed prompts as possible. Don't just describe the video, but also use words describing the art style, colors, and more. You can use terms like "watercolor", "painting", "photography", "4k", "8k", and more to create a very precise prompt. No matter what, unless very specifically asked not to, your prompt should include terms like "best quality".
 
 The prompts must be in this specific formula, delimited below in quadrupled quotation marks, with no additional text, questions, or suggestions. Do not include the quotation marks in your output, only the list. The output will be parsed by code. Note that sometimes, you only need to generate a single video, but it should still be a numbered list.
 
