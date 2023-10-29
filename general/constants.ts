@@ -375,6 +375,7 @@ export enum AGENT_TASK_INDICATION {
   Narration = "narration",
   Image = "image",
   Video = "video",
+  Code = "code",
 }
 
 export type AgentTask = {

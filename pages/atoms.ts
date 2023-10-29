@@ -133,6 +133,10 @@ export const agentContextsAtom = atomWithStorage(
   "AGENT_CONTEXTS",
   [] as string[]
 );
+export const agentCodeContextsAtom = atomWithStorage(
+  "AGENT_CODE_CONTEXTS",
+  [] as string[]
+);
 export const agentToNarrateAtom = atomWithStorage(
   "AGENT_TO_NARRATE",
   [] as string[]

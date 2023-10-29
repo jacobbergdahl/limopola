@@ -9,8 +9,10 @@ import {
   Message,
   MODEL,
   MODEL_TYPE,
+  SHOULD_SHOW_ALL_LOGS,
 } from "../../general/constants";
 import {
+  agentCodeContextsAtom,
   agentContextsAtom,
   agentImagePromptsAtom,
   agentMessagesAtom,
@@ -42,6 +44,7 @@ export const AgentOverview = () => {
   const [wasStopped, setWasStopped] = useAtom(wasAgentStoppedAtom);
   const [messages, setMessages] = useAtom(agentMessagesAtom);
   const [contexts, setContexts] = useAtom(agentContextsAtom);
+  const [codeContexts, setCodeContexts] = useAtom(agentCodeContextsAtom);
   const [toNarrate, setToNarrate] = useAtom(agentToNarrateAtom);
   const [imagePrompts, setImagePrompts] = useAtom(agentImagePromptsAtom);
   const [videoPrompts, setVideoPrompts] = useAtom(agentVideoPromptsAtom);
@@ -58,6 +61,22 @@ export const AgentOverview = () => {
     return interval;
   };
 
+  const startNewMission = () => {
+    handleClearMissionDetails();
+    // This looks absolutely ridiculous, but I don't know what to do because I picked React instead of Svelte
+    handleTaskStart(
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      true
+    );
+  };
+
   const handleTextareaKeyPress = (event) => {
     const hasPressedControlEnter =
       (event.ctrlKey || event.metaKey) && event.key === "Enter";
@@ -65,7 +84,7 @@ export const AgentOverview = () => {
     if (hasPressedControlEnter) {
       event.preventDefault();
       if (!isRunning) {
-        handleTaskStart();
+        startNewMission();
       }
     }
   };
@@ -95,12 +114,12 @@ export const AgentOverview = () => {
   };
 
   const handleClearMissionDetails = () => {
-    setMission(RESET);
     setTasks(RESET);
     setIsRunning(RESET);
     isStoppingRef.current = false;
     setWasStopped(RESET);
     setContexts(RESET);
+    setCodeContexts(RESET);
     setToNarrate(RESET);
     setImagePrompts(RESET);
     setVideoPrompts(RESET);
@@ -120,12 +139,13 @@ export const AgentOverview = () => {
         "Waiting for the back-end to generate content based on the following prompt"
       );
       console.log(prompt);
-      const response = await runTask(task, context, prompt);
+      const response = await runTask(task, context, undefined, prompt);
       const data = await response.json();
       const result = data.result;
       results.push(result[0]);
     }
-    console.log("Created the following result(s)", results);
+    SHOULD_SHOW_ALL_LOGS &&
+      console.log("Created the following result(s)", results);
     return results;
   };
 
@@ -136,7 +156,7 @@ export const AgentOverview = () => {
         "Waiting for the back-end to generate narration based of the following text"
       );
       console.log(prompt);
-      const response = await runTask(task, undefined, prompt);
+      const response = await runTask(task, undefined, undefined, prompt);
       const data = await response.arrayBuffer();
       dataArray.push(data);
     }
@@ -146,7 +166,8 @@ export const AgentOverview = () => {
       const audioUrl = URL.createObjectURL(audioBlob);
       audioUrls.push(audioUrl);
     }
-    console.log("Created the following audio URL's", audioUrls);
+    SHOULD_SHOW_ALL_LOGS &&
+      console.log("Created the following audio URL's", audioUrls);
 
     return audioUrls;
   };
@@ -159,6 +180,7 @@ export const AgentOverview = () => {
     allImagePrompts?: string[],
     allVideoPrompts?: string[],
     allContexts?: string[],
+    allCodeContexts?: string[],
     forceEverythingToBeNew?: boolean
   ) => {
     if (mission.length === 0) {
@@ -190,6 +212,10 @@ export const AgentOverview = () => {
       allContexts !== undefined && allContexts.length > 0
         ? allContexts
         : contexts;
+    let currentCodeContexts =
+      allCodeContexts !== undefined && allCodeContexts.length > 0
+        ? allCodeContexts
+        : codeContexts;
 
     if (forceEverythingToBeNew) {
       currentTasks = [];
@@ -204,7 +230,7 @@ export const AgentOverview = () => {
     }
     try {
       if (currentTasks.length === 0) {
-        prettyLog("Asking the backend to start the following mission");
+        prettyLog("Sending an AI agent on a new mission");
         console.log(mission);
         currentTasks = [...(await createListOfTasks(mission, tasks.length))];
         subtleLog("These tasks were created for the mission");
@@ -228,9 +254,12 @@ export const AgentOverview = () => {
         if (modelType === MODEL_TYPE.Text) {
           const response = await runTask(
             currentTask,
-            currentContexts.join("\n")
+            currentContexts.join("\n"),
+            currentCodeContexts.join("\n")
           );
           const data = await response.json();
+          subtleLog("The back-end generated the following result");
+          console.log(data.result);
           const sender = `Agent (in ${timerValue.toFixed(2)}s)`;
           const apiMessage: Message = {
             content: data.result,
@@ -245,6 +274,11 @@ export const AgentOverview = () => {
             subtleLog("Added new context");
             console.log(currentContexts);
             setContexts(currentContexts);
+          } else if (currentTask.indication === AGENT_TASK_INDICATION.Code) {
+            currentCodeContexts = [...currentCodeContexts, data.result];
+            subtleLog("Added new code context");
+            console.log(currentCodeContexts);
+            setCodeContexts(currentCodeContexts);
           } else if (currentTask.indication === AGENT_TASK_INDICATION.Image) {
             currentImagePrompts = [
               ...currentImagePrompts,
@@ -275,6 +309,8 @@ export const AgentOverview = () => {
             currentImagePrompts,
             currentContexts.join("\n")
           );
+          currentImagePrompts = [];
+          setImagePrompts(currentImagePrompts);
           const sender = `Agent (in ${timerValue.toFixed(2)}s)`;
           const apiMessage: Message = {
             imageUrls: imageUrls,
@@ -290,6 +326,8 @@ export const AgentOverview = () => {
             currentVideoPrompts,
             currentContexts.join("\n")
           );
+          currentVideoPrompts = [];
+          setVideoPrompts(currentVideoPrompts);
           const sender = `Agent (in ${timerValue.toFixed(2)}s)`;
           const apiMessage: Message = {
             videoUrls: videoUrls,
@@ -304,6 +342,8 @@ export const AgentOverview = () => {
             ...currentContexts,
             ...currentTextsToNarrate,
           ]);
+          currentTextsToNarrate = [];
+          setToNarrate(currentTextsToNarrate);
           const sender = `Agent (in ${timerValue.toFixed(2)}s)`;
           const apiMessage: Message = {
             audioUrls: audioUrls,
@@ -331,8 +371,8 @@ export const AgentOverview = () => {
         return;
       }
       if (hasPendingTasks(currentTasks)) {
+        clearInterval(interval);
         setTimeout(() => {
-          clearInterval(interval);
           let nextTask = getTaskWithId(currentTasks, idOfCurrentTask + 1);
           if (!nextTask) {
             nextTask = getNextPendingTask(currentTasks);
@@ -344,7 +384,8 @@ export const AgentOverview = () => {
             currentTextsToNarrate,
             currentImagePrompts,
             currentVideoPrompts,
-            currentContexts
+            currentContexts,
+            currentCodeContexts
           );
         }, 1000);
       } else {
@@ -391,26 +432,18 @@ export const AgentOverview = () => {
             handleChange={handleMissionChange}
             disabled={isRunning}
             name="mission"
-            placeholder="Enter the agent's mission"
+            placeholder={
+              isRunning
+                ? mission
+                : "Enter the agent's mission. Press CTRL / CMD + Enter, or the button below, to dispatch the agent."
+            }
             handleKeyDown={handleTextareaKeyPress}
           />
         </div>
         <div className={styles.fixedContentSecondRow}>
           {!isRunning && (
             <Button
-              onClick={() => {
-                handleClearMissionDetails();
-                handleTaskStart(
-                  undefined,
-                  undefined,
-                  undefined,
-                  undefined,
-                  undefined,
-                  undefined,
-                  undefined,
-                  true
-                );
-              }}
+              onClick={() => startNewMission()}
               value={`Dispatch${
                 wasStopped || isStoppingRef.current ? " new " : " "
               }agent`}
@@ -449,8 +482,7 @@ export const AgentOverview = () => {
       </div>
       <ChatHistory
         messages={messages}
-        /* emptyHistoryMessage="The Agent mode is a work in progress. Make sure to read the README before starting." */
-        emptyHistoryMessage=""
+        emptyHistoryMessage="The Agent mode is a work in progress. Make sure to carefully read the README before using it."
         isLoading={isRunning}
         chatRef={undefined}
         scrollAnchorRef={undefined}

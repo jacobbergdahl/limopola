@@ -59,7 +59,11 @@ export const gpt = async (
       text = completion.data.choices[0].message.content;
     }
 
-    res.status(STATUS_CODE.Ok).json({ result: parseTextResponse(text) });
+    const output = parseTextResponse(text);
+    SHOULD_SHOW_ALL_LOGS &&
+      (console.log("\nOutput from OpenAI:\n", output), console.log());
+
+    res.status(STATUS_CODE.Ok).json({ result: output });
   } catch (error) {
     console.error(error);
     let errorMessage = error?.message;

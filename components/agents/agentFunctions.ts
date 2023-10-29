@@ -25,15 +25,19 @@ export const parseAgentTasks = (
   let regex = /(\d+)\.\s\[(.*?)\]\[(.*?)\] (.*)/;
   let match = taskString.match(regex);
 
+  let id, api, indication, description;
+
   if (!match) {
     regex = /(\d+)\.\s\[(.*?)\] (.*)/;
     match = taskString.match(regex);
     if (!match) {
       throw new Error(`Invalid task string: ${taskString}`);
     }
+    [, id, api, description] = match;
+    indication = undefined;
+  } else {
+    [, id, api, indication, description] = match;
   }
-
-  const [, id, api, indication, description] = match;
 
   return {
     id: parseInt(id, 10) + initialIndex,
@@ -49,7 +53,9 @@ const parseAgentTask = (
   initialIndex: number
 ): AgentTask[] => {
   const tasks = taskString.trim().split("\n");
-  return tasks.map((task) => parseAgentTasks(task, initialIndex));
+  return tasks
+    .filter((task) => task.trim() !== "")
+    .map((task) => parseAgentTasks(task, initialIndex));
 };
 
 export const parseCreativePrompts = (input: string): string[] => {
@@ -75,19 +81,14 @@ export const createListOfTasks = async (
   let data = null;
   let taskString: string = "";
 
-  if (
-    process.env.NEXT_PUBLIC_AGENT_CREATE_LIST_OF_TASKS_DATA ===
-    "MOCK_LONG_TASK_LIST"
-  ) {
+  if (process.env.NEXT_PUBLIC_AGENT_TASKS_DATA === "MOCK_LONG_TASK_LIST") {
     taskString = LONG_TASK_LIST;
   } else if (
-    process.env.NEXT_PUBLIC_AGENT_CREATE_LIST_OF_TASKS_DATA ===
-    "MOCK_SHORT_TASK_LIST"
+    process.env.NEXT_PUBLIC_AGENT_TASKS_DATA === "MOCK_SHORT_TASK_LIST"
   ) {
     taskString = SHORT_TASK_LIST;
   } else if (
-    process.env.NEXT_PUBLIC_AGENT_CREATE_LIST_OF_TASKS_DATA ===
-    "ONLY_IMAGE_TASK_LIST"
+    process.env.NEXT_PUBLIC_AGENT_TASKS_DATA === "ONLY_IMAGE_TASK_LIST"
   ) {
     taskString = ONLY_IMAGE_TASK_LIST;
   } else {
@@ -133,6 +134,7 @@ export const getNextPendingTask = (tasksToCheck: AgentTask[]) => {
 export const runTask = async (
   task: AgentTask,
   context?: string,
+  codeContext?: string,
   specificPrompt?: string
 ) => {
   if (task.status !== AGENT_TASK_STATUS.Pending) {
@@ -150,21 +152,38 @@ export const runTask = async (
       api: task.api,
       indication: task.indication,
       context: context,
+      codeContext: codeContext,
     }),
   });
 
   return response;
 };
 
+const getBaseInstructions = (indication: AGENT_TASK_INDICATION) => {
+  if (indication === AGENT_TASK_INDICATION.Image) {
+    return AGENT_PROMPT_GENERATE_IMAGE_PROMPTS;
+  } else if (indication === AGENT_TASK_INDICATION.Video) {
+    return AGENT_PROMPT_GENERATE_VIDEO_PROMPTS;
+  } else if (indication === AGENT_TASK_INDICATION.Code) {
+    return "";
+  }
+
+  return "";
+};
+
 export const getAgentPromptForRequestingPrompts = (
   prompt: string,
   indication: AGENT_TASK_INDICATION,
-  context?: string
+  context?: string,
+  codeContext?: string
 ) => {
-  const baseInstructions =
-    indication === AGENT_TASK_INDICATION.Image
-      ? AGENT_PROMPT_GENERATE_IMAGE_PROMPTS
-      : AGENT_PROMPT_GENERATE_VIDEO_PROMPTS;
+  const baseInstructions = getBaseInstructions(indication);
+  let thisCodeContext = "";
+  if (indication === AGENT_TASK_INDICATION.Code) {
+    thisCodeContext += `\n
+    Below is the code for this project. Please use this code as basis for the code you write next.\n
+    ${codeContext}\n`;
+  }
 
   if (!!context && context.length > 0) {
     return `
@@ -172,6 +191,7 @@ export const getAgentPromptForRequestingPrompts = (
     BEGINCONTEXT
     ${context}
     ENDCONTEXT
+    ${thisCodeContext}
     BEGININSTRUCTION
     ${prompt}
     ENDINSTRUCTION
@@ -180,6 +200,7 @@ export const getAgentPromptForRequestingPrompts = (
 
   return `
   ${baseInstructions}
+  ${thisCodeContext}
   BEGININSTRUCTION
   ${prompt}
   ENDINSTRUCTION
@@ -189,6 +210,7 @@ export const getAgentPromptForRequestingPrompts = (
 export const appendContextToTextPrompt = (
   prompt: string,
   context: string,
+  codeContext?: string,
   indication?: AGENT_TASK_INDICATION
 ) => {
   const hasContext = context && context.trim().length > 0;
@@ -212,5 +234,10 @@ export const appendContextToTextPrompt = (
     `;
   }
 
-  return getAgentPromptForRequestingPrompts(prompt, indication!, context);
+  return getAgentPromptForRequestingPrompts(
+    prompt,
+    indication!,
+    context,
+    codeContext
+  );
 };

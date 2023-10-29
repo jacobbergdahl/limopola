@@ -5,6 +5,7 @@ import {
   DEFAULT_TECHNICAL_VOICE_STABILITY,
   IMAGE_SIZE,
   MODEL,
+  SHOULD_SHOW_ALL_LOGS,
   STATUS_CODE,
 } from "../../general/constants";
 import { gpt } from "./aiModels/gpt";
@@ -21,11 +22,13 @@ const openAiConfiguration = new Configuration({
 const openai = new OpenAIApi(openAiConfiguration);
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
-  console.log("the body", req.body);
   const description = req.body.description;
   const api = req.body.api;
   const indication = req.body.indication;
   const context = req.body.context;
+  const codeContext = req.body.codeContext;
+
+  SHOULD_SHOW_ALL_LOGS && console.log("Request body:", req.body);
 
   const body: ProcessedBody = {
     numberOfImages: 1,
@@ -42,11 +45,16 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   };
 
   if (api === MODEL.Gpt4) {
-    const prompt = appendContextToTextPrompt(description, context, indication);
+    const prompt = appendContextToTextPrompt(
+      description,
+      context,
+      codeContext,
+      indication
+    );
     // Will use Gpt4_32k
     return gpt(res, openai, prompt, MODEL.Gpt4, body);
   } else if (api === MODEL.Gpt3_5_turbo) {
-    const prompt = appendContextToTextPrompt(description, context);
+    const prompt = appendContextToTextPrompt(description, context, codeContext);
     // Will use Gpt3_5_turbo_16k
     return gpt(res, openai, prompt, MODEL.Gpt3_5_turbo, body);
   } else if (api === MODEL.StableDiffusionSdXl) {

@@ -1,3 +1,4 @@
+import { AGENT_TASK_INDICATION } from "./../../general/constants";
 import { MODEL } from "../../general/constants";
 
 const TEXT_GENERATING_AI = MODEL.Gpt4;
@@ -23,20 +24,23 @@ The output format must be a numbered list in the format delimited below in quadr
 
 When using ${TEXT_GENERATING_AI}, you can also use a second set of brackets to indicate if the result of the task will be used by a subsequent task. These are the brackets you can use for a secondary indication:
 
-- [context]: Indicates that this is the primary context for the work. This context will be used to help create images, narrate text, and more. There would typically only be one context and it is often the first task, but there could sometimes be multiple, as in example output 4. Context is information that is vital for other tasks to know about.
-- [narration]: If the context is not a story that can be obviously narrated, then you can write text specifically for narration. This is optional, if a context exists but narration doesn't exist, then context will be used instead. Only ${TEXT_GENERATING_AI} can create text for narration.
-- [image]: Indicates that this task will create prompts to be used by ${IMAGE_GENERATING_AI} in a subsequent task.
-- [video]: Indicates that this task will create prompts to be used by ${VIDEO_GENERATING_AI} in a subsequent task.
+- [${AGENT_TASK_INDICATION.Context}]: Indicates that this is the primary context for the work. This context will be used to help create images, narrate text, and more. There would typically only be one context and it is often the first task, but there could sometimes be multiple, as in example output 4. Context is information that is vital for other tasks to know about.
+- [${AGENT_TASK_INDICATION.Narration}]: If the context is not a story that can be obviously narrated, then you can write text specifically for narration. This is optional, if a context exists but narration doesn't exist, then context will be used instead. Only ${TEXT_GENERATING_AI} can create text for narration.
+- [${AGENT_TASK_INDICATION.Image}]: Indicates that this task will create prompts to be used by ${IMAGE_GENERATING_AI} in a subsequent task.
+- [${AGENT_TASK_INDICATION.Video}]: Indicates that this task will create prompts to be used by ${VIDEO_GENERATING_AI} in a subsequent task.
+- [${AGENT_TASK_INDICATION.Code}]: Indicates that this task will create software code (HTML, CSS, JavaScript, C#, SQL, etc.) which may be used by ${TEXT_GENERATING_AI} in a subsequent task.
 
 Again, this secondary indications can only be used by ${TEXT_GENERATING_AI}.
 
 """"
-1. [${TEXT_GENERATING_AI}][context] Write a story.
+1. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Context}] Write a story.
 2. [${VOICE_GENERATING_AI}] Narrate the story created above.
-3. [${TEXT_GENERATING_AI}][image] Create prompts for two images.
+3. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Image}] Create prompts for two images.
 4. [${IMAGE_GENERATING_AI}] Create the two images.
-5. [${TEXT_GENERATING_AI}][video] Create a prompt for generating a video.
+5. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Video}] Create a prompt for generating a video.
 6. [${VIDEO_GENERATING_AI}] Make a video.
+7. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Code}] Write HTML.
+7. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Code}] Write CSS for the HTML.
 """"
 
 # Example input 1
@@ -45,9 +49,9 @@ Create a short illustrated children's book about a young girl named Ellen who be
 
 # Example output 1
 
-1. [${TEXT_GENERATING_AI}][context] Write the story for the children's book about Ellen who befriends a bird, spread across ten pages. Each page should have only one paragraph of text. The story should include the following: a. Ellen's early life, including her family, friends, and hobbies. b. Ellen's encounter with a bird, and how they become friends. c. Ellen's adventures with the bird, including their travels and experiences. d. Ellen's realization that she must let the bird go, and how she comes to terms with it. e. Ellen's life after the bird, including her new friends and hobbies.
+1. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Context}] Write the story for the children's book about Ellen who befriends a bird, spread across ten pages. Each page should have only one paragraph of text. The story should include the following: a. Ellen's early life, including her family, friends, and hobbies. b. Ellen's encounter with a bird, and how they become friends. c. Ellen's adventures with the bird, including their travels and experiences. d. Ellen's realization that she must let the bird go, and how she comes to terms with it. e. Ellen's life after the bird, including her new friends and hobbies.
 2. [${VOICE_GENERATING_AI}] Create narration of the story.
-3. [${TEXT_GENERATING_AI}][image] Create prompts for ten images corresponding to the ten pages of the story.
+3. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Image}] Create prompts for ten images corresponding to the ten pages of the story.
 4. [${IMAGE_GENERATING_AI}] Generate images using the prompts.
 
 # Example input 2
@@ -56,14 +60,14 @@ Build a fan website about Beethoven. The website should be a single-page applica
 
 # Example output 2
 
-1. [${TEXT_GENERATING_AI}][context] Write a brief biography about Beethoven including his early life, major works, influence, and legacy.
-2. [${TEXT_GENERATING_AI}][image] Create prompts for three modern-day scenarios featuring Beethoven. a. Beethoven giving a concert in a modern cityscape. b. Beethoven wearing headphones and listening to electronic music. c. Beethoven interacting with other famous composers at a modern music festival.
+1. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Context}] Write a brief biography about Beethoven including his early life, major works, influence, and legacy.
+2. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Image}] Create prompts for three modern-day scenarios featuring Beethoven. a. Beethoven giving a concert in a modern cityscape. b. Beethoven wearing headphones and listening to electronic music. c. Beethoven interacting with other famous composers at a modern music festival.
 3. [${IMAGE_GENERATING_AI}] Generate images of Beethoven.
 4. [${TEXT_GENERATING_AI}] Include a section on the website dedicated to Beethoven's most famous works, along with a brief description and significance of each.
-5. [${TEXT_GENERATING_AI}] Write the HTML structure for the single-page application, ensuring it adheres to accessibility standards (using semantic elements, alt attributes for images, and aria roles where necessary).
-6. [${TEXT_GENERATING_AI}] Write the CSS for styling the website to make it responsive across different screen sizes and ensure a performant load time.
-7. [${TEXT_GENERATING_AI}] Write JavaScript to handle any interactivity, such as displaying additional information about Beethoven or toggling between images.
-8. [${TEXT_GENERATING_AI}] Include optimization techniques for performance: a. Lazy-loading images. b. Minifying CSS and JavaScript files. c. Implement caching strategies.
+5. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Code}] Write the HTML structure for the single-page application, ensuring it adheres to accessibility standards (using semantic elements, alt attributes for images, and aria roles where necessary).
+6. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Code}] Write the CSS for styling the website to make it responsive across different screen sizes and ensure a performant load time.
+7. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Code}] Write JavaScript to handle any interactivity, such as displaying additional information about Beethoven or toggling between images.
+8. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Code}] Include optimization techniques for performance: a. Lazy-loading images. b. Minifying CSS and JavaScript files. c. Implement caching strategies.
 
 # Example input 3
 
@@ -71,10 +75,10 @@ Create a short animated film about the frog Albert who befriends the gentle hors
 
 # Example output 3
 
-1. [${TEXT_GENERATING_AI}][context] Write a story outline for the animated film about Albert the frog and Tampere the gentle horse, detailing their initial meeting, adventures, challenges, and the climax.
-2. [${TEXT_GENERATING_AI}][video] Create prompts for key scenes in the story: a. Albert the frog encountering Tampere for the first time in a meadow. b. Albert and Tampere sharing a laugh while looking at the stars. c. The duo facing a challenge such as a river crossing. d. Albert and Tampere celebrating their friendship at the end.
+1. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Context}] Write a story outline for the animated film about Albert the frog and Tampere the gentle horse, detailing their initial meeting, adventures, challenges, and the climax.
+2. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Video}] Create prompts for key scenes in the story: a. Albert the frog encountering Tampere for the first time in a meadow. b. Albert and Tampere sharing a laugh while looking at the stars. c. The duo facing a challenge such as a river crossing. d. Albert and Tampere celebrating their friendship at the end.
 3. [${VIDEO_GENERATING_AI}] Generate animations for the scenes outlined above.
-4. [${TEXT_GENERATING_AI}][narration] Write a narration script for the film to provide context and fill in gaps between animated scenes.
+4. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Narration}] Write a narration script for the film to provide context and fill in gaps between animated scenes.
 5. [${VOICE_GENERATING_AI}] Generate voice narration using the provided script.
 
 # Example input 4
@@ -83,17 +87,17 @@ Make a branding profile for an IT consultancy firm based in Stockholm. The prima
 
 # Example output 4
 
-1. [${TEXT_GENERATING_AI}][context] Create a company name that reflects IT consultancy and its Stockholm origin. And define the company's mission statement and core values, emphasizing innovation, integrity, and client success.
-2. [${TEXT_GENERATING_AI}][context] Write a brief description of the color palette, including: a. Primary color: Indigo (with HEX, RGB, and CMYK values). b. Secondary colors that complement indigo and enhance the brand's visual appeal.
-3. [${TEXT_GENERATING_AI}][image] Design a logo concept using indigo as the primary color, incorporating elements that reflect IT, consultancy, and a touch of Stockholm's cultural or architectural identity.
+1. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Context}] Create a company name that reflects IT consultancy and its Stockholm origin. And define the company's mission statement and core values, emphasizing innovation, integrity, and client success.
+2. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Context}] Write a brief description of the color palette, including: a. Primary color: Indigo (with HEX, RGB, and CMYK values). b. Secondary colors that complement indigo and enhance the brand's visual appeal.
+3. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Image}] Design a logo concept using indigo as the primary color, incorporating elements that reflect IT, consultancy, and a touch of Stockholm's cultural or architectural identity.
 4. [${IMAGE_GENERATING_AI}] Generate a logo based on the provided design concept.
-5. [${TEXT_GENERATING_AI}][context] Recommend typography that pairs well with the logo and reflects the company's professional yet innovative identity. This should include a primary font for headings and a secondary font for body text.
-6. [${TEXT_GENERATING_AI}][context] Describe brand imagery guidelines, suggesting the use of modern technology imagery, Stockholm landmarks, and collaborative workplace scenarios.
-7. [${TEXT_GENERATING_AI}][context] Propose key messaging guidelines that emphasize the company's expertise, Stockholm roots, and commitment to client success.
-8. [${TEXT_GENERATING_AI}][context] Outline a social media strategy, focusing on platforms relevant to B2B marketing such as LinkedIn and Twitter, detailing post frequency, content themes, and engagement tactics.
-9. [${TEXT_GENERATING_AI}][image] Design a sample business card incorporating the company's name, logo, color palette, and typography.
+5. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Context}] Recommend typography that pairs well with the logo and reflects the company's professional yet innovative identity. This should include a primary font for headings and a secondary font for body text.
+6. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Context}] Describe brand imagery guidelines, suggesting the use of modern technology imagery, Stockholm landmarks, and collaborative workplace scenarios.
+7. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Context}] Propose key messaging guidelines that emphasize the company's expertise, Stockholm roots, and commitment to client success.
+8. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Context}] Outline a social media strategy, focusing on platforms relevant to B2B marketing such as LinkedIn and Twitter, detailing post frequency, content themes, and engagement tactics.
+9. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Image}] Design a sample business card incorporating the company's name, logo, color palette, and typography.
 10. [${IMAGE_GENERATING_AI}] Generate a visual of the business card based on the provided design.
-11. [${TEXT_GENERATING_AI}][context] Provide guidelines for website design, ensuring it aligns with the branding profile, is user-friendly, and emphasizes the company's services and Stockholm base.
+11. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Context}] Provide guidelines for website design, ensuring it aligns with the branding profile, is user-friendly, and emphasizes the company's services and Stockholm base.
 
 # Instruction
 

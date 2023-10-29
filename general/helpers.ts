@@ -1,26 +1,33 @@
 import { INPUT_MODE, Message } from "./constants";
 
 export const parseTextResponse = (text: string): string => {
+  const htmlTagPattern = /^<[^>]+>[\s\S]*<\/[^>]+>$/;
   const hasCodeBlock = text.includes("```");
-  // Escape HTML entities
-  let processedText = hasCodeBlock
-    ? text
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;")
-    : text;
+  // The user may ask for raw HTML output
+  const doesTextStartAndEndWithHtml = htmlTagPattern.test(text);
+  const startsWithPreOrCodePattern = /^(<pre>|<code>)/;
+  const doesTextStartWithPreOrCode = startsWithPreOrCodePattern.test(text);
+  let processedText = text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 
-  // It is possible to tell LLM's, in plain text, to please use <code> tags
+  if (doesTextStartAndEndWithHtml && !doesTextStartWithPreOrCode) {
+    processedText = `<pre><code>${processedText}</code></pre>`;
+  }
+
+  // It is possible to tell LLMs, in plain text, to please use <code> tags
   // instead of the ``` syntax. However, it is very inconsistent, and it also
-  // often leads to LLM's wrapping _everything_ in HTML tags.
+  // often leads to LLMs wrapping _everything_ in HTML tags.
   if (hasCodeBlock) {
     processedText = processedText.replace(
       /```([\s\S]+?)```/g,
       "<pre><code>$1</code></pre>"
     );
   }
+
   const hasInlineCode = processedText.includes("`");
   if (hasInlineCode) {
     processedText = processedText.replace(
@@ -28,6 +35,7 @@ export const parseTextResponse = (text: string): string => {
       `<span class="inline-code">$1</span>`
     );
   }
+
   return processedText;
 };
 
