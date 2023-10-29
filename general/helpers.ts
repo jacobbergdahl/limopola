@@ -6,10 +6,6 @@ const parseMarkdownToHtml = (markdown: string): string => {
 };
 
 export const parseTextResponse = (text: string): string => {
-  const htmlTagPattern = /^<[^>]+>[\s\S]*<\/[^>]+>$/;
-  const hasCodeBlock = text.includes("```");
-  const startsWithPreOrCodePattern = /^(<pre>|<code>)/;
-
   let processedText = text
     .replace("BEGINCONTEXT", "")
     .replace("ENDCONTEXT", "")
@@ -22,6 +18,11 @@ export const parseTextResponse = (text: string): string => {
     .replace("BEGININSTRUCTION", "")
     .replace("ENDINSTRUCTION", "")
     .trim();
+
+  const startsOrEndsWithHtmlTagRegexPattern = /^<[^>]+>[\s\S]*<\/[^>]+>$/;
+
+  const doesTextStartAndEndWithHtml =
+    startsOrEndsWithHtmlTagRegexPattern.test(processedText);
 
   const doesTextStartWithMarkdownHeader = processedText.startsWith("#");
   const doesTextContainMarkdownLinks = /\[.*?\]\(.*?\)/.test(processedText);
@@ -37,7 +38,6 @@ export const parseTextResponse = (text: string): string => {
     .replace(/<\/pre>/g, "PRE_END_TAG_PLACEHOLDER")
     .replace(/<code>/g, "CODE_TAG_PLACEHOLDER")
     .replace(/<\/code>/g, "CODE_END_TAG_PLACEHOLDER")
-    /* .replace(/&/g, "&amp;") */
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
@@ -50,6 +50,7 @@ export const parseTextResponse = (text: string): string => {
   // It is possible to tell LLMs, in plain text, to please use <code> tags
   // instead of the ``` syntax. However, it is very inconsistent, and it also
   // often leads to LLMs wrapping _everything_ in HTML tags.
+  const hasCodeBlock = text.includes("```");
   if (hasCodeBlock) {
     processedText = processedText.replace(
       /```([\s\S]+?)```/g,
@@ -65,11 +66,9 @@ export const parseTextResponse = (text: string): string => {
     );
   }
 
-  // The user may ask for raw HTML output
-  const doesTextStartAndEndWithHtml = htmlTagPattern.test(processedText);
+  const startsWithPreOrCodeRegexPattern = /^(<pre>|<code>)/;
   const doesTextStartWithPreOrCode =
-    startsWithPreOrCodePattern.test(processedText);
-
+    startsWithPreOrCodeRegexPattern.test(processedText);
   if (doesTextStartAndEndWithHtml && !doesTextStartWithPreOrCode) {
     processedText = `<pre><code>${processedText}</code></pre>`;
   }
