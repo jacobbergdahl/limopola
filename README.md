@@ -154,19 +154,6 @@ These are example screenshots of the application taken on 2023-10-11.
 
 ![Screenshot of the editor UI](./public/screenshot2.png)
 
-## Videos
-
-This is an example video of running an early version of the agent mode on 2023-10-29.
-
-In the video, the agent has been given the following mission:
-
-> Build a fan website about Super Mario. The website should be a single-page application. It should feature facts about Mario, along with some generated images of him in modern-day scenarios.
-
-<video controls>
-  <source src="./public/agent.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
-
 ## Limopola artworks
 
 The logo for Limopola by Midjourney v5:
