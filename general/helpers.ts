@@ -7,6 +7,7 @@ const parseMarkdownToHtml = (markdown: string): string => {
 
 export const parseTextResponse = (text: string): string => {
   let processedText = text
+    // It's rare that the LLM will output delimiters, but it could happen if it gets confused
     .replace("BEGINCONTEXT", "")
     .replace("ENDCONTEXT", "")
     .replace("BEGINRESULTS", "")
