@@ -67,7 +67,7 @@ Build a fan website about Beethoven. The website should be a single-page applica
 5. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Code}] Write the HTML structure for the single-page application, ensuring it adheres to accessibility standards (using semantic elements, alt attributes for images, and aria roles where necessary).
 6. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Code}] Write the CSS for styling the website to make it responsive across different screen sizes and ensure a performant load time.
 7. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Code}] Write JavaScript to handle any interactivity, such as displaying additional information about Beethoven or toggling between images.
-8. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Code}] Include optimization techniques for performance: a. Lazy-loading images. b. Minifying CSS and JavaScript files. c. Implement caching strategies.
+8. [${TEXT_GENERATING_AI}] Include optimization techniques for performance: a. Lazy-loading images. b. Minifying CSS and JavaScript files. c. Implement caching strategies.
 
 # Example input 3
 

@@ -57,7 +57,10 @@ export const ChatHistory = ({
             <>
               <span className={styles.messageSender}>{message.sender}</span>
               {message.header && (
-                <h4 className={styles.header}>{message.header}</h4>
+                <div
+                  className={styles.header}
+                  dangerouslySetInnerHTML={{ __html: message.header }}
+                />
               )}
               {isTextMessage && !isClickable && (
                 <div dangerouslySetInnerHTML={{ __html: message.content }} />

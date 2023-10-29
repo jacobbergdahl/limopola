@@ -1,22 +1,51 @@
 import { INPUT_MODE, Message } from "./constants";
+import { marked } from "marked";
+
+const parseMarkdownToHtml = (markdown: string): string => {
+  return marked(markdown);
+};
 
 export const parseTextResponse = (text: string): string => {
   const htmlTagPattern = /^<[^>]+>[\s\S]*<\/[^>]+>$/;
   const hasCodeBlock = text.includes("```");
-  // The user may ask for raw HTML output
-  const doesTextStartAndEndWithHtml = htmlTagPattern.test(text);
   const startsWithPreOrCodePattern = /^(<pre>|<code>)/;
-  const doesTextStartWithPreOrCode = startsWithPreOrCodePattern.test(text);
+
   let processedText = text
-    .replace(/&/g, "&amp;")
+    .replace("BEGINCONTEXT", "")
+    .replace("ENDCONTEXT", "")
+    .replace("BEGINRESULTS", "")
+    .replace("ENDRESULTS", "")
+    .replace("BEGINRESULT", "")
+    .replace("ENDRESULT", "")
+    .replace("BEGINCODE", "")
+    .replace("ENDCODE", "")
+    .replace("BEGININSTRUCTION", "")
+    .replace("ENDINSTRUCTION", "")
+    .trim();
+
+  const doesTextStartWithMarkdownHeader = processedText.startsWith("#");
+  const doesTextContainMarkdownLinks = /\[.*?\]\(.*?\)/.test(processedText);
+  if (doesTextStartWithMarkdownHeader || doesTextContainMarkdownLinks) {
+    processedText = parseMarkdownToHtml(processedText);
+  }
+
+  // We don't want to escape <pre> or <code> tags. This code
+  // temporarily replaces them with placeholders, and then
+  // replaces them back after escaping the rest of the text.
+  processedText = processedText
+    .replace(/<pre>/g, "PRE_TAG_PLACEHOLDER")
+    .replace(/<\/pre>/g, "PRE_END_TAG_PLACEHOLDER")
+    .replace(/<code>/g, "CODE_TAG_PLACEHOLDER")
+    .replace(/<\/code>/g, "CODE_END_TAG_PLACEHOLDER")
+    /* .replace(/&/g, "&amp;") */
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-
-  if (doesTextStartAndEndWithHtml && !doesTextStartWithPreOrCode) {
-    processedText = `<pre><code>${processedText}</code></pre>`;
-  }
+    .replace(/'/g, "&#039;")
+    .replace(/PRE_TAG_PLACEHOLDER/g, "<pre>")
+    .replace(/PRE_END_TAG_PLACEHOLDER/g, "</pre>")
+    .replace(/CODE_TAG_PLACEHOLDER/g, "<code>")
+    .replace(/CODE_END_TAG_PLACEHOLDER/g, "</code>");
 
   // It is possible to tell LLMs, in plain text, to please use <code> tags
   // instead of the ``` syntax. However, it is very inconsistent, and it also
@@ -34,6 +63,15 @@ export const parseTextResponse = (text: string): string => {
       /`([\s\S]+?)`/g,
       `<span class="inline-code">$1</span>`
     );
+  }
+
+  // The user may ask for raw HTML output
+  const doesTextStartAndEndWithHtml = htmlTagPattern.test(processedText);
+  const doesTextStartWithPreOrCode =
+    startsWithPreOrCodePattern.test(processedText);
+
+  if (doesTextStartAndEndWithHtml && !doesTextStartWithPreOrCode) {
+    processedText = `<pre><code>${processedText}</code></pre>`;
   }
 
   return processedText;
