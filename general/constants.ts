@@ -112,9 +112,8 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
     case MODEL.StableDiffusionSdXl:
       return {
         status: MODEL_STATUS.Full,
-        information: "Very powerful image generator.",
-        learnMoreUrl:
-          "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
+        information: "A text-to-image model by Stability AI.",
+        learnMoreUrl: "https://replicate.com/blog/run-sdxl-with-an-api",
         apiKey: MODEL_API_KEY.Replicate,
       };
     case MODEL.Llama2_70b_chat:
