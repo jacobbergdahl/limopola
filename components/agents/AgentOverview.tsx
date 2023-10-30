@@ -484,8 +484,6 @@ export const AgentOverview = () => {
         messages={messages}
         emptyHistoryMessage="The Agent mode is a work in progress. Make sure to carefully read the README before using it."
         isLoading={isRunning}
-        chatRef={undefined}
-        scrollAnchorRef={undefined}
         model={MODEL.Debug}
         timer={timer}
       />

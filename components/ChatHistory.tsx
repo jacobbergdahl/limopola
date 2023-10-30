@@ -6,8 +6,8 @@ import { SPINNER_TYPE, Spinner } from "./Spinner";
 type ChatHistoryType = {
   messages: Message[];
   isLoading: boolean;
-  chatRef: MutableRefObject<any>;
-  scrollAnchorRef: MutableRefObject<any>;
+  chatRef?: MutableRefObject<any>;
+  scrollAnchorRef?: MutableRefObject<any>;
   model: MODEL;
   handleAutoMessage?: (prompt: string) => void;
   timer: number;
