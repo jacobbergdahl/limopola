@@ -88,7 +88,7 @@ export const createListOfTasks = async (
   ) {
     taskString = SHORT_TASK_LIST;
   } else if (
-    process.env.NEXT_PUBLIC_AGENT_TASKS_DATA === "ONLY_IMAGE_TASK_LIST"
+    process.env.NEXT_PUBLIC_AGENT_TASKS_DATA === "MOCK_ONLY_IMAGE_TASK_LIST"
   ) {
     taskString = ONLY_IMAGE_TASK_LIST;
   } else {
