@@ -16,9 +16,8 @@ import {
 } from "../general/constants";
 import {
   downloadConversation,
+  getCorrectCtrlKey,
   getLatestMessageByUser,
-  getUserOperatingSystem,
-  OperatingSystem,
 } from "../general/helpers";
 import styles from "./index.module.css";
 import {
@@ -785,7 +784,7 @@ export default function Home() {
               placeholder={
                 inputMode === INPUT_MODE.Chat
                   ? "Press T or enter to focus. Hold shift and press enter to add a new line. Press enter to send."
-                  : "Press T or enter to focus. Hold CTRL / CMD and press enter to ask the AI to continue from the bottom of your text."
+                  : `Press T or enter to focus. Hold ${getCorrectCtrlKey()} and press enter to ask the AI to continue from the bottom of your text.`
               }
               value={
                 inputMode === INPUT_MODE.Chat ? currentInput : currentEditorText
@@ -859,11 +858,7 @@ export default function Home() {
             <div className={styles.section}>
               <h3>Options</h3>
               <Button
-                value={
-                  getUserOperatingSystem() === OperatingSystem.Mac
-                    ? "Download (CMD + S)"
-                    : "Download (CTRL + S)"
-                }
+                value={`Download (${getCorrectCtrlKey()} + S)`}
                 onClick={() =>
                   downloadConversation(
                     inputMode,

@@ -95,6 +95,10 @@ export function getUserOperatingSystem(): OperatingSystem {
   return OperatingSystem.Unknown;
 }
 
+export const getCorrectCtrlKey = () => {
+  return getUserOperatingSystem() === OperatingSystem.Mac ? "⌘" : "CTRL";
+};
+
 export const getLatestMessageByUser = (chatHistory: Message[]) => {
   return chatHistory
     .slice()

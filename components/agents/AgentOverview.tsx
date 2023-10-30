@@ -36,6 +36,7 @@ import {
 } from "./agentFunctions";
 import { prettyLog, subtleLog } from "../../general/logging";
 import { RESET } from "jotai/utils";
+import { getCorrectCtrlKey } from "../../general/helpers";
 
 export const AgentOverview = () => {
   const [mission, setMission] = useAtom(agentMissionAtom);
@@ -435,7 +436,7 @@ export const AgentOverview = () => {
             placeholder={
               isRunning
                 ? mission
-                : "Enter the agent's mission. Press CTRL / CMD + Enter, or the button below, to dispatch the agent."
+                : `Enter the agent's mission. Press ${getCorrectCtrlKey()} + Enter, or the button below, to dispatch the agent.`
             }
             handleKeyDown={handleTextareaKeyPress}
           />

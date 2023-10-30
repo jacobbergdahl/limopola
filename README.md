@@ -107,7 +107,7 @@ Tips:
 - Some AI's, like `gpt-4-fact-checker` and `eleven-labs`, allow you to click on any text chat message to instantly send that message to the AI.
 - The "reset settings" option will reset everything except for your saved contexts and your chat history.
 - You can jump to the textarea by just pressing enter or T.
-- You can download and save the conversation as a `.txt` file by pressing CTRL + S / CMD + S.
+- You can download and save the conversation as a `.txt` file by pressing CTRL + S / ⌘ + S.
 
 ### Editor
 
