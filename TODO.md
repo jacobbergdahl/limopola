@@ -42,10 +42,10 @@ This is a list of features, updates, and bug fixes that should be implemented in
 
 Agents are still in a very early version, and unexpected bugs still occur. Many small things need to be tested and adjusted. Below are bigger features that are to be added.
 
-- Allow the user to set what API's the agents have access to. This could be done with checkboxes. Not only does both the FE and BE need to handle this, but the prompt that creates the list of tasks need to be dynamically changed as well. The user should not need to supply as many API keys as they do now.
+- Allow the user to set what API's the agents have access to. The user should be able to set what AI to use for each function, e.g., generating text, summarizing text, generating images, etc. Assigning an AI to generate text should be the only required AI, everything else should be optional. Not only does both the FE and BE need to handle this, but the prompt that creates the list of tasks need to be dynamically changed as well. The user should not need to supply as many API keys as they do now.
 - Check if the context is too long to process. If so, use Gpt4_32k and Gpt3_5_turbo_16k.
 - If the context is too long for both API's mentioned above, then create summaries of the arrays context that fall within the context limit.
-- After the agent has finished, perhaps the final product can be combined in a pleasant way?
+- After the agent has finished, perhaps the final product can be combined in a pleasant way? It would be nice to be able to save the output with the press of a button. If it makes a website, it would be nice if it could correctly save each message in the correct format and zip it.
 
 Documentation:
 
