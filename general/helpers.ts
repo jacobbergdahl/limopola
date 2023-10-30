@@ -1,8 +1,38 @@
 import { INPUT_MODE, Message } from "./constants";
 import { marked } from "marked";
+import { PROGRAMMING_LANGUAGES } from "./helperConstants";
 
 const parseMarkdownToHtml = (markdown: string): string => {
   return marked(markdown);
+};
+
+const createCodeBlock = (code: string): string => {
+  let codeLines = code.split("\n");
+  const languageRegex = new RegExp(
+    `^(${PROGRAMMING_LANGUAGES.join("|")})\s?`,
+    "i"
+  );
+  const startsWithHtmlTagRegexPattern = /^<[^>]+>/;
+  const match = codeLines[0].match(languageRegex);
+  let programmingLanguageName = "";
+
+  if (match) {
+    programmingLanguageName = match[1].trim();
+    codeLines[0] = codeLines[0].replace(match[0], "").trim();
+    code = codeLines.join("\n");
+  } else if (startsWithHtmlTagRegexPattern.test(codeLines[0])) {
+    programmingLanguageName = "html";
+  }
+
+  return (
+    <>
+      <Clipboard />
+
+      <pre>
+        <code>${code}</code>
+      </pre>
+    </>
+  );
 };
 
 export const parseTextResponse = (text: string): string => {
@@ -18,6 +48,8 @@ export const parseTextResponse = (text: string): string => {
     .replace("ENDCODE", "")
     .replace("BEGININSTRUCTION", "")
     .replace("ENDINSTRUCTION", "")
+    .replace("BEGINOUTPUT", "")
+    .replace("ENDOUTPUT", "")
     .trim();
 
   const startsOrEndsWithHtmlTagRegexPattern = /^<[^>]+>[\s\S]*<\/[^>]+>$/;
@@ -55,7 +87,7 @@ export const parseTextResponse = (text: string): string => {
   if (hasCodeBlock) {
     processedText = processedText.replace(
       /```([\s\S]+?)```/g,
-      "<pre><code>$1</code></pre>"
+      (_match, codeContent) => createCodeBlock(codeContent)
     );
   }
 
@@ -71,7 +103,7 @@ export const parseTextResponse = (text: string): string => {
   const doesTextStartWithPreOrCode =
     startsWithPreOrCodeRegexPattern.test(processedText);
   if (doesTextStartAndEndWithHtml && !doesTextStartWithPreOrCode) {
-    processedText = `<pre><code>${processedText}</code></pre>`;
+    processedText = createCodeBlock(processedText);
   }
 
   return processedText;

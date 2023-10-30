@@ -19,6 +19,7 @@
     "next": "^13.1.1",
     "openai": "^3.3.0",
     "react": "^18.2.0",
+    "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "^18.2.0",
     "replicate": "^0.16.1",
     "sqlite3": "^5.1.6"
