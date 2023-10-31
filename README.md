@@ -2,11 +2,11 @@
 
 ![Banner](./public/banner.png)
 
-Limopola is an AI interface to interact with various large language models (LLMs). It is built with NextJS (a meta-framework of ReactJS). It uses TypeScript for typing and Jotai for state management. It has a tiny SQLite database that is only used for one table of information. Most information is stored in the client's local storage.
+Limopola is an AI interface to interact with various large language models (LLMs). It allows you to communicate with text, image, video, and audio AI through both chat and editors. Beyond that, it offers many features that the likes of ChatGPT, Google Bard, and Bing AI are missing (at the time of writing). Such features include the ability to remember conversations, setting multiple contexts (as in static prompts that get appended to your prompts), setting properties such as temperature, and starting conversations with one AI and continuing them with another.
 
 The name is a silly portmanteau of the words link, model, portal, and language. Limopola is indeed a portal or a link that allows you to communicate with a wide range of AI's.
 
-It allows you to communicate with text, image, video, and audio AI through both chat and editors. Beyond that, it offers many features that the likes of ChatGPT, Google Bard, and Bing AI are missing (at the time of writing). Such features include the ability to remember conversations, setting multiple contexts (as in static prompts that get appended to your prompts), setting properties such as temperature, and starting conversations with one AI and continuing them with another.
+The project is built with NextJS (a meta-framework of ReactJS). It uses TypeScript for typing and Jotai for state management. It has a tiny SQLite database that is only used for one table of information. Most information is stored in the client's local storage.
 
 Limopola is made to be run locally, but in the future it might be hosted online on a platform like Netlify.
 
@@ -28,7 +28,7 @@ $ npm i
 
 Create a `.env` file from the `.env.example` file, and add API keys. There are instructions in the file for where to get the keys.
 
-Note that OpenAI will charge money from the first API call you make, while both Replicate and ElevenLabs are free for a while and do not require any billing information until you reach a certain quota. Hence, if you just want to try this project out a little bit, then you can start by just adding the Replicate and/or Eleven Labs API keys.
+Note that OpenAI will charge money from the first API call you make, while all other API's are free for a while and do not require any billing information until you reach a certain quota. Hence, if you are just starting out and want to experiment without paying, then you may want to start by just adding the Replicate key.
 
 Be careful when using the `animate-diff` model as it will likely burn through your free period of Replicate quickly.
 
@@ -90,7 +90,7 @@ _And other local/custom versions of these models._
 
 Limopola supports three different modes for you to interact with agents.
 
-Note that no matter which mode you choose, Limopola's UI is intentionally made for power users. One example of what this means, is that the UI does not provide confirmation prompts when selecting to reset settings or to clear chat history.
+Note that no matter which mode you choose, Limopola's UI is intentionally made for power users. One example of what this means, is that the UI does not provide confirmation prompts when selecting to reset settings or to clear chat history, and there are currently no tooltips that explain what parameters like "temperature" mean. The UI is meant to be quick and efficient to use for power users.
 
 ### Chat
 
@@ -144,7 +144,7 @@ This is a work in progress. You can find a list of planned features and updates 
 
 ## Screenshots
 
-These are example screenshots of the application taken on 2023-10-11.
+These are example screenshots of the application.
 
 ### Chat UI
 
