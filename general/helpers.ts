@@ -95,7 +95,7 @@ export function getUserOperatingSystem(): OperatingSystem {
   return OperatingSystem.Unknown;
 }
 
-export const getCorrectCtrlKey = () => {
+export const getCtrlKey = () => {
   return getUserOperatingSystem() === OperatingSystem.Mac ? "⌘" : "CTRL";
 };
 
