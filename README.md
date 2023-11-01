@@ -154,6 +154,14 @@ These are example screenshots of the application.
 
 ![Screenshot of the editor UI](./public/screenshot2.png)
 
+## Videos
+
+Below is a video example of dispatching an autonomous AI agent to create a fan website a Super Mario. The agent has been given the following mission:
+
+> Build a fan website about Super Mario. The website should be a single-page application. It should feature facts about Mario, along with some generated images of him in modern-day scenarios.
+
+https://github.com/jacobbergdahl/limopola/assets/13106411/0141e096-ba3d-4452-a10e-6038c09bb6a2
+
 ## Limopola artworks
 
 The logo for Limopola by Midjourney v5:
