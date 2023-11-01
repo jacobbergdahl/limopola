@@ -64,7 +64,7 @@ export const AgentOverview = () => {
 
   const startNewMission = () => {
     handleClearMissionDetails();
-    // This looks absolutely ridiculous, but I don't know what to do because I picked React instead of Svelte
+    // This looks absolutely ridiculous, I know
     handleTaskStart(
       undefined,
       undefined,
@@ -182,7 +182,7 @@ export const AgentOverview = () => {
     allVideoPrompts?: string[],
     allContexts?: string[],
     allCodeContexts?: string[],
-    forceEverythingToBeNew?: boolean
+    shouldStartWithNewState?: boolean
   ) => {
     if (mission.length === 0) {
       return;
@@ -218,7 +218,7 @@ export const AgentOverview = () => {
         ? allCodeContexts
         : codeContexts;
 
-    if (forceEverythingToBeNew) {
+    if (shouldStartWithNewState) {
       currentTasks = [];
       currentTextsToNarrate = [];
       currentImagePrompts = [];
