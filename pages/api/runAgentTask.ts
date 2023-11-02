@@ -21,8 +21,28 @@ const openAiConfiguration = new Configuration({
 });
 const openai = new OpenAIApi(openAiConfiguration);
 
+let lastAccessTime = 0;
+let lastDescription = "";
+
 export default async function (req: NextApiRequest, res: NextApiResponse) {
+  const currentTimestamp = Date.now();
   const description = req.body.description;
+
+  if (currentTimestamp - lastAccessTime < 3000) {
+    const error =
+      description === lastDescription
+        ? "The agent appears to be making duplicate requests."
+        : "The agent appears to be making more requests than it should be.";
+    console.error(error);
+    res.status(STATUS_CODE.TooManyRequests).json({
+      error: error,
+    });
+    return;
+  }
+
+  lastAccessTime = currentTimestamp;
+  lastDescription = description;
+
   const api = req.body.api;
   const indication = req.body.indication;
   const context = req.body.context;

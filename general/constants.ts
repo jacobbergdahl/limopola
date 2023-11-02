@@ -360,6 +360,7 @@ export enum STATUS_CODE {
   BadRequest = 400,
   NotFound = 404,
   MethodNotAllowed = 405,
+  TooManyRequests = 429,
   InternalServerError = 500,
 }
 
