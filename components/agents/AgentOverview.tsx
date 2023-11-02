@@ -37,6 +37,11 @@ import {
 import { prettyLog, subtleLog } from "../../general/logging";
 import { RESET } from "jotai/utils";
 import { getCtrlKey } from "../../general/helpers";
+import {
+  contextAddedImages,
+  contextAddedNarration,
+  contextAddedVideos,
+} from "./contextCreator";
 
 export const AgentOverview = () => {
   const [mission, setMission] = useAtom(agentMissionAtom);
@@ -312,6 +317,11 @@ export const AgentOverview = () => {
           );
           currentImagePrompts = [];
           setImagePrompts(currentImagePrompts);
+          currentContexts = [
+            ...currentContexts,
+            ...contextAddedImages(imageUrls.length),
+          ];
+          setContexts(currentContexts);
           const sender = `Agent (in ${timerValue.toFixed(2)}s)`;
           const apiMessage: Message = {
             imageUrls: imageUrls,
@@ -329,6 +339,11 @@ export const AgentOverview = () => {
           );
           currentVideoPrompts = [];
           setVideoPrompts(currentVideoPrompts);
+          currentContexts = [
+            ...currentContexts,
+            ...contextAddedVideos(videoUrls.length),
+          ];
+          setContexts(currentContexts);
           const sender = `Agent (in ${timerValue.toFixed(2)}s)`;
           const apiMessage: Message = {
             videoUrls: videoUrls,
@@ -345,6 +360,11 @@ export const AgentOverview = () => {
           ]);
           currentTextsToNarrate = [];
           setToNarrate(currentTextsToNarrate);
+          currentContexts = [
+            ...currentContexts,
+            ...contextAddedNarration(audioUrls.length),
+          ];
+          setContexts(currentContexts);
           const sender = `Agent (in ${timerValue.toFixed(2)}s)`;
           const apiMessage: Message = {
             audioUrls: audioUrls,

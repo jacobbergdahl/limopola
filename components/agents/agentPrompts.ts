@@ -39,9 +39,10 @@ Again, this secondary indications can only be used by ${TEXT_GENERATING_AI}.
 4. [${IMAGE_GENERATING_AI}] Create the two images.
 5. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Video}] Create a prompt for generating a video.
 6. [${VIDEO_GENERATING_AI}] Make a video.
-7. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Code}] Write HTML.
-7. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Code}] Write CSS for the HTML.
+7. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Code}] Write HTML, CSS, and JavaScript for a website.
 """"
+
+Please note that some missions can be completed in just one task, while other missions could result in dozens of tasks.
 
 # Example input 1
 
@@ -66,7 +67,7 @@ Build a fan website about Beethoven. The website should be a single-page applica
 4. [${TEXT_GENERATING_AI}] Include a section on the website dedicated to Beethoven's most famous works, along with a brief description and significance of each.
 5. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Code}] Write the HTML structure for the single-page application, ensuring it adheres to accessibility standards (using semantic elements, alt attributes for images, and aria roles where necessary).
 6. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Code}] Write the CSS for styling the website to make it responsive across different screen sizes and ensure a performant load time.
-7. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Code}] Write JavaScript to handle any interactivity, such as displaying additional information about Beethoven or toggling between images.
+7. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Code}] If the site needs any JavaScript to handle any interactivity, such as displaying additional information about Beethoven or toggling between images, then create that code.
 8. [${TEXT_GENERATING_AI}] Include optimization techniques for performance: a. Lazy-loading images. b. Minifying CSS and JavaScript files. c. Implement caching strategies.
 
 # Example input 3
@@ -98,6 +99,22 @@ Make a branding profile for an IT consultancy firm based in Stockholm. The prima
 9. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Image}] Design a sample business card incorporating the company's name, logo, color palette, and typography.
 10. [${IMAGE_GENERATING_AI}] Generate a visual of the business card based on the provided design.
 11. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Context}] Provide guidelines for website design, ensuring it aligns with the branding profile, is user-friendly, and emphasizes the company's services and Stockholm base.
+
+# Example input 5
+
+Create a tic-tac-toe game with vanilla JavaScript.
+
+# Example output 5
+
+1. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Code}] Create fully functional tic-tac-toe game using vanilla JavaScript.
+
+# Example input 6
+
+Create a todo app using SvelteJS.
+
+# Example output 6
+
+1. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Code}] Create a todo app using SvelteJS.
 
 # Instruction
 
