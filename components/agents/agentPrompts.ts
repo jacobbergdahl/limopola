@@ -106,7 +106,7 @@ Create a tic-tac-toe game with vanilla JavaScript.
 
 # Example output 5
 
-1. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Code}] Create fully functional tic-tac-toe game using vanilla JavaScript.
+1. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Code}] Create a fully functional tic-tac-toe game using vanilla JavaScript. Write all of the code necessary to run the game.
 
 # Example input 6
 
@@ -114,7 +114,7 @@ Create a todo app using SvelteJS.
 
 # Example output 6
 
-1. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Code}] Create a todo app using SvelteJS.
+1. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Code}] Create a fully functional todo app using SvelteJS. Write all of the code necessary to run the app.
 
 # Instruction
 
