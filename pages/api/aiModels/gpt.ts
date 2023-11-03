@@ -45,7 +45,9 @@ export const gpt = async (
       ],
     });
 
-    SHOULD_SHOW_ALL_LOGS && console.log("Response from OpenAI:", completion);
+    SHOULD_SHOW_ALL_LOGS &&
+      (console.log("Response from OpenAI:", completion),
+      console.log("End of response from OpenAI"));
 
     let text = "";
     // This will be true if n is greater than 1
