@@ -1,5 +1,8 @@
 import { INPUT_MODE, Message } from "./constants";
 import { marked } from "marked";
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
+import hljs, { Language } from "highlight.js";
 
 const parseMarkdownToHtml = (markdown: string): string => {
   return marked(markdown);
@@ -118,6 +121,16 @@ const getMessageTextForDownload = (message: Message) => {
   }
 };
 
+export const downloadConversation = (
+  inputMode: INPUT_MODE,
+  chatHistory: Message[],
+  currentEditorText: string
+) => {
+  return inputMode === INPUT_MODE.Chat
+    ? saveMessagesAsZip(chatHistory, "conversation", true)
+    : downloadText(currentEditorText);
+};
+
 const getTextToDownload = (
   inputMode: INPUT_MODE,
   chatHistory: Message[],
@@ -136,23 +149,13 @@ const getTextToDownload = (
   }
 };
 
-export const downloadConversation = (
-  inputMode: INPUT_MODE,
-  chatHistory: Message[],
-  currentEditorText: string
-) => {
-  const textToSave = getTextToDownload(
-    inputMode,
-    chatHistory,
-    currentEditorText
-  );
-
-  if (textToSave.length === 0) {
+export const downloadText = (textToDownload: string) => {
+  if (textToDownload.length === 0) {
     return;
   }
 
   // Create a blob object representing the data as a text file
-  const blob = new Blob([textToSave], { type: "text/plain" });
+  const blob = new Blob([textToDownload], { type: "text/plain" });
 
   // Create a temporary anchor element to enable the download
   const url = window.URL.createObjectURL(blob);
@@ -167,6 +170,180 @@ export const downloadConversation = (
   // Clean up
   window.URL.revokeObjectURL(url);
   document.body.removeChild(temporaryElement);
+};
+
+export const saveMessagesAsZip = async (
+  messages: Message[],
+  zipFileName: string = "messages",
+  saveAllMessagesTogether: boolean = false
+) => {
+  const zip = new JSZip();
+  let finalMessage = "";
+
+  for (let i = 0; i < messages.length; i++) {
+    const message = messages[i];
+    if (message.shouldAvoidDownloading) {
+      continue;
+    }
+    let fileName = message.fileName || "message";
+    if (message.content) {
+      const messageContent = message.content
+        .replace(/&lt;/g, "<")
+        .replace(/&gt;/g, ">")
+        .replace(/&quot;/g, '"')
+        .replace(/&#039;/g, "'");
+
+      if (saveAllMessagesTogether) {
+        finalMessage += `${message.sender}: ${messageContent}\n\n`;
+        continue;
+      }
+
+      const codeBlockRegex = /<pre><code>([\s\S]*?)<\/code><\/pre>/g;
+      let match;
+      const codeBlocks = [];
+      while ((match = codeBlockRegex.exec(messageContent)) !== null) {
+        let unescapedCode = match[1];
+
+        const firstWord = unescapedCode.split("\n")[0];
+        const firstWordLowercase: string =
+          firstWord && firstWord.length > 0
+            ? firstWord.toLowerCase().trim()
+            : "";
+
+        const detectedLanguageByFirstWord: Language | undefined =
+          hljs.getLanguage(firstWordLowercase);
+        const detectedLanguage: Language = detectedLanguageByFirstWord
+          ? detectedLanguageByFirstWord
+          : hljs.getLanguage(hljs.highlightAuto(unescapedCode).language);
+
+        if (detectedLanguageByFirstWord) {
+          unescapedCode = unescapedCode.substring(firstWord.length).trim();
+        }
+
+        const alias =
+          detectedLanguage &&
+          detectedLanguage.aliases &&
+          detectedLanguage.aliases.length > 0
+            ? detectedLanguage.aliases[0].toLowerCase()
+            : "";
+
+        const name =
+          detectedLanguage && detectedLanguage.name
+            ? detectedLanguage.name.toLowerCase()
+            : "";
+
+        const extensionExtractedFromCode = alias || name;
+
+        const extension = extensionExtractedFromCode
+          ? `.${extensionExtractedFromCode}`
+          : ".txt";
+
+        codeBlocks.push({ code: unescapedCode, extension });
+      }
+
+      if (codeBlocks.length > 0) {
+        codeBlocks.forEach(({ code, extension }, index) => {
+          zip.file(`${fileName}${i}_code${index}${extension}`, code);
+        });
+      }
+
+      let fullFileName =
+        codeBlocks.length > 0 ? `${fileName}${i}_full` : `${fileName}${i}`;
+
+      zip.file(`${fullFileName}.txt`, messageContent);
+    } else if (message.imageUrls) {
+      for (let j = 0; j < message.imageUrls.length; j++) {
+        const imageUrl = message.imageUrls[j];
+        const response = await fetch(imageUrl);
+        const blob = await response.blob();
+        const fileNameSuffix = message.imageUrls.length > 1 ? `_${j}` : "";
+        const finalFileName = `${fileName}${i}${fileNameSuffix}.png`;
+        if (saveAllMessagesTogether) {
+          finalMessage += `${message.sender}: ${finalFileName}\n\n`;
+        }
+        zip.file(finalFileName, blob);
+      }
+    } else if (message.videoUrl) {
+      try {
+        const response = await fetch(message.videoUrl);
+        if (!response.ok) {
+          console.error("Could not download video", response);
+          continue;
+        }
+        const blob = await response.blob();
+        const finalFileName = `${fileName}${i}.mp4`;
+        if (saveAllMessagesTogether) {
+          finalMessage += `${message.sender}: ${finalFileName}\n\n`;
+        }
+        zip.file(finalFileName, blob);
+      } catch (error) {
+        console.error("Could not download audio", error);
+      }
+    } else if (message.audioUrl) {
+      try {
+        const response = await fetch(message.audioUrl);
+        if (!response.ok) {
+          console.error("Could not download audio", response);
+          continue;
+        }
+        const blob = await response.blob();
+        const finalFileName = `${fileName}${i}.mp3`;
+        if (saveAllMessagesTogether) {
+          finalMessage += `${message.sender}: ${finalFileName}\n\n`;
+        }
+        zip.file(finalFileName, blob);
+      } catch (error) {
+        console.error("Could not download audio", error);
+      }
+    } else if (message.videoUrls) {
+      for (let j = 0; j < message.videoUrls.length; j++) {
+        const videoUrl = message.videoUrls[j];
+        try {
+          const response = await fetch(videoUrl);
+          if (!response.ok) {
+            console.error("Could not download video", response);
+            continue;
+          }
+          const blob = await response.blob();
+          const fileNameSuffix = message.videoUrls.length > 1 ? `_${j}` : "";
+          const finalFileName = `${fileName}${i}${fileNameSuffix}.mp4`;
+          if (saveAllMessagesTogether) {
+            finalMessage += `${message.sender}: ${finalFileName}\n\n`;
+          }
+          zip.file(finalFileName, blob);
+        } catch (error) {
+          console.error("Could not download video", error);
+        }
+      }
+    } else if (message.audioUrls) {
+      for (let j = 0; j < message.audioUrls.length; j++) {
+        const audioUrl = message.audioUrls[j];
+        try {
+          const response = await fetch(audioUrl);
+          if (!response.ok) {
+            console.error("Could not download audio", response);
+            continue;
+          }
+          const blob = await response.blob();
+          const fileNameSuffix = message.audioUrls.length > 1 ? `_${j}` : "";
+          const finalFileName = `${fileName}${i}${fileNameSuffix}.mp3`;
+          if (saveAllMessagesTogether) {
+            finalMessage += `${message.sender}: ${finalFileName}\n\n`;
+          }
+          zip.file(finalFileName, blob);
+        } catch (error) {
+          console.error("Could not download audio", error);
+        }
+      }
+    }
+  }
+
+  if (saveAllMessagesTogether) {
+    zip.file(`textMessages.txt`, finalMessage);
+  }
+
+  const content = await zip.generateAsync({ type: "blob" });
+  saveAs(content, `${zipFileName}.zip`);
 };
 
 export const createPlaceHolderChatHistory = (numberOfMessages: number) => {

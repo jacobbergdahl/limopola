@@ -182,7 +182,8 @@ export const getAgentPromptForRequestingPrompts = (
   if (indication === AGENT_TASK_INDICATION.Code) {
     thisCodeContext += `\n
     Below is the code for this project. Please use this code as basis for the code you write next.\n
-    ${codeContext}\n`;
+    ${codeContext}\n
+    If you need to create code blocks, please specify the language of the code at the start of the block.`;
   }
 
   if (!!context && context.length > 0) {

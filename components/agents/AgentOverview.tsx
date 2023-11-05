@@ -36,7 +36,7 @@ import {
 } from "./agentFunctions";
 import { prettyLog, subtleLog } from "../../general/logging";
 import { RESET } from "jotai/utils";
-import { getCtrlKey } from "../../general/helpers";
+import { getCtrlKey, saveMessagesAsZip } from "../../general/helpers";
 import {
   contextAddedImages,
   contextAddedNarration,
@@ -247,6 +247,7 @@ export const AgentOverview = () => {
           sender: `Agent (in ${timerValue.toFixed(2)}s)`,
           id: currentMessages.length,
           header: mission,
+          fileName: "tasks",
         };
         currentMessages = [...currentMessages, firstTaskAsMessage];
         setMessages(currentMessages);
@@ -267,14 +268,7 @@ export const AgentOverview = () => {
           subtleLog("The back-end generated the following result");
           console.log(data.result);
           const sender = `Agent (in ${timerValue.toFixed(2)}s)`;
-          const apiMessage: Message = {
-            content: data.result,
-            sender: sender,
-            id: currentMessages.length,
-            header: `${currentTask.id}. ${currentTask.description}`,
-          };
-          currentMessages = [...currentMessages, apiMessage];
-          setMessages(currentMessages);
+          let fileName = "text";
           if (currentTask.indication === AGENT_TASK_INDICATION.Context) {
             currentContexts = [...currentContexts, data.result];
             subtleLog("Added new context");
@@ -285,6 +279,7 @@ export const AgentOverview = () => {
             subtleLog("Added new code context");
             console.log(currentCodeContexts);
             setCodeContexts(currentCodeContexts);
+            fileName = "full_code";
           } else if (currentTask.indication === AGENT_TASK_INDICATION.Image) {
             currentImagePrompts = [
               ...currentImagePrompts,
@@ -293,6 +288,7 @@ export const AgentOverview = () => {
             subtleLog("Added new image prompts");
             console.log(currentImagePrompts);
             setImagePrompts(currentImagePrompts);
+            fileName = "image_prompts";
           } else if (currentTask.indication === AGENT_TASK_INDICATION.Video) {
             currentVideoPrompts = [
               ...currentVideoPrompts,
@@ -301,6 +297,7 @@ export const AgentOverview = () => {
             subtleLog("Added new video prompts");
             console.log(currentVideoPrompts);
             setVideoPrompts(currentVideoPrompts);
+            fileName = "video_prompts";
           } else if (
             currentTask.indication === AGENT_TASK_INDICATION.Narration
           ) {
@@ -309,6 +306,15 @@ export const AgentOverview = () => {
             console.log(currentTextsToNarrate);
             setToNarrate(currentTextsToNarrate);
           }
+          const apiMessage: Message = {
+            content: data.result,
+            sender: sender,
+            id: currentMessages.length,
+            header: `${currentTask.id}. ${currentTask.description}`,
+            fileName: fileName,
+          };
+          currentMessages = [...currentMessages, apiMessage];
+          setMessages(currentMessages);
         } else if (modelType === MODEL_TYPE.Image) {
           const imageUrls = await runMultiplePromptsInSameTask(
             currentTask,
@@ -415,9 +421,11 @@ export const AgentOverview = () => {
           content: "The mission has now been finished.",
           sender: "Agent",
           id: currentMessages.length,
+          shouldAvoidDownloading: true,
         };
         currentMessages = [...currentMessages, finishedMessage];
         setMessages(currentMessages);
+        saveMessagesAsZip(currentMessages, "agent");
         handleClearMissionDetails();
         setIsRunning(false);
       }
@@ -434,6 +442,7 @@ export const AgentOverview = () => {
         content: errorMessage,
         sender: `Error (in ${timerValue.toFixed(2)}s)`,
         id: currentMessages.length,
+        shouldAvoidDownloading: true,
       };
       currentMessages = [...currentMessages, errorChatMessage];
       setMessages(currentMessages);
@@ -469,6 +478,13 @@ export const AgentOverview = () => {
                 wasStopped || isStoppingRef.current ? " new " : " "
               }agent`}
               theme={BUTTON_THEME.Positive}
+            />
+          )}
+          {!isRunning && messages.length > 0 && (
+            <Button
+              onClick={() => saveMessagesAsZip(messages, "agent")}
+              value={`Download all messages`}
+              theme={BUTTON_THEME.Default}
             />
           )}
           {(wasStopped || isStoppingRef.current) && (

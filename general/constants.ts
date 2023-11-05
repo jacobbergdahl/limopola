@@ -291,6 +291,8 @@ export type Message = {
   audioUrl?: string;
   audioUrls?: string[];
   header?: string;
+  fileName?: string;
+  shouldAvoidDownloading?: boolean;
 };
 
 export enum MODEL_TYPE {
