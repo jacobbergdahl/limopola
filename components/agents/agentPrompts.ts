@@ -8,7 +8,7 @@ const VIDEO_GENERATING_AI = MODEL.AnimateDiff;
 const VOICE_GENERATING_AI = MODEL.ElevenLabs;
 
 export const AGENT_PROMPT_TASK_LIST = `
-You will be given a mission, and must then create a list of tasks for that mission. You may assign an API to use for each task. These are the API's you have at your disposal:
+You will be given a mission, and must then create a list of tasks for that mission. You must assign an API to use for each task. These are the API's you have at your disposal:
 
 - [${TEXT_GENERATING_AI}]: Used to write any form of text, including software code. Is also used to generate prompts for image, video, and audio generation.
 - [${TEXT_SUMMARIZING_AI}]: Used to summarize text. When you need to write new text, however, you should use ${TEXT_GENERATING_AI}.
@@ -65,10 +65,9 @@ Build a fan website about Beethoven. The website should be a single-page applica
 2. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Image}] Create prompts for three modern-day scenarios featuring Beethoven. a. Beethoven giving a concert in a modern cityscape. b. Beethoven wearing headphones and listening to electronic music. c. Beethoven interacting with other famous composers at a modern music festival.
 3. [${IMAGE_GENERATING_AI}] Generate images of Beethoven.
 4. [${TEXT_GENERATING_AI}] Include a section on the website dedicated to Beethoven's most famous works, along with a brief description and significance of each.
-5. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Code}] Write the HTML structure for the single-page application, ensuring it adheres to accessibility standards (using semantic elements, alt attributes for images, and aria roles where necessary).
-6. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Code}] Write the CSS for styling the website to make it responsive across different screen sizes and ensure a performant load time.
-7. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Code}] If the site needs any JavaScript to handle any interactivity, such as displaying additional information about Beethoven or toggling between images, then create that code.
-8. [${TEXT_GENERATING_AI}] Include optimization techniques for performance: a. Lazy-loading images. b. Minifying CSS and JavaScript files. c. Implement caching strategies.
+5. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Code}] Write the HTML structure for the single-page application, ensuring it adheres to accessibility standards (using semantic elements, alt attributes for images, and aria roles where necessary) and is performant.
+6. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Code}] Write mobile-first CSS for styling the website to make it responsive across different screen sizes and ensure a performant load time.
+7. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Code}] If the site needs any JavaScript to handle any interactivity, such as displaying additional information about Beethoven or toggling between images, then create that code. If it doesn't need JavaScript, then don't add any. If you do add JavaScript, then make sure it is accessible and performant.
 
 # Example input 3
 
@@ -114,7 +113,7 @@ Create a todo app using SvelteJS.
 
 # Example output 6
 
-1. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Code}] Create a fully functional todo app using SvelteJS. Write all of the code necessary to run the app.
+1. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Code}] Create a fully functional todo app using SvelteJS. Write all of the code, including the HTML, CSS, and JS, necessary to run the app inside of the same codeblock.
 
 # Instruction
 
