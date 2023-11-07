@@ -36,5 +36,6 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     return;
   }
 
+  // MODEL.GPT4_Turbo may, oddly enough, wrap the whole output in code block tags
   return gpt(res, openai, prompt, MODEL.Gpt4, body);
 }

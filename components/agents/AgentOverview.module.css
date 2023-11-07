@@ -22,9 +22,7 @@
   pointer-events: auto;
 }
 
-.fixedContentTopRow,
-.fixedContentSecondRow,
-.fixedContentThirdRow {
+.fixedContentRow {
   margin-bottom: 20px;
 }
 

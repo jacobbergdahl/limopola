@@ -64,18 +64,17 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     maxNumberOfTokens: undefined,
   };
 
-  if (api === MODEL.Gpt4) {
+  if (api === MODEL.Gpt4 || api === MODEL.Gpt4_Turbo) {
     const prompt = appendContextToTextPrompt(
       description,
       context,
       codeContext,
       indication
     );
-    // Will use Gpt4_32k
+    // MODEL.Gpt4_Turbo (which is still in preview) has a few issues. It will wrap output in odd delimiters, even though it's not supposed to. Otherwise, it has a significantly better context length and is faster.
     return gpt(res, openai, prompt, MODEL.Gpt4, body);
   } else if (api === MODEL.Gpt3_5_turbo) {
     const prompt = appendContextToTextPrompt(description, context, codeContext);
-    // Will use Gpt3_5_turbo_16k
     return gpt(res, openai, prompt, MODEL.Gpt3_5_turbo, body);
   } else if (api === MODEL.StableDiffusionSdXl) {
     return stableDiffusionSdXl(res, description, 1);

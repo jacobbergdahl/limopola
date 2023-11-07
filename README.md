@@ -64,25 +64,30 @@ $ npm run dev
 
 This is a list of models currently included in this AI interface. More models will be added in the future.
 
-| Model               | Type  | API Source |
-| ------------------- | ----- | ---------- |
-| gpt-4               | Text  | OpenAI     |
-| gpt-4-32k           | Text  | OpenAI     |
-| gpt-3.5-turbo       | Text  | OpenAI     |
-| gpt-3.5-turbo-16k   | Text  | OpenAI     |
-| dall-e              | Image | OpenAI     |
-| stable-diffusion-xl | Image | Replicate  |
-| llama-2-70b         | Text  | Replicate  |
-| llama-2-13b         | Text  | Replicate  |
-| llama-2-70b-chat    | Text  | Replicate  |
-| llama-2-13b-chat    | Text  | Replicate  |
-| codellama-34b       | Text  | Replicate  |
-| text-to-pokemon     | Image | Replicate  |
-| animate-diff        | Video | Replicate  |
-| eleven-labs         | Audio | ElevenLabs |
-| text-bison-001      | Text  | Google     |
-| chat-bison-001      | Text  | Google     |
-| local-llama         | Text  | None       |
+| Model                | Type  | API Source |
+| -------------------- | ----- | ---------- |
+| gpt-4                | Text  | OpenAI     |
+| gpt-4-32k            | Text  | OpenAI     |
+| gpt-4-1106-preview\* | Text  | OpenAI     |
+| gpt-3.5-turbo        | Text  | OpenAI     |
+| gpt-3.5-turbo-16k    | Text  | OpenAI     |
+| dall-e               | Image | OpenAI     |
+| stable-diffusion-xl  | Image | Replicate  |
+| llama-2-70b          | Text  | Replicate  |
+| llama-2-13b          | Text  | Replicate  |
+| llama-2-70b-chat     | Text  | Replicate  |
+| llama-2-13b-chat     | Text  | Replicate  |
+| codellama-34b        | Text  | Replicate  |
+| text-to-pokemon      | Image | Replicate  |
+| animate-diff         | Video | Replicate  |
+| eleven-labs          | Audio | ElevenLabs |
+| text-bison-001\*\*   | Text  | Google     |
+| chat-bison-001\*\*   | Text  | Google     |
+| local-llama          | Text  | None       |
+
+\* GPT-4 Turbo (preview)
+
+\*\* Google PaLM
 
 _And other local/custom versions of these models._
 

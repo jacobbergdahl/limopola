@@ -115,6 +115,38 @@ Create a todo app using SvelteJS.
 
 1. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Code}] Create a fully functional todo app using SvelteJS. Write all of the code, including the HTML, CSS, and JS, necessary to run the app inside of the same codeblock.
 
+# Example input 7
+
+Write a novel called Terraformers of the Void. It should be one hundred pages long.
+
+Story summary: 
+
+In the far future, humanity has mastered the art of terraforming barren planets. The protagonist, a young terraforming engineer named Kael, discovers a seemingly inert, spherical artifact on a new planet. It awakens, revealing itself to be a repository of knowledge from a long-extinct alien race. Kael must navigate interstellar politics, corporate espionage, and the enigmatic "Guardians of the Seed" who seek the sphere, as it begins transforming not just the planet but Kael as well, granting them insight into the universe's greatest mysteries.
+
+# Example output 7
+
+1. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Context}] Write a summary of the entire story, from start to finish, of a book called Terraformers of the Void, which is one hundred pages long. Begin the output with the label "Story summary:" and end it with "End of story summary". Details: In the far future, humanity has mastered the art of terraforming barren planets. The protagonist, a young terraforming engineer named Kael, discovers a seemingly inert, spherical artifact on a new planet. It awakens, revealing itself to be a repository of knowledge from a long-extinct alien race. Kael must navigate interstellar politics, corporate espionage, and the enigmatic "Guardians of the Seed" who seek the sphere, as it begins transforming not just the planet but Kael as well, granting them insight into the universe's greatest mysteries.
+2. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Context}] Write the first five pages of the one hundred page book, following the story summary detailed above.
+3. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Context}] Write pages six to ten of the one hundred page book, which follow directly after the latest events. The overall story should follow the story summary detailed above.
+4. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Context}] Write pages eleven to fifteen of the one hundred page book, which follow directly after the latest events. The overall story should follow the story summary detailed above.
+5. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Context}] Write pages sixteen to twenty of the one hundred page book, which follow directly after the latest events. The overall story should follow the story summary detailed above.
+6. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Context}] Write pages twenty-one to twenty-five of the one hundred page book, which follow directly after the latest events. The overall story should follow the story summary detailed above.
+7. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Context}] Write pages twenty-six to thirty of the one hundred page book, which follow directly after the latest events. The overall story should follow the story summary detailed above.
+8. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Context}] Write pages thirty-one to thirty-five of the one hundred page book, which follow directly after the latest events. The overall story should follow the story summary detailed above.
+9. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Context}] Write pages thirty-six to forty of the one hundred page book, which follow directly after the latest events. The overall story should follow the story summary detailed above.
+10. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Context}] Write pages forty-one to forty-five of the one hundred page book, which follow directly after the latest events. The overall story should follow the story summary detailed above.
+11. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Context}] Write pages forty-six to fifty of the one hundred page book, which follow directly after the latest events. The overall story should follow the story summary detailed above.
+12. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Context}] Write pages fifty-one to fifty-five of the one hundred page book, which follow directly after the latest events. The overall story should follow the story summary detailed above.
+13. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Context}] Write pages fifty-six to sixty of the one hundred page book, which follow directly after the latest events. The overall story should follow the story summary detailed above.
+14. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Context}] Write pages sixty-one to sixty-five of the one hundred page book, which follow directly after the latest events. The overall story should follow the story summary detailed above.
+15. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Context}] Write pages sixty-six to seventy of the one hundred page book, which follow directly after the latest events. The overall story should follow the story summary detailed above.
+16. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Context}] Write pages seventy-one to seventy-five of the one hundred page book, which follow directly after the latest events. The overall story should follow the story summary detailed above.
+17. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Context}] Write pages seventy-six to eighty of the one hundred page book, which follow directly after the latest events. The overall story should follow the story summary detailed above.
+18. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Context}] Write pages eighty-one to eighty-five of the one hundred page book, which follow directly after the latest events. The overall story should follow the story summary detailed above.
+19. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Context}] Write pages eighty-six to ninety of the one hundred page book, which follow directly after the latest events. The overall story should follow the story summary detailed above.
+20. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Context}] Write pages ninety-one to ninety-five of the one hundred page book, which follow directly after the latest events. The overall story should follow the story summary detailed above.
+21. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Context}] Write pages ninety-six to one hundred of the one hundred page book, which follow directly after the latest events. The overall story should follow the story summary detailed above.
+
 # Instruction
 
 `;

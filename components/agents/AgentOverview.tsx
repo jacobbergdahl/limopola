@@ -456,7 +456,7 @@ export const AgentOverview = () => {
     <div>
       <div className={styles.pageTopColor}></div>
       <div className={styles.fixedContentContainer}>
-        <div className={styles.fixedContentTopRow}>
+        <div className={styles.fixedContentRow}>
           <TextArea
             value={mission}
             handleChange={handleMissionChange}
@@ -470,7 +470,7 @@ export const AgentOverview = () => {
             handleKeyDown={handleTextareaKeyPress}
           />
         </div>
-        <div className={styles.fixedContentSecondRow}>
+        <div className={styles.fixedContentRow}>
           {!isRunning && (
             <Button
               onClick={() => startNewMission()}
@@ -480,18 +480,18 @@ export const AgentOverview = () => {
               theme={BUTTON_THEME.Positive}
             />
           )}
-          {!isRunning && messages.length > 0 && (
-            <Button
-              onClick={() => saveMessagesAsZip(messages, "agent")}
-              value={`Download all messages`}
-              theme={BUTTON_THEME.Default}
-            />
-          )}
           {(wasStopped || isStoppingRef.current) && (
             <Button
               onClick={handleMissionResume}
               value="Resume agent"
               theme={BUTTON_THEME.Neutral}
+            />
+          )}
+          {!isRunning && messages.length > 0 && (
+            <Button
+              onClick={() => saveMessagesAsZip(messages, "agent")}
+              value={`Download all messages`}
+              theme={BUTTON_THEME.Default}
             />
           )}
           {!isRunning && (
@@ -512,7 +512,7 @@ export const AgentOverview = () => {
           )}
         </div>
         {isStoppingRef.current && (
-          <div className={styles.fixedContentThirdRow}>
+          <div className={styles.fixedContentRow}>
             <i>The agent will stop after finishing the current task.</i>
           </div>
         )}
