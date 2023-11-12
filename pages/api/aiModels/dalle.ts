@@ -16,12 +16,21 @@ export const dalle = async (
     `Asking Dall-E model ${model} to generate ${numberOfImages} image(s) at a resolution of ${imageSize}`
   );
   try {
-    const response = await openai.createImage({
-      model: model === MODEL.Dalle3 ? MODEL.Dalle3 : undefined,
-      prompt: message,
-      n: model === MODEL.Dalle3 ? 1 : numberOfImages,
-      size: imageSize,
-    });
+    const response =
+      model === MODEL.Dalle3
+        ? await openai.createImage({
+            model: MODEL.Dalle3,
+            prompt: message,
+            n: 1,
+            quality: "hd", // TODO: Make this a param users can set
+            size: imageSize,
+          })
+        : await openai.createImage({
+            prompt: message,
+            n: numberOfImages,
+            size: imageSize,
+          });
+
     const imageUrls = response.data.data.map((image) => image.url);
     if (SHOULD_SHOW_ALL_LOGS && imageUrls.length > 0) {
       console.log("Dall-E created the image(s) at the following url(s)\n");
