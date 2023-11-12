@@ -20,7 +20,8 @@ export enum MODEL {
   Gpt4_Turbo = "gpt-4-1106-preview",
   Gpt3_5_turbo = "gpt-3.5-turbo",
   Gpt3_5_turbo_16k = "gpt-3.5-turbo-16k",
-  Dalle = "dall-e",
+  Dalle2 = "dall-e",
+  Dalle3 = "dall-e-3",
   StableDiffusionSdXl = "stable-diffusion-xl", // full name: stable-diffusion-xl-base-1.0
   Llama2_70b = "llama-2-70b",
   Llama2_13b = "llama-2-13b",
@@ -112,7 +113,15 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
         learnMoreUrl: "https://platform.openai.com/docs/models/gpt-3-5",
         apiKey: MODEL_API_KEY.OpenAi,
       };
-    case MODEL.Dalle:
+    case MODEL.Dalle2:
+      return {
+        status: MODEL_STATUS.Full,
+        information:
+          "An OpenAI image generation algorithm that is very easy to use.",
+        learnMoreUrl: "https://platform.openai.com/docs/models/dall-e",
+        apiKey: MODEL_API_KEY.OpenAi,
+      };
+    case MODEL.Dalle3:
       return {
         status: MODEL_STATUS.Full,
         information:
@@ -255,7 +264,8 @@ export const ALL_VIDEO_MODELS = [MODEL.AnimateDiff];
 export const ALL_AUDIO_MODELS = [MODEL.ElevenLabs];
 
 export const ALL_IMAGE_MODELS = [
-  MODEL.Dalle,
+  MODEL.Dalle2,
+  MODEL.Dalle3,
   MODEL.StableDiffusionSdXl,
   MODEL.TextToPokemon,
   //MODEL.Midjourney,
@@ -267,7 +277,8 @@ export const ALL_OPEN_AI_MODELS = [
   MODEL.Gpt4_Turbo,
   MODEL.Gpt3_5_turbo,
   MODEL.Gpt3_5_turbo_16k,
-  MODEL.Dalle,
+  MODEL.Dalle2,
+  MODEL.Dalle3,
 ];
 
 export const ALL_LLAMA_MODELS = [
@@ -332,10 +343,16 @@ export const getModelType = (model: MODEL) => {
   return MODEL_TYPE.Text;
 };
 
-export enum IMAGE_SIZE {
+export enum IMAGE_SIZE_DALL_E_2 {
   Small = "256x256",
   Medium = "512x512",
   Large = "1024x1024",
+}
+
+export enum IMAGE_SIZE_DALL_E_3 {
+  One = "1024x1024",
+  Two = "1792x1024",
+  Three = "1024x1792",
 }
 
 export const getDefaultModel = (): MODEL => {

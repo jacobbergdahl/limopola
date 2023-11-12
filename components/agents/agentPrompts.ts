@@ -3,7 +3,7 @@ import { MODEL } from "../../general/constants";
 
 const TEXT_GENERATING_AI = MODEL.Gpt4;
 const TEXT_SUMMARIZING_AI = MODEL.Gpt3_5_turbo;
-const IMAGE_GENERATING_AI = MODEL.StableDiffusionSdXl;
+const IMAGE_GENERATING_AI = MODEL.StableDiffusionSdXl; // DALL-E 3 currently leads to unexpected CORS issues, but this will probably use DALL-E 3 in the future.
 const VIDEO_GENERATING_AI = MODEL.AnimateDiff;
 const VOICE_GENERATING_AI = MODEL.ElevenLabs;
 
@@ -57,12 +57,12 @@ Create a short illustrated children's book about a young girl named Ellen who be
 
 # Example input 2
 
-Build a fan website about Beethoven. The website should be a single-page application that is accessible and performant. It should feature facts about Beethoven, along with some generated images of him in modern-day scenarios.
+Build a fan website about Beethoven. The website should be a single-page application that is accessible and performant. It should feature facts about Beethoven, along with some photo-realistic generated images of him in modern-day scenarios.
 
 # Example output 2
 
 1. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Context}] Write a brief biography about Beethoven including his early life, major works, influence, and legacy.
-2. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Image}] Create prompts for three modern-day scenarios featuring Beethoven. a. Beethoven giving a concert in a modern cityscape. b. Beethoven wearing headphones and listening to electronic music. c. Beethoven interacting with other famous composers at a modern music festival.
+2. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Image}] Create prompts for three modern-day photo-realistic scenarios featuring Beethoven. a. Beethoven giving a concert in a modern cityscape. b. Beethoven wearing headphones and listening to electronic music. c. Beethoven interacting with other famous composers at a modern music festival.
 3. [${IMAGE_GENERATING_AI}] Generate images of Beethoven.
 4. [${TEXT_GENERATING_AI}] Include a section on the website dedicated to Beethoven's most famous works, along with a brief description and significance of each.
 5. [${TEXT_GENERATING_AI}][${AGENT_TASK_INDICATION.Code}] Write the HTML structure for the single-page application, ensuring it adheres to accessibility standards (using semantic elements, alt attributes for images, and aria roles where necessary) and is performant.
@@ -170,13 +170,13 @@ The prompts must be in this specific formula, delimited below in quadrupled quot
 
 # Example input 1
 
-Create prompts for three artificial scenarios featuring Beethoven. a. Beethoven giving a concert in a modern cityscape. b. Beethoven wearing headphones and listening to electronic music. c. Beethoven interacting with other famous composers at a modern music festival.
+Create prompts for three photo-realistic artificial scenarios featuring Beethoven. a. Beethoven giving a concert in a modern cityscape. b. Beethoven wearing headphones and listening to electronic music. c. Beethoven interacting with other famous composers at a modern music festival.
 
 # Example output 1
 
-1. An 8k digital painting of Ludwig van Beethoven standing on a stage in the middle of a bustling modern cityscape during the evening. Beethoven is wearing traditional 18th-century attire and passionately playing a grand piano, with skyscrapers illuminated in the background. The city lights reflect off the surface of the buildings, and there's a large crowd of diverse people watching in awe. The art style should resemble a blend of realism and impressionism, with a soft, dreamy color palette dominated by blues, purples, and golden hues.
-2. An 8k digital artwork in a detailed semi-realistic style showcasing Ludwig van Beethoven sitting comfortably in a modern living room setting. He's wearing large, sleek, black headphones and seems lost in the world of electronic music, with a subtle smile on his face. The environment is filled with ambient lighting from a nearby window, casting soft shadows. The color palette should be warm and inviting, using shades of amber, beige, and soft whites. The overall feel should be that of a cozy afternoon.
-3. An 8k high-quality digital art piece illustrating a lively modern music festival setting during the day. The scene captures Ludwig van Beethoven in conversation with other famous composers like Wolfgang Amadeus Mozart, Johann Sebastian Bach, and Franz Schubert. All of them are dressed in a blend of their historical attire with contemporary touches – like modern sunglasses or wristbands. They are surrounded by festival-goers, food stalls, and stages with bands playing. The art style should be vivid and colorful, with a touch of whimsy, capturing the essence of a cheerful, sunny day with a pastel color palette consisting of pinks, yellows, greens, and blues.
+1. An 8k photo-realistic photo of Ludwig van Beethoven standing on a stage in the middle of a bustling modern cityscape during the evening. Beethoven is wearing traditional 18th-century attire and passionately playing a grand piano, with skyscrapers illuminated in the background. The city lights reflect off the surface of the buildings, and there's a large crowd of diverse people watching in awe. The art style should resemble a blend of realism and impressionism, with a soft, dreamy color palette dominated by blues, purples, and golden hues.
+2. An 8k photo-realistic photo in a detailed semi-realistic style showcasing Ludwig van Beethoven sitting comfortably in a modern living room setting. He's wearing large, sleek, black headphones and seems lost in the world of electronic music, with a subtle smile on his face. The environment is filled with ambient lighting from a nearby window, casting soft shadows. The color palette should be warm and inviting, using shades of amber, beige, and soft whites. The overall feel should be that of a cozy afternoon.
+3. An 8k photo-realistic photo illustrating a lively modern music festival setting during the day. The scene captures Ludwig van Beethoven in conversation with other famous composers like Wolfgang Amadeus Mozart, Johann Sebastian Bach, and Franz Schubert. All of them are dressed in a blend of their historical attire with contemporary touches – like modern sunglasses or wristbands. They are surrounded by festival-goers, food stalls, and stages with bands playing. The art style should be vivid and colorful, with a touch of whimsy, capturing the essence of a cheerful, sunny day with a pastel color palette consisting of pinks, yellows, greens, and blues.
 
 # Example input 2
 

@@ -26,7 +26,8 @@ import {
   currentlySelectedContextAtom,
   editorTextAtom,
   frequencyPenaltyAtom,
-  imageSizeAtom,
+  imageSizeDallE2Atom,
+  imageSizeDallE3Atom,
   inputModeAtom,
   isContextModalOpenAtom,
   isFrequencyPenaltyDefaultAtom,
@@ -70,7 +71,7 @@ import { InstantMessages } from "../components/sections/InstantMessages";
 import { Temperature } from "../components/sections/Temperature";
 import { RequestedNumberOfTokens } from "../components/sections/RequestedNumberOfTokens";
 import { NumberOfImages } from "../components/sections/NumberOfImages";
-import { ImageSize } from "../components/sections/ImageSize";
+import { ImageSizeDallE2 } from "../components/sections/ImageSizeDallE2";
 import { VoiceStability } from "../components/sections/VoiceStability";
 import { VoiceSimilarityBoost } from "../components/sections/VoiceSimilarityBoost";
 import { AllContexts } from "../components/sections/AllContexts";
@@ -80,6 +81,7 @@ import { PresencePenalty } from "../components/sections/PresencePenalty";
 import { MaxNumberOfTokens } from "../components/sections/MaxNumberOfTokens";
 import TextArea from "../components/TextArea";
 import { AgentOverview } from "../components/agents/AgentOverview";
+import { ImageSizeDallE3 } from "../components/sections/ImageSizeDallE3";
 
 // I know, I know, this file is too long. It should, and will, be refactored 🙏
 // ... (maybe)
@@ -113,7 +115,8 @@ export default function Home() {
   const [numberOfImagesToGenerate, setNumberOfImagesToGenerate] = useAtom(
     numberOfImagesToGenerateAtom
   );
-  const [imageSize, setImageSize] = useAtom(imageSizeAtom);
+  const [imageSizeDallE2, setImageSizeDallE2] = useAtom(imageSizeDallE2Atom);
+  const [imageSizeDallE3, setImageSizeDallE3] = useAtom(imageSizeDallE3Atom);
   const [requestedNumberOfTokens, setRequestedNumberOfTokens] = useAtom(
     requestedNumberOfTokensAtom
   );
@@ -186,8 +189,10 @@ export default function Home() {
     inputMode === INPUT_MODE.Chat &&
     !isFactChecking &&
     selectedModelType !== MODEL_TYPE.Audio;
-  const shouldShowNumberOfImages = selectedModelType === MODEL_TYPE.Image;
-  const shouldShowImageSize = model === MODEL.Dalle;
+  const shouldShowNumberOfImages =
+    selectedModelType === MODEL_TYPE.Image && model !== MODEL.Dalle3;
+  const shouldShowImageSizeDallE2 = model === MODEL.Dalle2;
+  const shouldShowImageSizeDallE3 = model === MODEL.Dalle3;
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -316,7 +321,7 @@ export default function Home() {
     return JSON.stringify({
       message: prompt,
       numberOfImages: numberOfImagesToGenerate,
-      imageSize: imageSize,
+      imageSize: model === MODEL.Dalle2 ? imageSizeDallE2 : imageSizeDallE3,
       model: model,
     });
   };
@@ -659,7 +664,8 @@ export default function Home() {
     setMessagesInMemory(RESET);
     setIsLoading(RESET);
     setNumberOfImagesToGenerate(RESET);
-    setImageSize(RESET);
+    setImageSizeDallE2(RESET);
+    setImageSizeDallE3(RESET);
     setRequestedNumberOfTokens(RESET);
     setMaxNumberOfTokens(RESET);
     setInputMode(RESET);
@@ -978,9 +984,20 @@ export default function Home() {
                 />
               </div>
             )}
-            {shouldShowImageSize && (
+            {shouldShowImageSizeDallE2 && (
               <div className={styles.section}>
-                <ImageSize imageSize={imageSize} setImageSize={setImageSize} />
+                <ImageSizeDallE2
+                  imageSize={imageSizeDallE2}
+                  setImageSize={setImageSizeDallE2}
+                />
+              </div>
+            )}
+            {shouldShowImageSizeDallE3 && (
+              <div className={styles.section}>
+                <ImageSizeDallE3
+                  imageSize={imageSizeDallE3}
+                  setImageSize={setImageSizeDallE3}
+                />
               </div>
             )}
             {shouldShowVoiceSettings && (

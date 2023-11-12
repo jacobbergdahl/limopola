@@ -15,7 +15,8 @@ import {
   DEFAULT_TOP_P,
   DEFAULT_VOICE_SIMILARITY_BOOST,
   DEFAULT_VOICE_STABILITY,
-  IMAGE_SIZE,
+  IMAGE_SIZE_DALL_E_2,
+  IMAGE_SIZE_DALL_E_3,
   INPUT_MODE,
   IS_DEBUGGING,
   MEMORY,
@@ -51,7 +52,14 @@ export const numberOfImagesToGenerateAtom = atomWithStorage(
   "NUMBER_OF_IMAGES",
   1
 );
-export const imageSizeAtom = atomWithStorage("IMAGE_SIZE", IMAGE_SIZE.Small);
+export const imageSizeDallE2Atom = atomWithStorage(
+  "IMAGE_SIZE",
+  IMAGE_SIZE_DALL_E_2.Small
+);
+export const imageSizeDallE3Atom = atomWithStorage(
+  "IMAGE_SIZE_DALL_E_3",
+  IMAGE_SIZE_DALL_E_3.One
+);
 export const requestedNumberOfTokensAtom = atomWithStorage(
   "NUMBER_OF_TOKENS",
   0

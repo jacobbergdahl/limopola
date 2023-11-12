@@ -82,10 +82,7 @@ export const ChatHistory = ({
                       key={imageUrl}
                       rel="noreferrer"
                     >
-                      <img
-                        src={imageUrl}
-                        alt="AI generated image by the previous message"
-                      />
+                      <img src={imageUrl} alt="AI generated image" />
                     </a>
                   ))}
                 </div>

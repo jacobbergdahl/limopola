@@ -72,6 +72,7 @@ This is a list of models currently included in this AI interface. More models wi
 | gpt-3.5-turbo        | Text  | OpenAI     |
 | gpt-3.5-turbo-16k    | Text  | OpenAI     |
 | dall-e               | Image | OpenAI     |
+| dall-e-3             | Image | OpenAI     |
 | stable-diffusion-xl  | Image | Replicate  |
 | llama-2-70b          | Text  | Replicate  |
 | llama-2-13b          | Text  | Replicate  |

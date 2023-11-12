@@ -3,7 +3,8 @@ import { Configuration, OpenAIApi } from "openai";
 import {
   DEFAULT_TECHNICAL_VOICE_SIMILARITY_BOOST,
   DEFAULT_TECHNICAL_VOICE_STABILITY,
-  IMAGE_SIZE,
+  IMAGE_SIZE_DALL_E_2,
+  IMAGE_SIZE_DALL_E_3,
   MODEL,
   SHOULD_SHOW_ALL_LOGS,
   STATUS_CODE,
@@ -52,7 +53,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
 
   const body: ProcessedBody = {
     numberOfImages: 1,
-    imageSize: IMAGE_SIZE.Large,
+    imageSize: IMAGE_SIZE_DALL_E_2.Large,
     requestedNumberOfTokens: 0,
     voiceSimilarityBoost: DEFAULT_TECHNICAL_VOICE_SIMILARITY_BOOST,
     voiceStability: DEFAULT_TECHNICAL_VOICE_STABILITY,
@@ -78,8 +79,10 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     return gpt(res, openai, prompt, MODEL.Gpt3_5_turbo, body);
   } else if (api === MODEL.StableDiffusionSdXl) {
     return stableDiffusionSdXl(res, description, 1);
-  } else if (api === MODEL.Dalle) {
-    return dalle(res, openai, description, 1, IMAGE_SIZE.Large);
+  } else if (api === MODEL.Dalle2) {
+    return dalle(res, openai, description, 1, IMAGE_SIZE_DALL_E_2.Large, api);
+  } else if (api === MODEL.Dalle3) {
+    return dalle(res, openai, description, 1, IMAGE_SIZE_DALL_E_3.One, api);
   } else if (api === MODEL.AnimateDiff) {
     return animateDiff(res, description);
   } else if (api === MODEL.ElevenLabs) {

@@ -3,7 +3,8 @@ import {
   ALL_LLAMA_MODELS,
   DEFAULT_TECHNICAL_VOICE_SIMILARITY_BOOST,
   DEFAULT_TECHNICAL_VOICE_STABILITY,
-  IMAGE_SIZE,
+  IMAGE_SIZE_DALL_E_2,
+  IMAGE_SIZE_DALL_E_3,
   MODEL,
   STATUS_CODE,
 } from "../../general/constants";
@@ -44,7 +45,8 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   const message = req.body.message || "";
   const model = req.body.model || "";
   const numberOfImages = req.body.numberOfImages || 1;
-  const imageSize = req.body.imageSize || IMAGE_SIZE.Small;
+  const imageSize: IMAGE_SIZE_DALL_E_2 | IMAGE_SIZE_DALL_E_3 =
+    req.body.imageSize || IMAGE_SIZE_DALL_E_2.Small;
   const temperature = req.body.temperature;
   const requestedNumberOfTokens = req.body.requestedNumberOfTokens || 100;
   const maxNumberOfTokens =
@@ -96,8 +98,8 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   }
 
   try {
-    if (model === MODEL.Dalle) {
-      return dalle(res, openai, message, numberOfImages, imageSize);
+    if (model === MODEL.Dalle2 || model === MODEL.Dalle3) {
+      return dalle(res, openai, message, numberOfImages, imageSize, model);
     }
     if (model === MODEL.TextToPokemon) {
       return textToPokemon(res, message, numberOfImages);
