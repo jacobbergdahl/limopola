@@ -21,8 +21,8 @@ export const dalle = async (
         ? await openai.createImage({
             model: MODEL.Dalle3,
             prompt: message,
-            n: 1,
-            quality: "hd", // TODO: Make this a param users can set
+            n: 1, // DALL-E 3 only supports making one image at a time
+            quality: "hd", // We might want to let users set this manually in the future
             size: imageSize,
           })
         : await openai.createImage({

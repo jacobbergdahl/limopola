@@ -11,7 +11,8 @@ const openAiConfiguration = new Configuration({
 const openai = new OpenAIApi(openAiConfiguration);
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
-  const prompt = AGENT_PROMPT_TASK_LIST + req.body.prompt;
+  const mission = req.body.prompt;
+  const prompt = AGENT_PROMPT_TASK_LIST + mission;
 
   const body: ProcessedBody = {
     numberOfImages: 0,
