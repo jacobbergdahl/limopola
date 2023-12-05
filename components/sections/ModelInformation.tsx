@@ -1,4 +1,8 @@
-import { MODEL, getModelInformation } from "../../general/constants";
+import {
+  MODEL,
+  MODEL_STATUS,
+  getModelInformation,
+} from "../../general/constants";
 import styles from "./ModelInformation.module.css";
 
 export type ModelInformationProps = {
@@ -12,7 +16,9 @@ export const ModelInformation = ({ model }: ModelInformationProps) => {
     <>
       <h3>Model information</h3>
       <div className={styles.sectionInner}>
-        <span className={styles.status}>{modelInformation.status}</span>
+        {modelInformation.status !== MODEL_STATUS.Full && (
+          <span className={styles.status}>{modelInformation.status}</span>
+        )}
         <span className={styles.information}>
           {modelInformation.information}
         </span>
