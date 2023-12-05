@@ -1,13 +1,17 @@
 import { SHOULD_SHOW_ALL_LOGS, STATUS_CODE } from "../../../general/constants";
 import { parseTextResponse } from "../../../general/helpers";
 import { ProcessedBody } from "../generate";
+import OpenAI from "openai";
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
 /**
  * Accepts all versions of GPT-3.5 and GPT-4
  */
 export const gpt = async (
   res,
-  openai,
   message,
   model,
   processedBody: ProcessedBody
@@ -23,7 +27,7 @@ export const gpt = async (
   } = processedBody;
 
   try {
-    const completion = await openai.createChatCompletion({
+    const completion = await openai.chat.completions.create({
       model: model,
       /**
        * n determines the number of replies that the AI generates.
@@ -51,14 +55,14 @@ export const gpt = async (
 
     let text = "";
     // This will be true if n is greater than 1
-    if (completion.data.choices.length > 1) {
-      completion.data.choices.forEach((choice, i) => {
+    if (completion.choices.length > 1) {
+      completion.choices.forEach((choice, i) => {
         text += `${i > 0 ? "\n\n" : ""}Answer ${i + 1}:\n ${
           choice.message.content
         }`;
       });
     } else {
-      text = completion.data.choices[0].message.content;
+      text = completion.choices[0].message.content;
     }
 
     const output = parseTextResponse(text);
@@ -70,7 +74,11 @@ export const gpt = async (
   } catch (error) {
     console.error(error);
     let errorMessage = error?.message;
-    if (error?.response?.data?.error?.message) {
+    if (error?.response?.data?.message) {
+      errorMessage = error.response.data.message;
+    } else if (error?.response?.error?.message) {
+      errorMessage = error.response.error.message;
+    } else if (error?.response?.data?.error?.message) {
       errorMessage = error.response.data.error.message;
     }
     res

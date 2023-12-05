@@ -1,4 +1,3 @@
-import { Configuration, OpenAIApi } from "openai";
 import {
   ALL_LLAMA_MODELS,
   DEFAULT_TECHNICAL_VOICE_SIMILARITY_BOOST,
@@ -35,11 +34,6 @@ export type ProcessedBody = {
   topP: number | undefined;
   maxNumberOfTokens: number | undefined;
 };
-
-const openAiConfiguration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-const openai = new OpenAIApi(openAiConfiguration);
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
   const message = req.body.message || "";
@@ -99,7 +93,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
 
   try {
     if (model === MODEL.Dalle2 || model === MODEL.Dalle3) {
-      return dalle(res, openai, message, numberOfImages, imageSize, model);
+      return dalle(res, message, numberOfImages, imageSize, model);
     }
     if (model === MODEL.TextToPokemon) {
       return textToPokemon(res, message, numberOfImages);
@@ -120,7 +114,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
       return llamaLocal(res, message, temperature, requestedNumberOfTokens);
     }
     if (model === MODEL.FactChecker) {
-      return factChecker(res, openai, message);
+      return factChecker(res, message);
     }
     if (model === MODEL.Midjourney) {
       return midjourney(res, message);
@@ -130,7 +124,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     }
 
     // Accepts all versions of GPT 3.5 and GPT 4
-    return gpt(res, openai, message, model, processedBody);
+    return gpt(res, message, model, processedBody);
   } catch (error) {
     if (error.response) {
       console.error(

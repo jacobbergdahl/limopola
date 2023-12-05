@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { Configuration, OpenAIApi } from "openai";
 import {
   DEFAULT_TECHNICAL_VOICE_SIMILARITY_BOOST,
   DEFAULT_TECHNICAL_VOICE_STABILITY,
@@ -16,11 +15,6 @@ import { dalle } from "./aiModels/dalle";
 import { animateDiff } from "./aiModels/animateDiff";
 import { elevenLabs } from "./aiModels/elevenLabs";
 import { stableDiffusionSdXl } from "./aiModels/stableDiffusionSdXl";
-
-const openAiConfiguration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-const openai = new OpenAIApi(openAiConfiguration);
 
 let lastAccessTime = 0;
 let lastDescription = "";
@@ -73,16 +67,16 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
       indication
     );
     // MODEL.Gpt4_Turbo (which is still in preview) has a few issues. It will wrap output in odd delimiters, even though it's not supposed to. Otherwise, it has a significantly better context length and is faster.
-    return gpt(res, openai, prompt, MODEL.Gpt4, body);
+    return gpt(res, prompt, MODEL.Gpt4, body);
   } else if (api === MODEL.Gpt3_5_turbo) {
     const prompt = appendContextToTextPrompt(description, context, codeContext);
-    return gpt(res, openai, prompt, MODEL.Gpt3_5_turbo, body);
+    return gpt(res, prompt, MODEL.Gpt3_5_turbo, body);
   } else if (api === MODEL.StableDiffusionSdXl) {
     return stableDiffusionSdXl(res, description, 1);
   } else if (api === MODEL.Dalle2) {
-    return dalle(res, openai, description, 1, IMAGE_SIZE_DALL_E_2.Large, api);
+    return dalle(res, description, 1, IMAGE_SIZE_DALL_E_2.Large, api);
   } else if (api === MODEL.Dalle3) {
-    return dalle(res, openai, description, 1, IMAGE_SIZE_DALL_E_3.One, api);
+    return dalle(res, description, 1, IMAGE_SIZE_DALL_E_3.One, api);
   } else if (api === MODEL.AnimateDiff) {
     return animateDiff(res, description);
   } else if (api === MODEL.ElevenLabs) {
