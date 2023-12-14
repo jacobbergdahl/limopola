@@ -21,7 +21,7 @@ The project is quick and easy to set-up, but it requires either an API key from 
 ### Installation
 
 ```bash
-$ npm i
+npm i
 ```
 
 ### Get API keys
@@ -57,7 +57,7 @@ To set up a local LLM, follow these steps:
 ### Run project
 
 ```bash
-$ npm run dev
+npm run dev
 ```
 
 ## Models
