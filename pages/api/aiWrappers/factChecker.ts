@@ -13,7 +13,7 @@ const FACT_CHECKER_BODY: ProcessedBody = {
   presencePenalty: undefined,
   topP: undefined,
   maxNumberOfTokens: 5,
-  urlsToScrape: undefined
+  urlsToScrape: undefined,
 };
 
 export const factChecker = async (res, message) => {

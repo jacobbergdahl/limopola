@@ -30,7 +30,9 @@ const TextArea = (
   }: TextAreaProps,
   ref?: ForwardedRef<HTMLTextAreaElement>
 ) => {
-  const classes = `${styles.textarea}${isInSidebar ? " " + styles.textareaSidebar : ""}${className ? " " + className : ""}`;
+  const classes = `${styles.textarea}${
+    isInSidebar ? " " + styles.textareaSidebar : ""
+  }${className ? " " + className : ""}`;
 
   return (
     <textarea

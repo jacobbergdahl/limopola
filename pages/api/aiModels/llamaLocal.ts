@@ -46,9 +46,12 @@ export const llamaLocal = async (
 
   const abortController = new AbortController();
   // If the model works for more than n milliseconds, abort it.
-  setTimeout(() => {
-    abortController.abort();
-  }, Number(process.env.LOCAL_MODEL_TIMEOUT_LENGTH) || 20 * 60 * 1000);
+  setTimeout(
+    () => {
+      abortController.abort();
+    },
+    Number(process.env.LOCAL_MODEL_TIMEOUT_LENGTH) || 20 * 60 * 1000
+  );
 
   try {
     await llama.load(config);
