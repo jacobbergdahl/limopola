@@ -16,10 +16,10 @@ import { textToPokemon } from "./aiModels/textToPokemon";
 import { animateDiff } from "./aiModels/animateDiff";
 import { llamaLocal } from "./aiModels/llamaLocal";
 import { elevenLabs } from "./aiModels/elevenLabs";
-import { factChecker } from "./aiModels/factChecker";
-import midjourney from "./aiModels/midjourney";
+import { factChecker } from "./aiWrappers/factChecker";
 import { NextApiRequest, NextApiResponse } from "next";
 import { palm } from "./aiModels/palm";
+import { webRetriever } from "./aiWrappers/webRetriever";
 
 export type ProcessedBody = {
   numberOfImages: number;
@@ -33,6 +33,7 @@ export type ProcessedBody = {
   presencePenalty: number | undefined;
   topP: number | undefined;
   maxNumberOfTokens: number | undefined;
+  urlsToScrape: string | undefined;
 };
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
@@ -58,6 +59,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   const isUsingDefaultTopP = req.body.isTopPDefault;
   const isUsingDefaultFrequencyPenalty = req.body.isFrequencyPenaltyDefault;
   const isUsingDefaultPresencePenalty = req.body.isPresencePenaltyDefault;
+  const urlsToScrape = req.body.urlsToScrape || "";
 
   // The idea is to use this in all API calls later. Right now, there are a lot of inconsistencies in the code.
   const processedBody: ProcessedBody = {
@@ -76,6 +78,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
       : presencePenalty,
     topP: isUsingDefaultTopP ? undefined : topP,
     maxNumberOfTokens,
+    urlsToScrape,
   };
 
   if (model === MODEL.Debug) {
@@ -116,8 +119,14 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     if (model === MODEL.FactChecker) {
       return factChecker(res, message);
     }
-    if (model === MODEL.Midjourney) {
-      return midjourney(res, message);
+    if (model === MODEL.WebRetriever) {
+      return webRetriever(
+        res,
+        message,
+        MODEL.Gpt4,
+        processedBody,
+        urlsToScrape
+      );
     }
     if (model === MODEL.PalmChatBison001 || model === MODEL.PalmTextBison001) {
       return palm(res, message, model, temperature);

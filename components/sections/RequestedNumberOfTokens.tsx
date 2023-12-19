@@ -1,4 +1,4 @@
-import { NumberTextField } from "../NumberTextField";
+import { NumberTextField } from "../TextField";
 
 export type RequestedNumberOfTokensProps = {
   requestedNumberOfTokens: number;

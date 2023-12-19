@@ -34,7 +34,7 @@ export enum MODEL {
   PalmTextBison001 = "text-bison-001",
   PalmChatBison001 = "chat-bison-001",
   FactChecker = "gpt-4-fact-checker",
-  Midjourney = "midjourney-imagine",
+  WebRetriever = "gpt-4-web-retriever",
   LocalLlama = "local-llama",
   Debug = "debug",
 }
@@ -60,6 +60,7 @@ type ModelInformation = {
   information: string;
   learnMoreUrl?: string;
   apiKey?: MODEL_API_KEY;
+  mdNote?: string;
 };
 
 export const getModelInformation = (model: MODEL): ModelInformation => {
@@ -90,6 +91,7 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
         learnMoreUrl:
           "https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo",
         apiKey: MODEL_API_KEY.OpenAi,
+        mdNote: "GPT-4 Turbo (preview).",
       };
     case MODEL.Debug:
       return {
@@ -208,16 +210,18 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
     case MODEL.FactChecker:
       return {
         status: MODEL_STATUS.Full,
-        // information: `A custom implementation of a fact-checker using GPT-4 as a basis. Rates the accuracy of any statement on a scale from 0 to 100. Will rate the statement 50 if it is entirely subjective. It will usually rate statements as 0, 50, or 100, hence I might change it to simply present true, false, or debatable instead.`,
         information: `A custom implementation of a fact-checker using GPT-4 as a basis. Rates the accuracy of any statement. Will always return true, false, or debatable. You can send it at list of statements.`,
-        apiKey: MODEL_API_KEY.Replicate,
+        apiKey: MODEL_API_KEY.OpenAi,
+        mdNote:
+          "A custom implementation of a fact-checker. Uses GPT-4 to rate the accuracy of any statement.",
       };
-    case MODEL.Midjourney:
+    case MODEL.WebRetriever:
       return {
         status: MODEL_STATUS.Full,
-        information: `Temp.`,
-        learnMoreUrl:
-          "https://docs.midjourneyapi.io/midjourney-api/midjourney-api/imagine",
+        information: `A custom implementation of a web retriever using GPT-4 as a basis.`,
+        apiKey: MODEL_API_KEY.OpenAi,
+        mdNote:
+          "A custom implementation of a web retriever. Reads data from the internet and sends it to GPT-4. A form of RAG.",
       };
     case MODEL.PalmChatBison001:
       return {
@@ -225,6 +229,7 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
         information: `Google PaLM model for chatting. Optimized for multi-turn chats (dialogues). Not using the API fully correctly yet, but the memory still seems to work well.`,
         learnMoreUrl: "https://developers.generativeai.google/models/language",
         apiKey: MODEL_API_KEY.Google,
+        mdNote: "Google PaLM.",
       };
     case MODEL.PalmTextBison001:
       return {
@@ -232,6 +237,7 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
         information: `Google PaLM model for generating text. Does not work well with multi-turn chats (e.g., the memory feature), but is great for accomplishing tasks like writing code.`,
         learnMoreUrl: "https://developers.generativeai.google/models/language",
         apiKey: MODEL_API_KEY.Google,
+        mdNote: "Google PaLM.",
       };
   }
 
@@ -248,6 +254,7 @@ export const ALL_TEXT_MODELS = [
   MODEL.Gpt3_5_turbo,
   MODEL.Gpt3_5_turbo_16k,
   MODEL.FactChecker,
+  MODEL.WebRetriever,
   MODEL.Llama2_70b,
   MODEL.Llama2_13b,
   MODEL.Llama2_70b_chat,
@@ -297,6 +304,8 @@ export const ALL_SLOW_MODELS = [
   MODEL.AnimateDiff,
   MODEL.LocalLlama,
 ];
+
+export const ALL_CUSTOM_WRAPPERS = [MODEL.FactChecker, MODEL.WebRetriever];
 
 export enum MEMORY {
   Remember = "On",

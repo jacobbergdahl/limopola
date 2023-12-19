@@ -12,6 +12,7 @@ type TextAreaProps = {
   disabled?: boolean;
   shouldSpellCheck?: boolean;
   className?: string;
+  isInSidebar?: boolean;
 };
 
 const TextArea = (
@@ -25,10 +26,11 @@ const TextArea = (
     className,
     disabled = false,
     shouldSpellCheck = true,
+    isInSidebar = false,
   }: TextAreaProps,
   ref?: ForwardedRef<HTMLTextAreaElement>
 ) => {
-  const classes = `${styles.textarea}${className ? " " + className : ""}`;
+  const classes = `${styles.textarea}${isInSidebar ? " " + styles.textareaSidebar : ""}${className ? " " + className : ""}`;
 
   return (
     <textarea

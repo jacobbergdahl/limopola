@@ -86,11 +86,15 @@ This is a list of models currently included in this AI interface. More models wi
 | chat-bison-001\*\*   | Text  | Google     |
 | local-llama          | Text  | None       |
 
-\* GPT-4 Turbo (preview)
+\* GPT-4 Turbo (preview).
+\*\* Google PaLM.
 
-\*\* Google PaLM
+### Custom wrappers of AI models
 
-_And other local/custom versions of these models._
+| Model               | Type | API Source | Note                                                                                                           |
+| ------------------- | ---- | ---------- | -------------------------------------------------------------------------------------------------------------- |
+| gpt-4-fact-checker  | Text | OpenAI     | A custom implementation of a fact-checker. Uses GPT-4 to rate the accuracy of any statement.                   |
+| gpt-4-web-retriever | Text | OpenAI     | A custom implementation of a web retriever. Reads data from the internet and sends it to GPT-4. A form of RAG. |
 
 ## Modes
 

@@ -1,5 +1,5 @@
 import { ProcessedBody } from "../generate";
-import { gpt } from "./gpt";
+import { gpt } from "../aiModels/gpt";
 
 const FACT_CHECKER_BODY: ProcessedBody = {
   numberOfImages: 0,
@@ -13,6 +13,7 @@ const FACT_CHECKER_BODY: ProcessedBody = {
   presencePenalty: undefined,
   topP: undefined,
   maxNumberOfTokens: 5,
+  urlsToScrape: undefined
 };
 
 export const factChecker = async (res, message) => {

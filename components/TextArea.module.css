@@ -15,3 +15,7 @@
 .textarea:disabled {
   background: var(--disabled-textarea-background-color);
 }
+.textareaSidebar {
+  margin: 15px 5px 0px 5px;
+  width: calc(100% - 10px);
+}

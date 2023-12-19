@@ -51,6 +51,7 @@ import {
   temperatureAtom,
   textAreaStyleAtom,
   topPAtom,
+  urlsToScrapeAtom,
   voiceSimilarityBoostAtom,
   voiceStabilityAtom,
 } from "./atoms";
@@ -82,6 +83,7 @@ import { MaxNumberOfTokens } from "../components/sections/MaxNumberOfTokens";
 import TextArea from "../components/TextArea";
 import { AgentOverview } from "../components/agents/AgentOverview";
 import { ImageSizeDallE3 } from "../components/sections/ImageSizeDallE3";
+import { UrlsToScrape } from "../components/sections/UrlsToScrape";
 
 // I know, I know, this file is too long. It should, and will, be refactored 🙏
 // ... (maybe)
@@ -146,32 +148,37 @@ export default function Home() {
   const [isPresencePenaltyDefault, setIsPresencePenaltyDefault] = useAtom(
     isPresencePenaltyDefaultAtom
   );
+  const [urlsToScrape, setUrlsToScrape] = useAtom(urlsToScrapeAtom);
   const [timer, setTimer] = useState<number>(-1);
   const scrollAnchorRef = useRef(null);
   const chatRef = useRef(null);
   const textareaRef = useRef(null);
 
   const isFactChecking = model === MODEL.FactChecker;
+  const isUsingWebRetriever = model === MODEL.WebRetriever;
+  const isUsingCustomTextGeneratingWrapper =
+    isFactChecking || isUsingWebRetriever;
+  const shouldShowUrlsToScrape = isUsingWebRetriever;
   const shouldShowTemperature =
     selectedModelType === MODEL_TYPE.Text &&
     (ALL_LLAMA_MODELS.includes(model) ||
       ALL_OPEN_AI_MODELS.includes(model) ||
       model === MODEL.PalmChatBison001 ||
       model === MODEL.PalmTextBison001) &&
-    !isFactChecking;
+    !isUsingCustomTextGeneratingWrapper;
   const shouldShowTopP =
     selectedModelType === MODEL_TYPE.Text &&
     model !== MODEL.LocalLlama &&
     (ALL_LLAMA_MODELS.includes(model) || ALL_OPEN_AI_MODELS.includes(model)) &&
-    !isFactChecking;
+    !isUsingCustomTextGeneratingWrapper;
   const shouldShowFrequencyPenalty =
     selectedModelType === MODEL_TYPE.Text &&
     ALL_OPEN_AI_MODELS.includes(model) &&
-    !isFactChecking;
+    !isUsingCustomTextGeneratingWrapper;
   const shouldShowPresencePenalty =
     selectedModelType === MODEL_TYPE.Text &&
     ALL_OPEN_AI_MODELS.includes(model) &&
-    !isFactChecking;
+    !isUsingCustomTextGeneratingWrapper;
   const shouldShowVoiceSettings = selectedModelType === MODEL_TYPE.Audio;
   const shouldShowRequestedNumberOfTokens = model === MODEL.LocalLlama;
   const shouldShowMaxNumberOfTokens =
@@ -179,7 +186,7 @@ export default function Home() {
   const shouldShowMemory =
     selectedModelType === MODEL_TYPE.Text &&
     inputMode === INPUT_MODE.Chat &&
-    !isFactChecking;
+    !isUsingCustomTextGeneratingWrapper;
   const shouldShowInstantMessages =
     selectedModelType === MODEL_TYPE.Text &&
     inputMode === INPUT_MODE.Chat &&
@@ -274,7 +281,7 @@ export default function Home() {
         ? currentlySelectedContext.content + "\n\n" + prompt
         : prompt;
 
-    if (isFactChecking) {
+    if (isUsingCustomTextGeneratingWrapper) {
       return prompt;
     } else if (
       selectedModelType === MODEL_TYPE.Text &&
@@ -308,6 +315,7 @@ export default function Home() {
         isTopPDefault: isTopPDefault,
         isFrequencyPenaltyDefault: isFrequencyPenaltyDefault,
         isPresencePenaltyDefault: isPresencePenaltyDefault,
+        urlsToScrape: urlsToScrape,
       });
     } else if (selectedModelType === MODEL_TYPE.Audio) {
       return JSON.stringify({
@@ -891,6 +899,12 @@ export default function Home() {
             <div className={styles.section}>
               <ModelInformation model={model} />
             </div>
+            {shouldShowUrlsToScrape && (
+              <UrlsToScrape
+                urlsToScrape={urlsToScrape}
+                setUrlsToScrape={setUrlsToScrape}
+              />
+            )}
             {shouldShowMemory && (
               <div className={styles.section}>
                 <Memory
