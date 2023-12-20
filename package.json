@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "generate-api-table": "tsc scripts/generateModelTable.ts --outDir . && node scripts/generateModelTable.js",
-    "format": "prettier --write \"./**/*.{ts,tsx}\""
+    "format": "prettier --write \"./**/*.{ts,tsx}\"",
+    "update-packages": "ncu -u && npm install && npm update"
   },
   "dependencies": {
     "@google-ai/generativelanguage": "^2.0.0",
