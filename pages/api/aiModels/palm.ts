@@ -41,38 +41,15 @@ export const palm = async (
             temperature: temperature,
             candidateCount: 1,
             prompt: {
-              // This is not fully implemented yet. We should send all
-              // messages in memory individually here.
-              // optional, preamble context to prime responses
-              /* context: "Respond to all questions with a rhyming poem.", */
-              // Optional. Examples for further fine-tuning of responses.
-              /* examples: [
-              {
-                input: { content: "What is the capital of California?" },
-                output: {
-                  content: `If the capital of California is what you seek,
-  Sacramento is where you ought to peek.`,
-                },
-              },
-            ], */
-              // Required. Alternating prompt/response messages.
+              // This API call is not fully implemented yet. We should send all
+              // messages in memory individually, rather than as one.
               messages: [{ content: message }],
             },
           });
 
-    if (
-      !response ||
-      !response[0] ||
-      !response[0].candidates ||
-      !response[0].candidates[0]
-    ) {
+    if (!response?.[0]?.candidates?.[0]) {
       console.log(response);
-      if (
-        response &&
-        response[0] &&
-        response[0].candidates &&
-        response[0].candidates.length === 0
-      ) {
+      if (response?.[0]?.candidates?.length === 0) {
         throw new Error("The AI did not return a response for the question.");
       }
       throw new Error("An unexpected error occurred.");
