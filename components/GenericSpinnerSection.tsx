@@ -1,4 +1,4 @@
-import styles from "./GenericSpinnerSection.module.css";
+import { Checkbox } from "./Checkbox";
 
 export type GenericSpinnerSectionProps = {
   sectionName: string;
@@ -26,14 +26,11 @@ export const GenericSpinnerSection = ({
       <h3>
         {sectionName} ({technicalValue.toFixed(2)})
       </h3>
-      <label className={styles.checkBox}>
-        <input
-          type="checkbox"
-          checked={isUsingDefault}
-          onChange={handleCheckboxChange}
-        />
-        <span>Use default</span>
-      </label>
+      <Checkbox
+        isChecked={isUsingDefault}
+        onChange={handleCheckboxChange}
+        label="Use default"
+      />
       <input
         type="range"
         min={min}

@@ -14,6 +14,7 @@ const FACT_CHECKER_BODY: ProcessedBody = {
   topP: undefined,
   maxNumberOfTokens: 5,
   urlsToScrape: undefined,
+  isUsingSimilaritySearch: false,
 };
 
 export const factChecker = async (res, message) => {
@@ -29,5 +30,5 @@ export const factChecker = async (res, message) => {
 
   console.log(prompt);
 
-  gpt(res, prompt, "gpt-4", FACT_CHECKER_BODY);
+  return gpt(res, prompt, "gpt-4", FACT_CHECKER_BODY);
 };

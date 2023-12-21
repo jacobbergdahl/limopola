@@ -11,15 +11,14 @@
     "update-packages": "ncu -u && npm install && npm update"
   },
   "dependencies": {
-    "@google-ai/generativelanguage": "^2.0.0",
     "@llama-node/llama-cpp": "^0.1.6",
     "@types/sqlite3": "^3.1.11",
     "cheerio": "^1.0.0-rc.12",
     "file-saver": "^2.0.5",
-    "google-auth-library": "^9.4.1",
     "highlight.js": "^11.9.0",
     "jotai": "^2.6.0",
     "jszip": "^3.10.1",
+    "langchain": "^0.0.211",
     "llama-node": "^0.1.6",
     "marked": "^11.1.0",
     "next": "^14.0.4",

@@ -35,6 +35,7 @@ import {
   isPresencePenaltyDefaultAtom,
   isTemperatureDefaultAtom,
   isTopPDefaultAtom,
+  isUsingSimilaritySearchAtom,
   maxNumberOfTokensAtom,
   memoryAtom,
   messagesInMemoryAtom,
@@ -84,6 +85,7 @@ import TextArea from "../components/TextArea";
 import { AgentOverview } from "../components/agents/AgentOverview";
 import { ImageSizeDallE3 } from "../components/sections/ImageSizeDallE3";
 import { UrlsToScrape } from "../components/sections/UrlsToScrape";
+import { SimilaritySearch } from "../components/sections/SimilaritySearch";
 
 // I know, I know, this file is too long. It should, and will, be refactored 🙏
 // ... (maybe)
@@ -149,6 +151,9 @@ export default function Home() {
     isPresencePenaltyDefaultAtom
   );
   const [urlsToScrape, setUrlsToScrape] = useAtom(urlsToScrapeAtom);
+  const [isUsingSimilaritySearch, setIsUsingSimilaritySearch] = useAtom(
+    isUsingSimilaritySearchAtom
+  );
   const [timer, setTimer] = useState<number>(-1);
   const scrollAnchorRef = useRef(null);
   const chatRef = useRef(null);
@@ -200,6 +205,7 @@ export default function Home() {
     selectedModelType === MODEL_TYPE.Image && model !== MODEL.Dalle3;
   const shouldShowImageSizeDallE2 = model === MODEL.Dalle2;
   const shouldShowImageSizeDallE3 = model === MODEL.Dalle3;
+  const shouldShowSimilaritySearch = model === MODEL.WebRetriever;
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -316,6 +322,7 @@ export default function Home() {
         isFrequencyPenaltyDefault: isFrequencyPenaltyDefault,
         isPresencePenaltyDefault: isPresencePenaltyDefault,
         urlsToScrape: urlsToScrape,
+        isUsingSimilaritySearch: isUsingSimilaritySearch,
       });
     } else if (selectedModelType === MODEL_TYPE.Audio) {
       return JSON.stringify({
@@ -903,6 +910,14 @@ export default function Home() {
               <UrlsToScrape
                 urlsToScrape={urlsToScrape}
                 setUrlsToScrape={setUrlsToScrape}
+              />
+            )}
+            {shouldShowSimilaritySearch && (
+              <SimilaritySearch
+                isUsingSimilaritySearch={isUsingSimilaritySearch}
+                setIsUsingSimilaritySearch={() =>
+                  setIsUsingSimilaritySearch(!isUsingSimilaritySearch)
+                }
               />
             )}
             {shouldShowMemory && (

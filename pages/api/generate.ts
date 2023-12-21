@@ -34,6 +34,7 @@ export type ProcessedBody = {
   topP: number | undefined;
   maxNumberOfTokens: number | undefined;
   urlsToScrape: string | undefined;
+  isUsingSimilaritySearch: boolean | undefined;
 };
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
@@ -60,6 +61,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   const isUsingDefaultFrequencyPenalty = req.body.isFrequencyPenaltyDefault;
   const isUsingDefaultPresencePenalty = req.body.isPresencePenaltyDefault;
   const urlsToScrape = req.body.urlsToScrape || "";
+  const isUsingSimilaritySearch = !!req.body.isUsingSimilaritySearch;
 
   // The idea is to use this in all API calls later. Right now, there are a lot of inconsistencies in the code.
   const processedBody: ProcessedBody = {
@@ -79,6 +81,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     topP: isUsingDefaultTopP ? undefined : topP,
     maxNumberOfTokens,
     urlsToScrape,
+    isUsingSimilaritySearch,
   };
 
   if (model === MODEL.Debug) {
@@ -125,7 +128,8 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
         message,
         MODEL.Gpt4,
         processedBody,
-        urlsToScrape
+        urlsToScrape,
+        isUsingSimilaritySearch
       );
     }
     if (model === MODEL.PalmChatBison001 || model === MODEL.PalmTextBison001) {

@@ -160,3 +160,7 @@ export const agentVideoPromptsAtom = atomWithStorage(
 export const isAgentRunningAtom = atomWithStorage("AGENT_RUNNING", false);
 export const wasAgentStoppedAtom = atomWithStorage("AGENT_STOPPED", false);
 export const urlsToScrapeAtom = atomWithStorage("URLS_TO_SCRAPE", "");
+export const isUsingSimilaritySearchAtom = atomWithStorage(
+  "IS_USING_SIMILARITY_SEARCH",
+  false
+);

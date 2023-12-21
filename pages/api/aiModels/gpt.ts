@@ -14,7 +14,8 @@ export const gpt = async (
   res,
   message,
   model,
-  processedBody: ProcessedBody
+  processedBody: ProcessedBody,
+  shouldReturnRawCompletion = false
 ) => {
   console.log(`The backend is calling OpenAI model ${model}.`);
 
@@ -69,6 +70,10 @@ export const gpt = async (
     SHOULD_SHOW_ALL_LOGS &&
       (console.log("\nOutput from OpenAI before parsing:\n", text),
       console.log());
+
+    if (shouldReturnRawCompletion) {
+      return output;
+    }
 
     res.status(STATUS_CODE.Ok).json({ result: output });
   } catch (error) {

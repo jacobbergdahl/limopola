@@ -229,7 +229,8 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
         information: `Google PaLM model for chatting. Optimized for multi-turn chats (dialogues). Not using the API fully correctly yet, but the memory still seems to work well.`,
         learnMoreUrl: "https://developers.generativeai.google/models/language",
         apiKey: MODEL_API_KEY.Google,
-        mdNote: "Google PaLM.",
+        mdNote:
+          "Google PaLM. No longer available in the `main` branch due to a rough dependency clash. To use Google's API's, run `git checkout google-generativelanguage && npm install`.",
       };
     case MODEL.PalmTextBison001:
       return {
@@ -237,7 +238,8 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
         information: `Google PaLM model for generating text. Does not work well with multi-turn chats (e.g., the memory feature), but is great for accomplishing tasks like writing code.`,
         learnMoreUrl: "https://developers.generativeai.google/models/language",
         apiKey: MODEL_API_KEY.Google,
-        mdNote: "Google PaLM.",
+        mdNote:
+          "Google PaLM. No longer available in the `main` branch due to a rough dependency clash. To use Google's API's, run `git checkout google-generativelanguage && npm install`.",
       };
   }
 
@@ -403,6 +405,7 @@ export enum STATUS_CODE {
   MethodNotAllowed = 405,
   TooManyRequests = 429,
   InternalServerError = 500,
+  NotImplemented = 501,
 }
 
 export enum AGENT_TASK_STATUS {

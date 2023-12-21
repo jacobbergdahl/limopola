@@ -1,6 +1,7 @@
 .checkBox {
   margin-bottom: 10px;
   margin-left: 4px;
+  display: block;
 }
 .checkBox input {
   margin-right: 10px;

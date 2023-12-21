@@ -87,7 +87,7 @@ This is a list of models currently included in this AI interface. More models wi
 | local-llama          | Text  | None       |
 
 \* GPT-4 Turbo (preview).
-\*\* Google PaLM.
+\*\* Google PaLM. No longer available in the `main` branch due to a rough dependency clash. To use Google's API's, run `git checkout google-generativelanguage && npm install`.
 
 ### Custom wrappers of AI models
 
