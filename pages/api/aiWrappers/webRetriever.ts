@@ -20,8 +20,9 @@ const addHttpsToUrl = (url: string): string => {
     !url.startsWith("http://") &&
     !url.startsWith("https://")
   ) {
-    url = "https://" + url;
+    return "https://" + url;
   }
+
   return url;
 };
 
@@ -32,14 +33,17 @@ const createUrlArrayFromStringOfUrls = (urls: string): string[] => {
 const fetchPageContent = async (url: string): Promise<string> => {
   try {
     console.log(`Reading data from ${url}`);
+
     const response = await fetch(url);
     const html = await response.text();
     const $ = load(html);
     $("script, style, head, nav, footer, iframe, img").remove();
+
     return $("body").text().replace(/\s+/g, " ").trim();
   } catch (error: any) {
     console.error(`Could not read data from url: ${url}`);
     console.error(error);
+
     return "";
   }
 };
@@ -62,7 +66,7 @@ const validateText = (textArray: string[]): void => {
 const performSimilaritySearch = async (text: string, message: string) => {
   if (text.length < 250) {
     console.log("Skipped similarity search because text was too short.");
-    return null;
+    return text;
   }
 
   const splitText = await new RecursiveCharacterTextSplitter({
@@ -114,15 +118,17 @@ export const webRetriever = async (
           textScrapedFromWebsites.map(
             (text, i) => (
               console.log(
-                `Processing vector ${i + 1} out of ${
-                  textScrapedFromWebsites.length
-                }.`
+                textScrapedFromWebsites.length > 1
+                  ? `Processing vector ${i + 1} out of ${
+                      textScrapedFromWebsites.length
+                    }.`
+                  : "Processing vector."
               ),
               performSimilaritySearch(text, message)
             )
           )
         )
-      : textScrapedFromWebsites.join(" ");
+      : textScrapedFromWebsites.join(" ").trim();
 
     const prompt = `BEGINCONTEXT
       ${JSON.stringify(context)}
@@ -133,7 +139,7 @@ export const webRetriever = async (
     `;
 
     SHOULD_SHOW_ALL_LOGS &&
-      console.log("Prompt after text scraping from the web\n", prompt);
+      console.log("Prompt after text scraping the web\n", prompt);
 
     return gpt(res, prompt, model, processedBody);
   } catch (error: any) {
