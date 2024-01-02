@@ -20,6 +20,7 @@ import { factChecker } from "./aiWrappers/factChecker";
 import { NextApiRequest, NextApiResponse } from "next";
 import { palm } from "./aiModels/palm";
 import { webRetriever } from "./aiWrappers/webRetriever";
+import { pdfReader } from "./aiWrappers/pdfReader";
 
 export type ProcessedBody = {
   numberOfImages: number;
@@ -131,6 +132,9 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
         urlsToScrape,
         isUsingSimilaritySearch
       );
+    }
+    if (model === MODEL.PdfReader) {
+      return pdfReader(res, message, MODEL.Gpt4, processedBody);
     }
     if (model === MODEL.PalmChatBison001 || model === MODEL.PalmTextBison001) {
       return palm(res, message, model, temperature);

@@ -18,6 +18,7 @@
 .code-workspace
 /models/
 database.db
+/data/pdf/
 
 # debug
 npm-debug.log*

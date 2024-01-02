@@ -161,8 +161,9 @@ export default function Home() {
 
   const isFactChecking = model === MODEL.FactChecker;
   const isUsingWebRetriever = model === MODEL.WebRetriever;
+  const isUsingPdfReader = model === MODEL.PdfReader;
   const isUsingCustomTextGeneratingWrapper =
-    isFactChecking || isUsingWebRetriever;
+    isFactChecking || isUsingWebRetriever || isUsingPdfReader;
   const shouldShowUrlsToScrape = isUsingWebRetriever;
   const shouldShowTemperature =
     selectedModelType === MODEL_TYPE.Text &&

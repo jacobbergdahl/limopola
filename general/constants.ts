@@ -35,6 +35,7 @@ export enum MODEL {
   PalmChatBison001 = "chat-bison-001",
   FactChecker = "gpt-4-fact-checker",
   WebRetriever = "gpt-4-web-retriever",
+  PdfReader = "gpt-4-pdf-reader",
   LocalLlama = "local-llama",
   Debug = "debug",
 }
@@ -223,6 +224,14 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
         mdNote:
           "A custom implementation of a web retriever. Reads data from the internet and sends it to GPT-4. A form of RAG.",
       };
+    case MODEL.PdfReader:
+      return {
+        status: MODEL_STATUS.Full,
+        information: `A custom implementation of a pdf reader using GPT-4 as a basis. To use it, add (a) pdf file(s) to ~/data/pdf/. The AI will fetch all pdf files from that directory and perform a similarity search to find the relevant information based on your prompt.`,
+        apiKey: MODEL_API_KEY.OpenAi,
+        mdNote:
+          "A custom implementation of a pdf reader. Reads data from pdf files and sends it to GPT-4. A form of RAG.",
+      };
     case MODEL.PalmChatBison001:
       return {
         status: MODEL_STATUS.Partial,
@@ -257,6 +266,7 @@ export const ALL_TEXT_MODELS = [
   MODEL.Gpt3_5_turbo_16k,
   MODEL.FactChecker,
   MODEL.WebRetriever,
+  MODEL.PdfReader,
   MODEL.Llama2_70b,
   MODEL.Llama2_13b,
   MODEL.Llama2_70b_chat,
@@ -277,7 +287,6 @@ export const ALL_IMAGE_MODELS = [
   MODEL.Dalle3,
   MODEL.StableDiffusionSdXl,
   MODEL.TextToPokemon,
-  //MODEL.Midjourney,
 ];
 
 export const ALL_OPEN_AI_MODELS = [
@@ -299,15 +308,13 @@ export const ALL_LLAMA_MODELS = [
   MODEL.LocalLlama,
 ];
 
-export const ALL_SLOW_MODELS = [
-  MODEL.CodeLlama_13b,
-  MODEL.Llama2_70b,
-  MODEL.Llama2_70b_chat,
-  MODEL.AnimateDiff,
-  MODEL.LocalLlama,
-];
+export const ALL_SLOW_MODELS = [MODEL.AnimateDiff, MODEL.LocalLlama];
 
-export const ALL_CUSTOM_WRAPPERS = [MODEL.FactChecker, MODEL.WebRetriever];
+export const ALL_CUSTOM_WRAPPERS = [
+  MODEL.FactChecker,
+  MODEL.WebRetriever,
+  MODEL.PdfReader,
+];
 
 export enum MEMORY {
   Remember = "On",

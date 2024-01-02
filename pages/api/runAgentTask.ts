@@ -57,6 +57,8 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     presencePenalty: undefined,
     topP: undefined,
     maxNumberOfTokens: undefined,
+    urlsToScrape: "",
+    isUsingSimilaritySearch: false,
   };
 
   if (api === MODEL.Gpt4 || api === MODEL.Gpt4_Turbo) {

@@ -2,17 +2,17 @@
  * The code in this file is based in large parts on this file from a repository by DevelopersDigest:
  * https://github.com/developersdigest/OpenAI-Web-Search-RAG-LLM-API-with-BUN.js/blob/main/index.js
  */
-import type { NextApiResponse } from "next";
+import { NextApiResponse } from "next";
 import fetch from "node-fetch";
 import { load } from "cheerio";
 import { gpt } from "../aiModels/gpt";
 import { ProcessedBody } from "../generate";
 import { MODEL, SHOULD_SHOW_ALL_LOGS } from "../../../general/constants";
-import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
-import { OpenAIEmbeddings } from "langchain/embeddings/openai";
-import { MemoryVectorStore } from "langchain/vectorstores/memory";
-
-const embeddings = new OpenAIEmbeddings();
+import {
+  createRagPrompt,
+  performSimilaritySearchOnArrayOfStrings,
+  throwIfPromptIsLong,
+} from "../../../general/retrievalAugmentedGeneration";
 
 const addHttpsToUrl = (url: string): string => {
   if (
@@ -52,51 +52,6 @@ const getTextFromWebsites = async (urlArray: string[]): Promise<string[]> => {
   return Promise.all(urlArray.map(fetchPageContent));
 };
 
-const validateText = (textArray: string[]): void => {
-  if (
-    textArray.length === 0 ||
-    textArray.every((text) => text.trim().length === 0)
-  ) {
-    throw new Error(
-      "No text was scraped from the web. There may be additional logs above this that provide more insights into what went wrong."
-    );
-  }
-};
-
-const performSimilaritySearch = async (text: string, message: string) => {
-  if (text.length < 250) {
-    console.log("Skipped similarity search because text was too short.");
-    return text;
-  }
-
-  const splitText = await new RecursiveCharacterTextSplitter({
-    chunkSize: 200,
-    chunkOverlap: 20,
-  }).splitText(text);
-
-  console.log(`Split text into ${splitText.length} chunks.`);
-
-  const vectorStore = await MemoryVectorStore.fromTexts(
-    splitText,
-    {},
-    embeddings
-  );
-
-  const numberOfSimilarityResults = 2;
-  const similaritySearchResults = await vectorStore.similaritySearch(
-    message,
-    numberOfSimilarityResults
-  );
-
-  SHOULD_SHOW_ALL_LOGS &&
-    console.log(
-      "Similarity search results:",
-      JSON.stringify(similaritySearchResults)
-    );
-
-  return similaritySearchResults;
-};
-
 /**
  * Retrieves data from defined url's
  */
@@ -111,35 +66,30 @@ export const webRetriever = async (
   try {
     const urlArray = createUrlArrayFromStringOfUrls(urls);
     const textScrapedFromWebsites = await getTextFromWebsites(urlArray);
-    validateText(textScrapedFromWebsites);
+
+    const isTextEmpty =
+      textScrapedFromWebsites.length === 0 ||
+      textScrapedFromWebsites.every((text) => text.trim().length === 0);
+
+    if (isTextEmpty) {
+      throw new Error(
+        "No text was scraped from the web. There may be additional logs above this that provide more insights into what went wrong."
+      );
+    }
 
     const context = shouldRunSimilaritySearch
-      ? await Promise.all(
-          textScrapedFromWebsites.map(
-            (text, i) => (
-              console.log(
-                textScrapedFromWebsites.length > 1
-                  ? `Processing vector ${i + 1} out of ${
-                      textScrapedFromWebsites.length
-                    }.`
-                  : "Processing vector."
-              ),
-              performSimilaritySearch(text, message)
-            )
-          )
+      ? await performSimilaritySearchOnArrayOfStrings(
+          textScrapedFromWebsites,
+          message
         )
-      : textScrapedFromWebsites.join(" ").trim();
+      : JSON.stringify(textScrapedFromWebsites.join(" ").trim());
 
-    const prompt = `BEGINCONTEXT
-      ${JSON.stringify(context)}
-      ENDCONTEXT
-      BEGININSTRUCTION
-      ${message}
-      ENDINSTRUCTION
-    `;
+    const prompt = createRagPrompt(message, context);
 
     SHOULD_SHOW_ALL_LOGS &&
       console.log("Prompt after text scraping the web\n", prompt);
+
+    throwIfPromptIsLong(prompt);
 
     return gpt(res, prompt, model, processedBody);
   } catch (error: any) {

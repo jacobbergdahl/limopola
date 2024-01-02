@@ -5,7 +5,7 @@ import { saveAs } from "file-saver";
 import hljs, { Language } from "highlight.js";
 
 const parseMarkdownToHtml = (markdown: string): string => {
-  return marked(markdown);
+  return marked(markdown) as string;
 };
 
 export const parseTextResponse = (text: string): string => {

@@ -95,6 +95,7 @@ This is a list of models currently included in this AI interface. More models wi
 | ------------------- | ---- | ---------- | -------------------------------------------------------------------------------------------------------------- |
 | gpt-4-fact-checker  | Text | OpenAI     | A custom implementation of a fact-checker. Uses GPT-4 to rate the accuracy of any statement.                   |
 | gpt-4-web-retriever | Text | OpenAI     | A custom implementation of a web retriever. Reads data from the internet and sends it to GPT-4. A form of RAG. |
+| gpt-4-pdf-reader    | Text | OpenAI     | A custom implementation of a pdf reader. Reads data from pdf files and sends it to GPT-4. A form of RAG.       |
 
 ## Modes
 
@@ -172,16 +173,12 @@ Below is a video example of dispatching an autonomous AI agent to create a fan w
 
 https://github.com/jacobbergdahl/limopola/assets/13106411/0141e096-ba3d-4452-a10e-6038c09bb6a2
 
-## Limopola artworks
+## Limopola logos
 
 The logo for Limopola by Midjourney v5:
 
 <img src="./public/logo.png" width="400" height="400">
 
-Limopola in text by DALL-E 3:
+Alternate logo of Limopola in text by DALL-E 3:
 
-<img src="./public/limopola.png" width="200" height="200">
-<img src="./public/limopola2.png" width="200" height="200">
-<img src="./public/limopola3.png" width="200" height="200">
-<img src="./public/limopola4.png" width="200" height="200">
-<img src="./public/limopola5.png" width="200" height="200">
+<img src="./public/limopola.png" width="400" height="400">

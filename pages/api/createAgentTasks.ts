@@ -20,6 +20,8 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     presencePenalty: undefined,
     topP: undefined,
     maxNumberOfTokens: undefined,
+    urlsToScrape: "",
+    isUsingSimilaritySearch: false,
   };
 
   if (prompt.trim().length === 0) {
