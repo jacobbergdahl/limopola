@@ -19,6 +19,7 @@
   --accent-color-secondary: #25357b;
   --accent-color-tertiary: #0065a2;
   --error-color: #3c0000;
+  --error-alternate-color: #600;
   --link-color: #fff;
   --link-hover-color: #bfbfbf;
 }

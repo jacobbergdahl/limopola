@@ -101,7 +101,7 @@ const performWebSearch = async (searchQuery: string) => {
   if (!!data.organic_results) {
     const organicResults: any[] = data.organic_results;
     organicResults.forEach((result, i) => {
-      contextString += `\n Search result ${i + 1}`;
+      contextString += `\nSearch result ${i + 1}`;
       if (result.title) {
         contextString += "\n" + result.title;
       }

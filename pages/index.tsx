@@ -900,12 +900,20 @@ export default function Home() {
                 }
               />
               {inputMode === INPUT_MODE.Chat && (
-                <Button value="Clear chat history" onClick={handleClearChat} />
+                <Button
+                  value="Clear chat history"
+                  onClick={handleClearChat}
+                  shouldAskForConfirmation={true}
+                />
               )}
               {inputMode === INPUT_MODE.Editor && (
                 <Button value="Clear text" onClick={handleClearEditorText} />
               )}
-              <Button value="Reset settings" onClick={handleResetSettings} />
+              <Button
+                value="Reset settings"
+                onClick={handleResetSettings}
+                shouldAskForConfirmation={true}
+              />
               {inputMode === INPUT_MODE.Chat && (
                 <Button value="Scroll to bottom" onClick={scrollToBottom} />
               )}

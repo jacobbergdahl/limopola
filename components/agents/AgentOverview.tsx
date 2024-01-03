@@ -501,7 +501,11 @@ export const AgentOverview = () => {
             />
           )}
           {!isRunning && (
-            <Button onClick={handleClearChat} value="Clear chat" />
+            <Button
+              onClick={handleClearChat}
+              value="Clear chat"
+              shouldAskForConfirmation={true}
+            />
           )}
           {isRunning && !isStoppingRef.current && (
             <Button

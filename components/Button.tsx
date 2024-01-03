@@ -1,4 +1,4 @@
-import { MouseEventHandler } from "react";
+import { MouseEventHandler, useEffect, useRef, useState } from "react";
 import styles from "./Button.module.css";
 
 export enum BUTTON_THEME {
@@ -15,6 +15,7 @@ type ButtonProps = {
   disabled?: boolean;
   className?: string;
   theme?: BUTTON_THEME;
+  shouldAskForConfirmation?: boolean;
 };
 
 export const Button = ({
@@ -24,10 +25,33 @@ export const Button = ({
   isSelected = false,
   disabled = false,
   theme = BUTTON_THEME.Default,
+  shouldAskForConfirmation = false,
 }: ButtonProps) => {
+  const [isAskingForConfirmation, setIsAskingForConfirmation] = useState(false);
+  const clearAskingForConfirmationTimer = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    if (isAskingForConfirmation) {
+      const timeoutId = setTimeout(() => {
+        setIsAskingForConfirmation(false);
+      }, 1000 * 5);
+      clearAskingForConfirmationTimer.current = timeoutId;
+    } else if (clearAskingForConfirmationTimer.current) {
+      clearTimeout(clearAskingForConfirmationTimer.current);
+      clearAskingForConfirmationTimer.current = null;
+    }
+
+    return () => {
+      if (clearAskingForConfirmationTimer.current) {
+        clearTimeout(clearAskingForConfirmationTimer.current);
+      }
+    };
+  }, [isAskingForConfirmation]);
+
   let classnames = `${styles.button}${className ? ` ${className}` : ""}${
     isSelected ? ` ${styles.selected}` : ""
   }`;
+
   switch (theme) {
     case BUTTON_THEME.Positive:
       classnames += ` ${styles.positive}`;
@@ -41,11 +65,27 @@ export const Button = ({
     default:
       break;
   }
+
+  if (isAskingForConfirmation) {
+    classnames += ` ${styles.negative}`;
+  }
+
+  const handleClick = () => {
+    if (!isAskingForConfirmation && shouldAskForConfirmation) {
+      setIsAskingForConfirmation(true);
+    } else {
+      setIsAskingForConfirmation(false);
+      onClick?.(value);
+    }
+  };
+
   return (
     <input
       type="button"
-      value={value.toString()}
-      onClick={onClick}
+      value={
+        isAskingForConfirmation ? "Press again to confirm" : value.toString()
+      }
+      onClick={handleClick}
       className={classnames}
       disabled={disabled}
     />
