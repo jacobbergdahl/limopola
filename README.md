@@ -119,6 +119,7 @@ Tips:
 - The "reset settings" option will reset everything except for your saved contexts and your chat history.
 - You can jump to the textarea by just pressing enter or T.
 - You can download and save the conversation as a `.txt` file by pressing CTRL + S / ⌘ + S.
+- Any text-generating AI can be given the ability to browse the world wide web by pressing the checkbox under "Online connection" in the right-hand sidebar. This requires a (free) API key to [SearchAPI](https://www.searchapi.io/).
 
 ### Editor
 
