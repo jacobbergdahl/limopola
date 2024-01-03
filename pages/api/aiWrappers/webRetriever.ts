@@ -6,13 +6,13 @@ import { NextApiResponse } from "next";
 import fetch from "node-fetch";
 import { load } from "cheerio";
 import { gpt } from "../aiModels/gpt";
-import { ProcessedBody } from "../generate";
 import { MODEL, SHOULD_SHOW_ALL_LOGS } from "../../../general/constants";
 import {
   createRagPrompt,
   performSimilaritySearchOnArrayOfStrings,
   throwIfPromptIsLong,
 } from "../../../general/retrievalAugmentedGeneration";
+import { ProcessedBody } from "../../../general/apiHelper";
 
 const addHttpsToUrl = (url: string): string => {
   if (

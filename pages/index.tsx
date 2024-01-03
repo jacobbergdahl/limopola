@@ -31,6 +31,7 @@ import {
   inputModeAtom,
   isContextModalOpenAtom,
   isFrequencyPenaltyDefaultAtom,
+  isGivingAiSearchAccessAtom,
   isLoadingAtom,
   isPresencePenaltyDefaultAtom,
   isTemperatureDefaultAtom,
@@ -86,6 +87,7 @@ import { AgentOverview } from "../components/agents/AgentOverview";
 import { ImageSizeDallE3 } from "../components/sections/ImageSizeDallE3";
 import { UrlsToScrape } from "../components/sections/UrlsToScrape";
 import { SimilaritySearch } from "../components/sections/SimilaritySearch";
+import { SearchAccess } from "../components/sections/SearchAccess";
 
 // I know, I know, this file is too long. It should, and will, be refactored 🙏
 // ... (maybe)
@@ -154,6 +156,9 @@ export default function Home() {
   const [isUsingSimilaritySearch, setIsUsingSimilaritySearch] = useAtom(
     isUsingSimilaritySearchAtom
   );
+  const [isGivingAiSearchAccess, setIsGivingAiSearchAccess] = useAtom(
+    isGivingAiSearchAccessAtom
+  );
   const [timer, setTimer] = useState<number>(-1);
   const scrollAnchorRef = useRef(null);
   const chatRef = useRef(null);
@@ -207,6 +212,10 @@ export default function Home() {
   const shouldShowImageSizeDallE2 = model === MODEL.Dalle2;
   const shouldShowImageSizeDallE3 = model === MODEL.Dalle3;
   const shouldShowSimilaritySearch = model === MODEL.WebRetriever;
+  const shouldShowAiSearchAccess =
+    selectedModelType === MODEL_TYPE.Text &&
+    inputMode === INPUT_MODE.Chat &&
+    !isUsingCustomTextGeneratingWrapper;
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -324,6 +333,7 @@ export default function Home() {
         isPresencePenaltyDefault: isPresencePenaltyDefault,
         urlsToScrape: urlsToScrape,
         isUsingSimilaritySearch: isUsingSimilaritySearch,
+        isGivingAiSearchAccess: isGivingAiSearchAccess,
       });
     } else if (selectedModelType === MODEL_TYPE.Audio) {
       return JSON.stringify({
@@ -989,6 +999,14 @@ export default function Home() {
                   }
                 />
               </div>
+            )}
+            {shouldShowAiSearchAccess && (
+              <SearchAccess
+                isGivingAiSearchAccess={isGivingAiSearchAccess}
+                setIsGivingAiSearchAccess={() =>
+                  setIsGivingAiSearchAccess(!isGivingAiSearchAccess)
+                }
+              />
             )}
             {shouldShowRequestedNumberOfTokens && (
               <div className={styles.section}>

@@ -4,6 +4,7 @@ import path from "path";
 import { SHOULD_SHOW_ALL_LOGS, STATUS_CODE } from "../../../general/constants";
 import { parseTextResponse } from "../../../general/helpers";
 import * as fs from "fs/promises";
+import { NextApiResponse } from "next";
 
 const modelName =
   process.env.LOCAL_MODEL_NAME || "airoboros-13b-gpt4.ggmlv3.q4_0.bin";
@@ -35,8 +36,8 @@ const config = {
 };
 
 export const llamaLocal = async (
-  res,
-  message,
+  res: NextApiResponse | undefined,
+  message: string,
   temperature,
   requestedNumberOfTokens
 ) => {
@@ -79,6 +80,11 @@ export const llamaLocal = async (
         .replace("\n\n</end>", "")
         .trim()
     );
+
+    if (!res) {
+      return result;
+    }
+
     res.status(STATUS_CODE.Ok).json({
       result:
         result.length > 0 ? result : "<i>The AI returned an empty message.</i>",

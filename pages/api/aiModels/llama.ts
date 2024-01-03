@@ -5,7 +5,8 @@ import {
 } from "../../../general/constants";
 import { parseTextResponse } from "../../../general/helpers";
 import Replicate from "replicate";
-import { ProcessedBody } from "../generate";
+import { NextApiResponse } from "next";
+import { ProcessedBody } from "../../../general/apiHelper";
 
 const replicate = new Replicate({
   auth: process.env.REPLICATE_API_KEY,
@@ -28,9 +29,9 @@ const getLlamaUrl = (model: MODEL) => {
 };
 
 export const llama2 = async (
-  res,
-  message,
-  model,
+  res: NextApiResponse | undefined,
+  message: string,
+  model: MODEL,
   processedBody: ProcessedBody
 ) => {
   console.log(`The backend is calling ${model} through Replicate.`);
@@ -50,7 +51,13 @@ export const llama2 = async (
 
     const textArray = completion as string[];
     const text = textArray.join("");
-    res.status(STATUS_CODE.Ok).json({ result: parseTextResponse(text).trim() });
+    const processedOutput = parseTextResponse(text).trim();
+
+    if (!res) {
+      return processedOutput;
+    }
+
+    return res.status(STATUS_CODE.Ok).json({ result: processedOutput });
   } catch (error) {
     const errorMessage = error.message;
     console.error(errorMessage);

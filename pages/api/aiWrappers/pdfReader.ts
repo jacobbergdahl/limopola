@@ -1,6 +1,5 @@
 import { NextApiResponse } from "next";
 import { gpt } from "../aiModels/gpt";
-import { ProcessedBody } from "../generate";
 import { MODEL, SHOULD_SHOW_ALL_LOGS } from "../../../general/constants";
 import {
   createRagPrompt,
@@ -9,6 +8,7 @@ import {
   throwIfPromptIsLong,
 } from "../../../general/retrievalAugmentedGeneration";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
+import { ProcessedBody } from "../../../general/apiHelper";
 
 /**
  * Retrieves data from pdf files

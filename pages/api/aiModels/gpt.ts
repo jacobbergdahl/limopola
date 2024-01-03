@@ -1,7 +1,12 @@
-import { SHOULD_SHOW_ALL_LOGS, STATUS_CODE } from "../../../general/constants";
+import { NextApiResponse } from "next";
+import {
+  MODEL,
+  SHOULD_SHOW_ALL_LOGS,
+  STATUS_CODE,
+} from "../../../general/constants";
 import { parseTextResponse } from "../../../general/helpers";
-import { ProcessedBody } from "../generate";
 import OpenAI from "openai";
+import { ProcessedBody } from "../../../general/apiHelper";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -11,11 +16,10 @@ const openai = new OpenAI({
  * Accepts all versions of GPT-3.5 and GPT-4
  */
 export const gpt = async (
-  res,
-  message,
-  model,
-  processedBody: ProcessedBody,
-  shouldReturnRawCompletion = false
+  res: NextApiResponse | undefined,
+  message: string,
+  model: MODEL,
+  processedBody: ProcessedBody
 ) => {
   console.log(`The backend is calling OpenAI model ${model}.`);
 
@@ -71,7 +75,7 @@ export const gpt = async (
       (console.log("\nOutput from OpenAI before parsing:\n", text),
       console.log());
 
-    if (shouldReturnRawCompletion) {
+    if (!res) {
       return output;
     }
 

@@ -44,6 +44,7 @@
 }
 .chatHistory .errorMessage {
   background: var(--error-color);
+  word-break: break-all;
 }
 .chatHistory .loadingMessage {
   background: var(--accent-color-secondary);

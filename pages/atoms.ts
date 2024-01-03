@@ -164,3 +164,7 @@ export const isUsingSimilaritySearchAtom = atomWithStorage(
   "IS_USING_SIMILARITY_SEARCH",
   false
 );
+export const isGivingAiSearchAccessAtom = atomWithStorage(
+  "IS_GIVING_AI_SEARCH_ACCESS",
+  false
+);

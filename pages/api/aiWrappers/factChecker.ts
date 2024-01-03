@@ -1,5 +1,6 @@
-import { ProcessedBody } from "../generate";
 import { gpt } from "../aiModels/gpt";
+import { MODEL } from "../../../general/constants";
+import { ProcessedBody } from "../../../general/apiHelper";
 
 const FACT_CHECKER_BODY: ProcessedBody = {
   numberOfImages: 0,
@@ -15,6 +16,9 @@ const FACT_CHECKER_BODY: ProcessedBody = {
   maxNumberOfTokens: 5,
   urlsToScrape: undefined,
   isUsingSimilaritySearch: false,
+  isGivingAiSearchAccess: false,
+  message: "",
+  model: MODEL.Gpt4,
 };
 
 export const factChecker = async (res, message) => {
@@ -30,5 +34,5 @@ export const factChecker = async (res, message) => {
 
   console.log(prompt);
 
-  return gpt(res, prompt, "gpt-4", FACT_CHECKER_BODY);
+  return gpt(res, prompt, MODEL.Gpt4, FACT_CHECKER_BODY);
 };

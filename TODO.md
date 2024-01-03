@@ -1,13 +1,13 @@
 # Todo
 
-This is a list of features, updates, and bug fixes that should be implemented into this repository.
+This is a list of features, updates, and bug fixes that may be implemented into this repository.
 
 ## Clean code
 
 - Refactor (a lot) more code out of `index.tsx`. The main thing is to break out the two forms and their onSubmit's.
 - Update comments.
-- Add Vite.
-- Streamline the way responses are sent from the back-end.
+- Streamline the way responses are sent from the back-end. Create helper functions that append the `res` object instead of doing it in each model.
+- Create systemic re-usable function for calling AI models.
 - Further utilize Jotai. We don't need to do prop-drilling any more with Jotai.
 - Use em or rem for fonts. In fact, all px values should be rem.
 - Add more Typescript types.
@@ -30,7 +30,9 @@ This is a list of features, updates, and bug fixes that should be implemented in
 
 ## Core
 
-- Change the Options into Quick Links, create a modal for resetting data, and also add options for setting themes
+- Change the Options into Quick Links, create a modal for resetting data, and also add options for setting themes.
+- Add "Are you sure?" prompts when the user clicks to reset settings.
+- Move the "Scroll to bottom" button.
 - Improve the UI of managing contexts.
 - Make it possible to retroactively create memory (click on posts to add to memory).
 - Make it possible to use contexts in Editor mode.

@@ -9,12 +9,12 @@ import {
   STATUS_CODE,
 } from "../../general/constants";
 import { gpt } from "./aiModels/gpt";
-import { ProcessedBody } from "./generate";
 import { appendContextToTextPrompt } from "../../components/agents/agentFunctions";
 import { dalle } from "./aiModels/dalle";
 import { animateDiff } from "./aiModels/animateDiff";
 import { elevenLabs } from "./aiModels/elevenLabs";
 import { stableDiffusionSdXl } from "./aiModels/stableDiffusionSdXl";
+import { ProcessedBody } from "../../general/apiHelper";
 
 let lastAccessTime = 0;
 let lastDescription = "";
@@ -59,6 +59,9 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     maxNumberOfTokens: undefined,
     urlsToScrape: "",
     isUsingSimilaritySearch: false,
+    isGivingAiSearchAccess: false,
+    message: "",
+    model: MODEL.Gpt4,
   };
 
   if (api === MODEL.Gpt4 || api === MODEL.Gpt4_Turbo) {

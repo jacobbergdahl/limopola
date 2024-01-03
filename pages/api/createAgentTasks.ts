@@ -1,8 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { MODEL, STATUS_CODE } from "../../general/constants";
 import { gpt } from "./aiModels/gpt";
-import { ProcessedBody } from "./generate";
 import { AGENT_PROMPT_TASK_LIST } from "../../components/agents/agentPrompts";
+import { ProcessedBody } from "../../general/apiHelper";
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
   const mission = req.body.prompt;
@@ -22,6 +22,9 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     maxNumberOfTokens: undefined,
     urlsToScrape: "",
     isUsingSimilaritySearch: false,
+    isGivingAiSearchAccess: false,
+    message: prompt,
+    model: MODEL.Gpt4,
   };
 
   if (prompt.trim().length === 0) {
@@ -33,6 +36,5 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     return;
   }
 
-  // MODEL.GPT4_Turbo may, oddly enough, wrap the whole output in code block tags
   return gpt(res, prompt, MODEL.Gpt4, body);
 }
