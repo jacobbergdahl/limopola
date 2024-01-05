@@ -7,6 +7,8 @@ import { PDFLoader } from "langchain/document_loaders/fs/pdf";
 import { Document } from "langchain/document";
 import path from "path";
 
+type LangchainDocument = Document<Record<string, any>>;
+
 export const splitTextIntoChunks = async (text: string) => {
   const splitText = await new RecursiveCharacterTextSplitter({
     chunkSize: 200,
@@ -19,7 +21,7 @@ export const splitTextIntoChunks = async (text: string) => {
 };
 
 export const splitDocumentsIntoChunks = async (
-  documents: Document<Record<string, any>>[]
+  documents: LangchainDocument[]
 ) => {
   const splitDocs = await new RecursiveCharacterTextSplitter({
     chunkSize: 1000,
@@ -51,7 +53,7 @@ export const performSimilaritySearchFromTexts = async (
 };
 
 export const performSimilaritySearchFromDocuments = async (
-  documents: Document<Record<string, any>>[],
+  documents: LangchainDocument[],
   prompt: string,
   embeddings: OpenAIEmbeddings
 ) => {
@@ -112,7 +114,7 @@ export const performSimilaritySearchOnArrayOfStrings = async (
 
 export const createRagPrompt = (userPrompt: string, context: string) => {
   if (!context) {
-    console.log("Did not receive context.");
+    SHOULD_SHOW_ALL_LOGS && console.log("Did not receive context.");
     return userPrompt;
   }
 
@@ -137,7 +139,7 @@ export const fetchPdfFiles = async () => {
 };
 
 export const getPageContentFromDocuments = (
-  documents: Document<Record<string, any>>[]
+  documents: LangchainDocument[]
 ): string[] => {
   return documents.map((document) => document.pageContent);
 };

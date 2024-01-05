@@ -10,7 +10,7 @@ export enum BUTTON_THEME {
 
 type ButtonProps = {
   value: any;
-  onClick: MouseEventHandler<HTMLInputElement> | undefined;
+  onClick?: MouseEventHandler<HTMLInputElement>;
   isSelected?: boolean;
   disabled?: boolean;
   className?: string;
@@ -70,12 +70,12 @@ export const Button = ({
     classnames += ` ${styles.negative}`;
   }
 
-  const handleClick = () => {
+  const handleClick = (event) => {
     if (!isAskingForConfirmation && shouldAskForConfirmation) {
       setIsAskingForConfirmation(true);
     } else {
       setIsAskingForConfirmation(false);
-      onClick?.(value);
+      onClick?.(event);
     }
   };
 
@@ -85,7 +85,7 @@ export const Button = ({
       value={
         isAskingForConfirmation ? "Press again to confirm" : value.toString()
       }
-      onClick={handleClick}
+      onClick={(event) => handleClick(event)}
       className={classnames}
       disabled={disabled}
     />
