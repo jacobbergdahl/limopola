@@ -9,6 +9,7 @@ import {
   createRagPrompt,
   fetchPdfFiles,
   performSimilaritySearchFromDocuments,
+  splitDocumentsIntoChunks,
   throwIfPromptIsLong,
 } from "../../../general/retrievalAugmentedGeneration";
 import { OpenAIEmbeddings } from "@langchain/openai";
@@ -26,8 +27,9 @@ export const pdfReader = async (
   try {
     const embeddings = new OpenAIEmbeddings();
     const pdfFiles = await fetchPdfFiles();
+    const chunks = await splitDocumentsIntoChunks(pdfFiles);
     const context = await performSimilaritySearchFromDocuments(
-      pdfFiles, // note: I have created a function called splitDocumentsIntoChunks (~\general\retrievalAugmentedGeneration.ts) which I ended up not using here, but in the future it might be interesting to see if it can yield better results than to just send in the pdf files
+      chunks,
       message,
       embeddings
     );
@@ -38,6 +40,7 @@ export const pdfReader = async (
       console.log("Prompt after reading pdf files\n", prompt);
 
     throwIfPromptIsLong(prompt);
+    return;
 
     return gpt(res, prompt, model, processedBody);
   } catch (error: any) {
