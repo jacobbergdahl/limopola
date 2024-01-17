@@ -1,4 +1,4 @@
-import { OpenAIEmbeddings } from "langchain/embeddings/openai";
+import { OpenAIEmbeddings } from "@langchain/openai";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { MemoryVectorStore } from "langchain/vectorstores/memory";
 import { SHOULD_SHOW_ALL_LOGS } from "./constants";
@@ -147,7 +147,7 @@ export const getPageContentFromDocuments = (
 export const throwIfPromptIsLong = (prompt: string): void => {
   if (prompt.length > 10000) {
     throw new Error(
-      "The prompt is very long. It might not necessarily be too long to send to an LLM, but given that it should be the result of a similarity search, it shouldn't be this long. Your prompt was not sent to an LLM as a (monetary) safety precaution, but you may still be able to send it to an LLM. To do so, simply comment out this conditional."
+      "The prompt is very long. It might not necessarily be too long to send to an LLM, but given that it should be the result of a similarity search, it shouldn't be this long. Your prompt was not sent to an LLM as a (monetary) safety precaution, but you may still be able to send it to an LLM. To do so, simply comment out this conditional.\n\nThis can also probably be resolved by splitting the content from the retrieval into chunks."
     );
   }
 };

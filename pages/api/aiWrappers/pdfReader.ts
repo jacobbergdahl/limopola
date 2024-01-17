@@ -7,7 +7,7 @@ import {
   performSimilaritySearchFromDocuments,
   throwIfPromptIsLong,
 } from "../../../general/retrievalAugmentedGeneration";
-import { OpenAIEmbeddings } from "langchain/embeddings/openai";
+import { OpenAIEmbeddings } from "@langchain/openai";
 import { ProcessedBody } from "../../../general/apiHelper";
 
 /**
