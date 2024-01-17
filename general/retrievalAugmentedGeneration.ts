@@ -49,12 +49,7 @@ export const performSimilaritySearchFromTexts = async (
     numberOfSimilarityResults
   );
 
-  const stringifiedResults = JSON.stringify(similaritySearchResults);
-
-  SHOULD_SHOW_ALL_LOGS &&
-    console.log("Similarity search results:", stringifiedResults);
-
-  return stringifiedResults;
+  return similaritySearchResults;
 };
 
 export const performSimilaritySearchFromDocuments = async (
@@ -109,7 +104,12 @@ export const performSimilaritySearchOnArrayOfStrings = async (
     })
   );
 
-  return similaritySearchResults;
+  const stringifiedResults = JSON.stringify(similaritySearchResults);
+
+  SHOULD_SHOW_ALL_LOGS &&
+    console.log("Similarity search results:", stringifiedResults);
+
+  return stringifiedResults;
 };
 
 export const createRagPrompt = (userPrompt: string, context: string) => {
