@@ -1,6 +1,10 @@
 import { NextApiResponse } from "next";
 import { gpt } from "../aiModels/gpt";
-import { MODEL, SHOULD_SHOW_ALL_LOGS, STATUS_CODE } from "../../../general/constants";
+import {
+  MODEL,
+  SHOULD_SHOW_ALL_LOGS,
+  STATUS_CODE,
+} from "../../../general/constants";
 import {
   createRagPrompt,
   fetchPdfFiles,
@@ -37,6 +41,8 @@ export const pdfReader = async (
 
     return gpt(res, prompt, model, processedBody);
   } catch (error: any) {
-    res.status(STATUS_CODE.InternalServerError).json({ error: error.message || "An error occurred" });
+    res
+      .status(STATUS_CODE.InternalServerError)
+      .json({ error: error.message || "An error occurred" });
   }
 };

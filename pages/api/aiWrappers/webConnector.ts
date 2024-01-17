@@ -166,6 +166,8 @@ export const webConnector = async (
 
     return callLlm(res, finalPrompt, model, processedBody);
   } catch (error: any) {
-    res.status(STATUS_CODE.InternalServerError).json({ error: error.message || "An error occurred" });
+    res
+      .status(STATUS_CODE.InternalServerError)
+      .json({ error: error.message || "An error occurred" });
   }
 };

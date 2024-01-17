@@ -450,7 +450,8 @@ export default function Home() {
 
     if (response.status !== STATUS_CODE.Ok) {
       handleError(
-        data.error?.message || data.error ||
+        data.error?.message ||
+          data.error ||
           new Error(`Request failed with status ${response.status}`),
         newChatHistory
       );
