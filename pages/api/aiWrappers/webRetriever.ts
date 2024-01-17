@@ -6,7 +6,7 @@ import { NextApiResponse } from "next";
 import fetch from "node-fetch";
 import { load } from "cheerio";
 import { gpt } from "../aiModels/gpt";
-import { MODEL, SHOULD_SHOW_ALL_LOGS } from "../../../general/constants";
+import { MODEL, SHOULD_SHOW_ALL_LOGS, STATUS_CODE } from "../../../general/constants";
 import {
   createRagPrompt,
   performSimilaritySearchOnArrayOfStrings,
@@ -93,6 +93,6 @@ export const webRetriever = async (
 
     return gpt(res, prompt, model, processedBody);
   } catch (error: any) {
-    res.status(500).json({ error: error.message || "An error occurred" });
+    res.status(STATUS_CODE.InternalServerError).json({ error: error.message || "An error occurred" });
   }
 };

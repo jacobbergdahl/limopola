@@ -1,10 +1,11 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextApiResponse } from "next";
 import fetch from "node-fetch";
 import { gpt } from "../aiModels/gpt";
 import {
   ALL_LLAMA_MODELS,
   ALL_OPEN_AI_MODELS,
   MODEL,
+  STATUS_CODE,
 } from "../../../general/constants";
 import { llama2 } from "../aiModels/llama";
 import { llamaLocal } from "../aiModels/llamaLocal";
@@ -165,6 +166,6 @@ export const webConnector = async (
 
     return callLlm(res, finalPrompt, model, processedBody);
   } catch (error: any) {
-    res.status(500).json({ error: error.message || "An error occurred" });
+    res.status(STATUS_CODE.InternalServerError).json({ error: error.message || "An error occurred" });
   }
 };
