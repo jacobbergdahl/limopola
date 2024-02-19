@@ -40,7 +40,6 @@ export const pdfReader = async (
       console.log("Prompt after reading pdf files\n", prompt);
 
     throwIfPromptIsLong(prompt);
-    return;
 
     return gpt(res, prompt, model, processedBody);
   } catch (error: any) {
