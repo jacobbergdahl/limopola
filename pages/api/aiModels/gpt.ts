@@ -4,7 +4,10 @@ import {
   SHOULD_SHOW_ALL_LOGS,
   STATUS_CODE,
 } from "../../../general/constants";
-import { parseTextResponse } from "../../../general/helpers";
+import {
+  extractErrorMessage,
+  parseTextResponse,
+} from "../../../general/helpers";
 import OpenAI from "openai";
 import { ProcessedBody } from "../../../general/apiHelper";
 
@@ -81,15 +84,8 @@ export const gpt = async (
 
     res.status(STATUS_CODE.Ok).json({ result: output });
   } catch (error) {
+    const errorMessage = extractErrorMessage(error);
     console.error(error);
-    let errorMessage = error?.message;
-    if (error?.response?.data?.message) {
-      errorMessage = error.response.data.message;
-    } else if (error?.response?.error?.message) {
-      errorMessage = error.response.error.message;
-    } else if (error?.response?.data?.error?.message) {
-      errorMessage = error.response.data.error.message;
-    }
     res
       .status(STATUS_CODE.InternalServerError)
       .json({ error: { message: errorMessage } });

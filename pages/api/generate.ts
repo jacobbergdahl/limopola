@@ -1,5 +1,5 @@
 import {
-  ALL_LLAMA_MODELS,
+  ALL_LLAMA_MODELS_REPLICATE,
   ALL_OPEN_AI_MODELS,
   MODEL,
   STATUS_CODE,
@@ -28,7 +28,6 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   const numberOfImages = processedBody.numberOfImages;
   const imageSize = processedBody.imageSize;
   const temperature = processedBody.temperature;
-  const requestedNumberOfTokens = processedBody.requestedNumberOfTokens;
   const voiceSimilarityBoost = processedBody.voiceSimilarityBoost;
   const voiceStability = processedBody.voiceStability;
   const urlsToScrape = processedBody.urlsToScrape;
@@ -61,7 +60,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     if (model === MODEL.StableDiffusionSdXl) {
       return stableDiffusionSdXl(res, message, numberOfImages);
     }
-    if (ALL_LLAMA_MODELS.includes(model)) {
+    if (ALL_LLAMA_MODELS_REPLICATE.includes(model)) {
       return llama2(res, message, model, processedBody);
     }
     if (model === MODEL.AnimateDiff) {
@@ -71,7 +70,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
       return elevenLabs(res, message, voiceSimilarityBoost, voiceStability);
     }
     if (model === MODEL.LocalLlama) {
-      return llamaLocal(res, message, temperature, requestedNumberOfTokens);
+      return llamaLocal(res, message, processedBody);
     }
     if (model === MODEL.FactChecker) {
       return factChecker(res, message);

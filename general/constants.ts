@@ -37,6 +37,7 @@ export enum MODEL {
   WebRetriever = "gpt-4-web-retriever",
   PdfReader = "gpt-4-pdf-reader",
   LocalLlama = "local-llama",
+  WebLlm = "web-llm",
   Debug = "debug",
 }
 
@@ -197,8 +198,14 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
     case MODEL.LocalLlama:
       return {
         status: MODEL_STATUS.Full,
-        information: `This model runs locally on your machine. If you have have opted to show all logs, then you can see its progress in the NodeJS console. End your message with "Answer:" to get an answer, otherwise you might get a continuation.`,
+        information: `This model runs locally on your machine. See the README for an explanation on how to get set-up.`,
         learnMoreUrl: "https://llama-node.vercel.app/docs/start",
+      };
+    case MODEL.WebLlm:
+      return {
+        status: MODEL_STATUS.Poor,
+        information: `Not yet implemented. WebLlm allows you to run local llm's directly in the browser, but it's still very early and there are technical issues with running it.`,
+        learnMoreUrl: "https://github.com/mlc-ai/web-llm/tree/main",
       };
     case MODEL.ElevenLabs:
       return {
@@ -299,13 +306,12 @@ export const ALL_OPEN_AI_MODELS = [
   MODEL.Dalle3,
 ];
 
-export const ALL_LLAMA_MODELS = [
+export const ALL_LLAMA_MODELS_REPLICATE = [
   MODEL.Llama2_70b,
   MODEL.Llama2_13b,
   MODEL.Llama2_70b_chat,
   MODEL.Llama2_13b_chat,
   MODEL.CodeLlama_13b,
-  MODEL.LocalLlama,
 ];
 
 export const ALL_SLOW_MODELS = [MODEL.AnimateDiff, MODEL.LocalLlama];

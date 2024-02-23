@@ -21,6 +21,8 @@ export const parseTextResponse = (text: string): string => {
     .replace(/ENDCODE/g, "")
     .replace(/BEGININSTRUCTION/g, "")
     .replace(/ENDINSTRUCTION/g, "")
+    .replace("\n\n<end>", "")
+    .replace("\n\n</end>", "")
     .replace(/""""/g, "")
     .replace(/"""/g, "")
     .trim();
@@ -376,4 +378,16 @@ export const createPlaceHolderChatHistory = (numberOfMessages: number) => {
 
 export const clearLocalStorage = () => {
   localStorage.clear();
+};
+
+export const extractErrorMessage = (error: any) => {
+  let errorMessage = error?.message;
+  if (error?.response?.data?.message) {
+    errorMessage = error.response.data.message;
+  } else if (error?.response?.error?.message) {
+    errorMessage = error.response.error.message;
+  } else if (error?.response?.data?.error?.message) {
+    errorMessage = error.response.data.error.message;
+  }
+  return errorMessage;
 };

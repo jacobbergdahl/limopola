@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useRef, useEffect, useState, useCallback } from "react";
 import {
-  ALL_LLAMA_MODELS,
+  ALL_LLAMA_MODELS_REPLICATE,
   ALL_OPEN_AI_MODELS,
   DEFAULT_CONTEXT,
   getModelType,
@@ -172,15 +172,17 @@ export default function Home() {
   const shouldShowUrlsToScrape = isUsingWebRetriever;
   const shouldShowTemperature =
     selectedModelType === MODEL_TYPE.Text &&
-    (ALL_LLAMA_MODELS.includes(model) ||
+    (ALL_LLAMA_MODELS_REPLICATE.includes(model) ||
       ALL_OPEN_AI_MODELS.includes(model) ||
       model === MODEL.PalmChatBison001 ||
-      model === MODEL.PalmTextBison001) &&
+      model === MODEL.PalmTextBison001 ||
+      model === MODEL.LocalLlama) &&
     !isUsingCustomTextGeneratingWrapper;
   const shouldShowTopP =
     selectedModelType === MODEL_TYPE.Text &&
     model !== MODEL.LocalLlama &&
-    (ALL_LLAMA_MODELS.includes(model) || ALL_OPEN_AI_MODELS.includes(model)) &&
+    (ALL_LLAMA_MODELS_REPLICATE.includes(model) ||
+      ALL_OPEN_AI_MODELS.includes(model)) &&
     !isUsingCustomTextGeneratingWrapper;
   const shouldShowFrequencyPenalty =
     selectedModelType === MODEL_TYPE.Text &&
@@ -191,9 +193,11 @@ export default function Home() {
     ALL_OPEN_AI_MODELS.includes(model) &&
     !isUsingCustomTextGeneratingWrapper;
   const shouldShowVoiceSettings = selectedModelType === MODEL_TYPE.Audio;
-  const shouldShowRequestedNumberOfTokens = model === MODEL.LocalLlama;
+  const shouldShowRequestedNumberOfTokens = false;
   const shouldShowMaxNumberOfTokens =
-    ALL_OPEN_AI_MODELS.includes(model) && selectedModelType === MODEL_TYPE.Text;
+    (ALL_OPEN_AI_MODELS.includes(model) &&
+      selectedModelType === MODEL_TYPE.Text) ||
+    model === MODEL.LocalLlama;
   const shouldShowMemory =
     selectedModelType === MODEL_TYPE.Text &&
     inputMode === INPUT_MODE.Chat &&

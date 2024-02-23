@@ -16,7 +16,8 @@
 # misc
 .DS_Store
 .code-workspace
-/models/
+/models/*
+!/models/.gitkeep
 database.db
 /data/pdf/
 

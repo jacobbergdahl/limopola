@@ -2,7 +2,7 @@ import { NextApiResponse } from "next";
 import fetch from "node-fetch";
 import { gpt } from "../aiModels/gpt";
 import {
-  ALL_LLAMA_MODELS,
+  ALL_LLAMA_MODELS_REPLICATE,
   ALL_OPEN_AI_MODELS,
   MODEL,
   STATUS_CODE,
@@ -19,16 +19,11 @@ const callLlm = async (
   model: MODEL,
   processedBody: ProcessedBody
 ) => {
-  if (ALL_LLAMA_MODELS.includes(model)) {
+  if (ALL_LLAMA_MODELS_REPLICATE.includes(model)) {
     return llama2(res, message, model, processedBody);
   }
   if (model === MODEL.LocalLlama) {
-    return llamaLocal(
-      res,
-      message,
-      processedBody.temperature,
-      processedBody.requestedNumberOfTokens
-    );
+    return llamaLocal(res, message, processedBody);
   }
   if (ALL_OPEN_AI_MODELS.includes(model)) {
     return gpt(res, message, model, processedBody);

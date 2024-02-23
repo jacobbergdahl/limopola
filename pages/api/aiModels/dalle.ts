@@ -4,6 +4,7 @@ import {
   STATUS_CODE,
 } from "../../../general/constants";
 import OpenAI from "openai";
+import { extractErrorMessage } from "../../../general/helpers";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -45,10 +46,7 @@ export const dalle = async (
     return;
   } catch (error) {
     console.error(error);
-    let errorMessage = error?.message;
-    if (error?.response?.data?.error?.message) {
-      errorMessage = error.response.data.error.message;
-    }
+    let errorMessage = extractErrorMessage(error);
     res
       .status(STATUS_CODE.InternalServerError)
       .json({ error: { message: errorMessage } });

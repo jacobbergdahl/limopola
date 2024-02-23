@@ -24,6 +24,22 @@ The project is quick and easy to set-up, but it requires either an API key from 
 npm i
 ```
 
+### Set up a local LLM
+
+You can easily use [llama](https://ai.meta.com/resources/models-and-libraries/llama/) locally on your machine in this project. Depending on your OS and your prior set-ups, you may need to set-up environments using [this guide](https://github.com/cocktailpeanut/dalai#quickstart).
+
+To set up a local LLM, follow these steps:
+
+1. Download an LLM from HuggingFace. I recommend downloading [this model](https://huggingface.co/TheBloke/dolphin-2.6-mistral-7B-dpo-laser-GGUF/blob/main/dolphin-2.6-mistral-7b-dpo-laser.Q4_K_M.gguf). If you want to download a different model, I recommend downloading a 7B version with the `gguf` extension from [TheBloke](https://huggingface.co/TheBloke?search_models=GGUF). Place the model in the `models/` folder.
+2. Validate the model by running `npm run validate-local-llm`. Try saying "Hello" just to check that you get a reasonable output.
+3. Run `npm i` and `npm run dev`, and then select `local-llama` in the left sidebar, and start interacting with the model.
+
+#### Troubleshooting the local LLM
+
+- [Documentation](https://github.com/withcatai/node-llama-cpp).
+- [Get started with node-llama-cpp](https://withcatai.github.io/node-llama-cpp/guide/).
+- [Helpful guide](https://blog.devgenius.io/how-to-generate-html-content-with-ai-using-llama-node-and-express-e1b1e0e1a55b).
+
 ### Get API keys
 
 Create a `.env` file from the `.env.example` file, and add API keys. There are instructions in the file for where to get the keys.
@@ -38,21 +54,6 @@ Be careful when using the `animate-diff` model as it will likely burn through yo
 - `GOOGLE_API_KEY`: Used for Google's text-to-speech LLMs (PaLM). This API is also free to use for a while, but may be region-locked. Generate the API key at [https://makersuite.google.com/app/apikey](https://makersuite.google.com/app/apikey).
 
 In the future, this project will likely also give you the option of adding an API key to HuggingFace.
-
-### Set up a local LLM
-
-You can easily use [llama](https://ai.meta.com/resources/models-and-libraries/llama/) locally on your machine in this project.
-
-To set up a local LLM, follow these steps:
-
-1. Install the correct environments by following [this guide](https://github.com/cocktailpeanut/dalai#quickstart). The steps will vary depending on your operating system.
-2. Download [this model](https://huggingface.co/TheBloke/airoboros-13b-gpt4-GGML/resolve/main/airoboros-13b-gpt4.ggmlv3.q4_0.bin) and place it in the gitignored `models/` folder.
-3. Run `npm i` and `npm run dev`, and then select `local` in the left sidebar, and start interacting with the model.
-
-#### Troubleshooting the local LLM
-
-- [Documentation](https://llama-node.vercel.app/docs/start)
-- [Helpful guide](https://blog.devgenius.io/how-to-generate-html-content-with-ai-using-llama-node-and-express-e1b1e0e1a55b)
 
 ### Run project
 

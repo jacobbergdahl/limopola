@@ -15,7 +15,7 @@ export const MaxNumberOfTokens = ({
       <p>
         This will request the model to write a reply that is less than this
         number of tokens, but it's not guaranteed to follow the instruction. 0 =
-        the default is used.
+        no limit is passed in.
       </p>
       <NumberTextField
         value={maxNumberOfTokens}
