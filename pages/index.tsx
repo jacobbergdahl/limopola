@@ -176,11 +176,11 @@ export default function Home() {
       ALL_OPEN_AI_MODELS.includes(model) ||
       model === MODEL.PalmChatBison001 ||
       model === MODEL.PalmTextBison001 ||
-      model === MODEL.LocalLlama) &&
+      model === MODEL.LocalLlm) &&
     !isUsingCustomTextGeneratingWrapper;
   const shouldShowTopP =
     selectedModelType === MODEL_TYPE.Text &&
-    model !== MODEL.LocalLlama &&
+    model !== MODEL.LocalLlm &&
     (ALL_LLAMA_MODELS_REPLICATE.includes(model) ||
       ALL_OPEN_AI_MODELS.includes(model)) &&
     !isUsingCustomTextGeneratingWrapper;
@@ -197,7 +197,7 @@ export default function Home() {
   const shouldShowMaxNumberOfTokens =
     (ALL_OPEN_AI_MODELS.includes(model) &&
       selectedModelType === MODEL_TYPE.Text) ||
-    model === MODEL.LocalLlama;
+    model === MODEL.LocalLlm;
   const shouldShowMemory =
     selectedModelType === MODEL_TYPE.Text &&
     inputMode === INPUT_MODE.Chat &&
@@ -287,7 +287,7 @@ export default function Home() {
         `${message.sender.replace("You", "User")}: ${message.content}\n\n`
     );
 
-    const modelNameOrEmpty = model !== MODEL.LocalLlama ? `${model}:` : "";
+    const modelNameOrEmpty = model !== MODEL.LocalLlm ? `${model}:` : "";
 
     return `${finalMessage.join(
       ""
@@ -717,8 +717,12 @@ export default function Home() {
       "Please elaborate on your previous message. Explain in greater detail what you just wrote."
     );
   const handleContinue = () => onSubmit("Please continue on your last post.");
-  const handleRepeatLastMessage = () =>
-    onSubmit(getLatestMessageByUser(chatHistory).content);
+  const handleRepeatLastMessage = () => {
+    const latestMessageByUser = getLatestMessageByUser(chatHistory);
+    if (latestMessageByUser) {
+      onSubmit(latestMessageByUser.content);
+    }
+  };
 
   // This logic exists due to the hydration mismatch caused by Jotai's functions for saving to local storage
   const [hasMounted, setHasMounted] = useState(false);

@@ -47,6 +47,7 @@ export const llamaLocal = async (
       temperature: processedBody.temperature,
       maxTokens: processedBody.maxNumberOfTokens,
       topP: processedBody.topP,
+      signal: abortController.signal,
     });
 
     abortController.abort();

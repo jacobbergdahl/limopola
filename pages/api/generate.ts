@@ -69,7 +69,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     if (model === MODEL.ElevenLabs) {
       return elevenLabs(res, message, voiceSimilarityBoost, voiceStability);
     }
-    if (model === MODEL.LocalLlama) {
+    if (model === MODEL.LocalLlm) {
       return llamaLocal(res, message, processedBody);
     }
     if (model === MODEL.FactChecker) {

@@ -36,7 +36,7 @@ export enum MODEL {
   FactChecker = "gpt-4-fact-checker",
   WebRetriever = "gpt-4-web-retriever",
   PdfReader = "gpt-4-pdf-reader",
-  LocalLlama = "local-llama",
+  LocalLlm = "local-llm",
   WebLlm = "web-llm",
   Debug = "debug",
 }
@@ -195,11 +195,11 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
         learnMoreUrl: "https://replicate.com/lucataco/animate-diff",
         apiKey: MODEL_API_KEY.Replicate,
       };
-    case MODEL.LocalLlama:
+    case MODEL.LocalLlm:
       return {
         status: MODEL_STATUS.Full,
         information: `This model runs locally on your machine. See the README for an explanation on how to get set-up.`,
-        learnMoreUrl: "https://llama-node.vercel.app/docs/start",
+        learnMoreUrl: "https://github.com/withcatai/node-llama-cpp",
       };
     case MODEL.WebLlm:
       return {
@@ -279,7 +279,7 @@ export const ALL_TEXT_MODELS = [
   MODEL.Llama2_70b_chat,
   MODEL.Llama2_13b_chat,
   MODEL.CodeLlama_13b,
-  MODEL.LocalLlama,
+  MODEL.LocalLlm,
   MODEL.PalmTextBison001,
   MODEL.PalmChatBison001,
   MODEL.Debug,
@@ -314,7 +314,7 @@ export const ALL_LLAMA_MODELS_REPLICATE = [
   MODEL.CodeLlama_13b,
 ];
 
-export const ALL_SLOW_MODELS = [MODEL.AnimateDiff, MODEL.LocalLlama];
+export const ALL_SLOW_MODELS = [MODEL.AnimateDiff, MODEL.LocalLlm];
 
 export const ALL_CUSTOM_WRAPPERS = [
   MODEL.FactChecker,
@@ -380,6 +380,9 @@ export enum IMAGE_SIZE_DALL_E_3 {
 }
 
 export const getDefaultModel = (): MODEL => {
+  if (!!process.env.NEXT_PUBLIC_DEFAULT_MODEL) {
+    return process.env.NEXT_PUBLIC_DEFAULT_MODEL as MODEL;
+  }
   if (IS_DEBUGGING) {
     return MODEL.Debug;
   }

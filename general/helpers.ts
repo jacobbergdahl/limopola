@@ -106,7 +106,9 @@ export const getCtrlKey = () => {
   return getUserOperatingSystem() === OperatingSystem.Mac ? "⌘" : "CTRL";
 };
 
-export const getLatestMessageByUser = (chatHistory: Message[]) => {
+export const getLatestMessageByUser = (
+  chatHistory: Message[]
+): Message | undefined => {
   return chatHistory
     .slice()
     .reverse()

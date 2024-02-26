@@ -6,11 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "local": "cross-env NEXT_PUBLIC_DEFAULT_MODEL=local-llm && npm run dev",
     "generate-api-table": "tsc scripts/generateModelTable.ts --outDir . && node scripts/generateModelTable.js",
     "format": "prettier --write \"./**/*.{ts,tsx}\"",
     "update-packages": "npx ncu -u && npm install && npm update",
-    "install-local-llm": "npx ipull https://huggingface.co/TheBloke/dolphin-2.6-mistral-7B-dpo-laser-GGUF/blob/main/dolphin-2.6-mistral-7b-dpo-laser.Q4_K_M.gguf",
-    "validate-local-llm": "npx --no node-llama-cpp chat --model dolphin-2.6-mistral-7b-dpo-laser.Q4_K_M.gguf"
+    "install-local-llm": "npx ipull set .gguf ./models && npx ipull https://huggingface.co/TheBloke/dolphin-2.6-mistral-7B-dpo-laser-GGUF/resolve/main/dolphin-2.6-mistral-7b-dpo-laser.Q4_K_M.gguf",
+    "validate-local-llm": "npx --no node-llama-cpp chat --model dolphin-2.6-mistral-7b-dpo-laser.Q4_K_M.gguf",
+    "quickstart": "npm install && npm run install-local-llm && npm run local"
   },
   "dependencies": {
     "@langchain/openai": "^0.0.14",

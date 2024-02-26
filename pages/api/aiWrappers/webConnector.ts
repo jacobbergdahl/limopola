@@ -22,7 +22,7 @@ const callLlm = async (
   if (ALL_LLAMA_MODELS_REPLICATE.includes(model)) {
     return llama2(res, message, model, processedBody);
   }
-  if (model === MODEL.LocalLlama) {
+  if (model === MODEL.LocalLlm) {
     return llamaLocal(res, message, processedBody);
   }
   if (ALL_OPEN_AI_MODELS.includes(model)) {

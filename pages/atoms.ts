@@ -65,7 +65,7 @@ export const requestedNumberOfTokensAtom = atomWithStorage(
   0
 );
 export const maxNumberOfTokensAtom = atomWithStorage("MAX_NUMBER_OF_TOKENS", 0);
-export const inputModeAtom = atomWithStorage("INPUT_MODE", INPUT_MODE.Agent);
+export const inputModeAtom = atomWithStorage("INPUT_MODE", INPUT_MODE.Chat);
 export const textAreaStyleAtom = atomWithStorage(
   "TEXTAREA_STYLE",
   TEXTAREA_STYLE.Default

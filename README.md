@@ -14,9 +14,17 @@ Originally (regrettably) based on a [simple starter repository by OpenAI](https:
 
 - [Planned updates to this repository](https://github.com/jacobbergdahl/limopola/blob/main/TODO.md).
 
+## Quickstart
+
+This will download the repository, install dependencies, install [this AI model](https://huggingface.co/TheBloke/dolphin-2.6-mistral-7B-dpo-laser-GGUF/blob/main/dolphin-2.6-mistral-7b-dpo-laser.Q4_K_M.gguf), and run the project.
+
+```bash
+git clone git@github.com:jacobbergdahl/limopola.git && cd limopola/ && npm run quickstart
+```
+
 ## Set-up
 
-The project is quick and easy to set-up, but it requires either an API key from at least one service or setting up a local machine learning model.
+The project is very quick and easy to set-up. It requires either an API key from at least one service or setting up a local machine learning model.
 
 ### Installation
 
@@ -30,9 +38,9 @@ You can easily use [llama](https://ai.meta.com/resources/models-and-libraries/ll
 
 To set up a local LLM, follow these steps:
 
-1. Download an LLM from HuggingFace. I recommend downloading [this model](https://huggingface.co/TheBloke/dolphin-2.6-mistral-7B-dpo-laser-GGUF/blob/main/dolphin-2.6-mistral-7b-dpo-laser.Q4_K_M.gguf). If you want to download a different model, I recommend downloading a 7B version with the `gguf` extension from [TheBloke](https://huggingface.co/TheBloke?search_models=GGUF). Place the model in the `models/` folder.
+1. Download an LLM from HuggingFace. You can download a recommended model by simply running `npm run install-local-llm`. If you want to download an LLM manually, then I recommend downloading [this model](https://huggingface.co/TheBloke/dolphin-2.6-mistral-7B-dpo-laser-GGUF/blob/main/dolphin-2.6-mistral-7b-dpo-laser.Q4_K_M.gguf). If you want to download a different model, I recommend downloading a 7B version with the `gguf` extension from [TheBloke](https://huggingface.co/TheBloke?search_models=GGUF). Place the model in the `models/` folder (this is done automatically by the `install-local-llm` script).
 2. Validate the model by running `npm run validate-local-llm`. Try saying "Hello" just to check that you get a reasonable output.
-3. Run `npm i` and `npm run dev`, and then select `local-llama` in the left sidebar, and start interacting with the model.
+3. Run `npm i` and `npm run local`. If it's not already selected by default, then `local-llm` in the left sidebar, and start interacting with the model.
 
 #### Troubleshooting the local LLM
 
@@ -85,7 +93,7 @@ This is a list of models currently included in this AI interface. More models wi
 | eleven-labs          | Audio | ElevenLabs |
 | text-bison-001\*\*   | Text  | Google     |
 | chat-bison-001\*\*   | Text  | Google     |
-| local-llama          | Text  | None       |
+| local-llm            | Text  | None       |
 
 \* GPT-4 Turbo (preview).
 \*\* Google PaLM. No longer available in the `main` branch due to a rough dependency clash. To use Google's API's, run `git checkout google-generativelanguage && npm install`.
