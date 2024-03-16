@@ -19,6 +19,7 @@
     "@llama-node/llama-cpp": "^0.1.6",
     "@mlc-ai/web-llm": "^0.2.28",
     "@types/sqlite3": "^3.1.11",
+    "@xenova/transformers": "^2.16.0",
     "cheerio": "^1.0.0-rc.12",
     "file-saver": "^2.0.5",
     "highlight.js": "^11.9.0",

@@ -197,6 +197,7 @@ export default function Home() {
   const shouldShowMaxNumberOfTokens =
     (ALL_OPEN_AI_MODELS.includes(model) &&
       selectedModelType === MODEL_TYPE.Text) ||
+    model === MODEL.TransformersText2Text ||
     model === MODEL.LocalLlm;
   const shouldShowMemory =
     selectedModelType === MODEL_TYPE.Text &&
@@ -210,6 +211,8 @@ export default function Home() {
   const shouldShowContexts =
     inputMode === INPUT_MODE.Chat &&
     !isFactChecking &&
+    model !== MODEL.TransformersSentimentAnalysis &&
+    model !== MODEL.TransformersText2Text &&
     selectedModelType !== MODEL_TYPE.Audio;
   const shouldShowNumberOfImages =
     selectedModelType === MODEL_TYPE.Image && model !== MODEL.Dalle3;
@@ -219,6 +222,7 @@ export default function Home() {
   const shouldShowAiSearchAccess =
     selectedModelType === MODEL_TYPE.Text &&
     inputMode === INPUT_MODE.Chat &&
+    model !== MODEL.TransformersSentimentAnalysis &&
     !isUsingCustomTextGeneratingWrapper;
 
   useEffect(() => {
@@ -337,7 +341,10 @@ export default function Home() {
         isPresencePenaltyDefault: isPresencePenaltyDefault,
         urlsToScrape: urlsToScrape,
         isUsingSimilaritySearch: isUsingSimilaritySearch,
-        isGivingAiSearchAccess: isGivingAiSearchAccess,
+        isGivingAiSearchAccess:
+          model !== MODEL.TransformersSentimentAnalysis
+            ? isGivingAiSearchAccess
+            : false,
       });
     } else if (selectedModelType === MODEL_TYPE.Audio) {
       return JSON.stringify({
@@ -711,6 +718,7 @@ export default function Home() {
     setIsTopPDefault(true);
     setIsFrequencyPenaltyDefault(true);
     setIsPresencePenaltyDefault(true);
+    setIsGivingAiSearchAccess(false);
   };
   const handleElaborate = () =>
     onSubmit(

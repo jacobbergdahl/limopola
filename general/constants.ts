@@ -38,6 +38,8 @@ export enum MODEL {
   PdfReader = "gpt-4-pdf-reader",
   LocalLlm = "local-llm",
   WebLlm = "web-llm",
+  TransformersSentimentAnalysis = "t-sentiment-analysis",
+  TransformersText2Text = "t-text2text",
   Debug = "debug",
 }
 
@@ -201,6 +203,18 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
         information: `This model runs locally on your machine. See the README for an explanation on how to get set-up.`,
         learnMoreUrl: "https://github.com/withcatai/node-llama-cpp",
       };
+    case MODEL.TransformersSentimentAnalysis:
+      return {
+        status: MODEL_STATUS.Full,
+        information: `This model will perform sentiment analysis on your input. It runs locally in your browser via transformers.js. It will be slow the first time you run it, but it will be cached, and subsequent runs are faster.`,
+        learnMoreUrl: "https://huggingface.co/docs/transformers.js/pipelines",
+      };
+    case MODEL.TransformersText2Text:
+      return {
+        status: MODEL_STATUS.Full,
+        information: `This is a conversational model that runs locally in your browser via transformers.js. It will be slow the first time you run it, but it will be cached, and subsequent runs are faster.`,
+        learnMoreUrl: "https://huggingface.co/docs/transformers.js/pipelines",
+      };
     case MODEL.WebLlm:
       return {
         status: MODEL_STATUS.Poor,
@@ -280,6 +294,8 @@ export const ALL_TEXT_MODELS = [
   MODEL.Llama2_13b_chat,
   MODEL.CodeLlama_13b,
   MODEL.LocalLlm,
+  MODEL.TransformersSentimentAnalysis,
+  MODEL.TransformersText2Text,
   MODEL.PalmTextBison001,
   MODEL.PalmChatBison001,
   MODEL.Debug,
@@ -314,7 +330,12 @@ export const ALL_LLAMA_MODELS_REPLICATE = [
   MODEL.CodeLlama_13b,
 ];
 
-export const ALL_SLOW_MODELS = [MODEL.AnimateDiff, MODEL.LocalLlm];
+export const ALL_SLOW_MODELS = [
+  MODEL.AnimateDiff,
+  MODEL.LocalLlm,
+  MODEL.TransformersSentimentAnalysis,
+  MODEL.TransformersText2Text,
+];
 
 export const ALL_CUSTOM_WRAPPERS = [
   MODEL.FactChecker,

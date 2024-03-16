@@ -20,6 +20,7 @@ import { webRetriever } from "./aiWrappers/webRetriever";
 import { pdfReader } from "./aiWrappers/pdfReader";
 import { webConnector } from "./aiWrappers/webConnector";
 import { getProcessedBodyForAiApiCalls } from "../../general/apiHelper";
+import { transformers } from "./aiModels/transformers";
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
   const processedBody = getProcessedBodyForAiApiCalls(req);
@@ -87,6 +88,12 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     }
     if (model === MODEL.PdfReader) {
       return pdfReader(res, message, MODEL.Gpt4, processedBody);
+    }
+    if (
+      model === MODEL.TransformersSentimentAnalysis ||
+      model === MODEL.TransformersText2Text
+    ) {
+      return transformers(res, message, model, processedBody);
     }
     if (model === MODEL.PalmChatBison001 || model === MODEL.PalmTextBison001) {
       return palm(res, message, model, temperature);
