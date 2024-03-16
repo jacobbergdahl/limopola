@@ -12,6 +12,6 @@ export const contextAddedVideos = (numberOfVideos?: number): string[] => {
 
 export const contextAddedNarration = (numberOfClips?: number): string[] => {
   return [
-    `In a previous task, you created ${numberOfClips} narration clips to be used in this project.`,
+    `In a previous task, you created ${numberOfClips} narration sound clips to be used in this project.`,
   ];
 };

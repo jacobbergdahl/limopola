@@ -15,6 +15,7 @@
     "ENDRESULTS",
     "Langchain",
     "Limopola",
-    "openai"
+    "openai",
+    "quickstart"
   ]
 }

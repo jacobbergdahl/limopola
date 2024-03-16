@@ -8,32 +8,32 @@
     "start": "next start",
     "local": "cross-env NEXT_PUBLIC_DEFAULT_MODEL=local-llm && npm run dev",
     "generate-api-table": "tsc scripts/generateModelTable.ts --outDir . && node scripts/generateModelTable.js",
-    "format": "prettier --write \"./**/*.{ts,tsx}\"",
+    "format": "prettier --write \"./**/*.{ts,tsx,md}\"",
     "update-packages": "npx ncu -u && npm install && npm update",
     "install-local-llm": "npx ipull set .gguf ./models && npx ipull https://huggingface.co/TheBloke/dolphin-2.6-mistral-7B-dpo-laser-GGUF/resolve/main/dolphin-2.6-mistral-7b-dpo-laser.Q4_K_M.gguf",
     "validate-local-llm": "npx --no node-llama-cpp chat --model dolphin-2.6-mistral-7b-dpo-laser.Q4_K_M.gguf",
     "quickstart": "npm install && npm run install-local-llm && npm run local"
   },
   "dependencies": {
-    "@langchain/openai": "^0.0.14",
+    "@langchain/openai": "^0.0.21",
     "@llama-node/llama-cpp": "^0.1.6",
-    "@mlc-ai/web-llm": "^0.2.20",
+    "@mlc-ai/web-llm": "^0.2.28",
     "@types/sqlite3": "^3.1.11",
     "cheerio": "^1.0.0-rc.12",
     "file-saver": "^2.0.5",
     "highlight.js": "^11.9.0",
-    "jotai": "^2.6.5",
+    "jotai": "^2.7.1",
     "jszip": "^3.10.1",
-    "langchain": "^0.1.21",
-    "marked": "^12.0.0",
-    "next": "^14.1.0",
+    "langchain": "^0.1.28",
+    "marked": "^12.0.1",
+    "next": "^14.1.3",
     "node-fetch": "^3.3.2",
-    "node-llama-cpp": "^2.8.7",
-    "openai": "^4.28.0",
+    "node-llama-cpp": "^2.8.8",
+    "openai": "^4.29.1",
     "pdf-parse": "^1.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "replicate": "^0.27.1",
+    "replicate": "^0.28.1",
     "sqlite3": "^5.1.7"
   },
   "engines": {
@@ -41,10 +41,10 @@
   },
   "devDependencies": {
     "@swc-jotai/react-refresh": "^0.1.0",
-    "@types/node": "20.11.20",
-    "@types/react": "18.2.57",
+    "@types/node": "20.11.28",
+    "@types/react": "18.2.66",
     "prettier": "^3.2.5",
     "ts-node": "^10.9.2",
-    "typescript": "^5.3.3"
+    "typescript": "^5.4.2"
   }
 }
