@@ -36,11 +36,6 @@ export const performSimilaritySearchFromTexts = async (
   prompt: string,
   embeddings: OpenAIEmbeddings
 ) => {
-  if (texts.length < 250) {
-    console.log("Skipped similarity search because text was too short.");
-    return texts;
-  }
-
   const vectorStore = await MemoryVectorStore.fromTexts(texts, {}, embeddings);
 
   const numberOfSimilarityResults = 2;

@@ -50,9 +50,8 @@ export const transformers = async (
     let result = "";
 
     if (model === MODEL.TransformersSentimentAnalysis) {
-      let classifier = await pipeline("sentiment-analysis");
-
-      let output = await classifier(message);
+      const classifier = await pipeline("sentiment-analysis");
+      const output = await classifier(message);
 
       SHOULD_SHOW_ALL_LOGS && console.log("Output before parsing:", output);
       result = processSentimentAnalysis(output);
