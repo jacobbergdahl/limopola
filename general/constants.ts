@@ -16,8 +16,9 @@ export const DEFAULT_TECHNICAL_VOICE_SIMILARITY_BOOST = 0.5;
 
 export enum MODEL {
   Gpt4 = "gpt-4",
+  Gpt4_o = "gpt-4o",
   Gpt4_32k = "gpt-4-32k",
-  Gpt4_Turbo = "gpt-4-1106-preview",
+  Gpt4_Turbo = "gpt-4-turbo",
   Gpt3_5_turbo = "gpt-3.5-turbo",
   Gpt3_5_turbo_16k = "gpt-3.5-turbo-16k",
   Dalle2 = "dall-e",
@@ -91,11 +92,17 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
       return {
         status: MODEL_STATUS.Full,
         information:
-          "This is the preview version of GPT-4 Turbo. It is more capable and has knowledge of world events up to April 2023. It has a 128k context window so it can fit the equivalent of more than 300 pages of text in a single prompt. It is also cheaper than GPT-4.",
+          "GPT-4 Turbo has more up-to-date information and a larger context window than GPT-4.",
         learnMoreUrl:
           "https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo",
         apiKey: MODEL_API_KEY.OpenAi,
-        mdNote: "GPT-4 Turbo (preview).",
+      };
+    case MODEL.Gpt4_o:
+      return {
+        status: MODEL_STATUS.Full,
+        information: "GPT-4o (Omni) is the most advanced AI model from OpenAI.",
+        learnMoreUrl: "https://platform.openai.com/docs/models/gpt-4o",
+        apiKey: MODEL_API_KEY.OpenAi,
       };
     case MODEL.Debug:
       return {
@@ -281,6 +288,7 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
 
 export const ALL_TEXT_MODELS = [
   MODEL.Gpt4,
+  MODEL.Gpt4_o,
   MODEL.Gpt4_32k,
   MODEL.Gpt4_Turbo,
   MODEL.Gpt3_5_turbo,
@@ -316,6 +324,7 @@ export const ALL_OPEN_AI_MODELS = [
   MODEL.Gpt4,
   MODEL.Gpt4_32k,
   MODEL.Gpt4_Turbo,
+  MODEL.Gpt4_o,
   MODEL.Gpt3_5_turbo,
   MODEL.Gpt3_5_turbo_16k,
   MODEL.Dalle2,

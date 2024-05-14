@@ -76,8 +76,9 @@ This is a list of models currently included in this AI interface. More models wi
 | Model                | Type  | API Source |
 | -------------------- | ----- | ---------- |
 | gpt-4                | Text  | OpenAI     |
+| gpt-4o               | Text  | OpenAI     |
 | gpt-4-32k            | Text  | OpenAI     |
-| gpt-4-1106-preview\* | Text  | OpenAI     |
+| gpt-4-turbo          | Text  | OpenAI     |
 | gpt-3.5-turbo        | Text  | OpenAI     |
 | gpt-3.5-turbo-16k    | Text  | OpenAI     |
 | dall-e               | Image | OpenAI     |
@@ -91,12 +92,14 @@ This is a list of models currently included in this AI interface. More models wi
 | text-to-pokemon      | Image | Replicate  |
 | animate-diff         | Video | Replicate  |
 | eleven-labs          | Audio | ElevenLabs |
-| text-bison-001\*\*   | Text  | Google     |
-| chat-bison-001\*\*   | Text  | Google     |
+| text-bison-001\*     | Text  | Google     |
+| chat-bison-001\*     | Text  | Google     |
 | local-llm            | Text  | None       |
+| web-llm              | Text  | None       |
+| t-sentiment-analysis | Text  | None       |
+| t-text2text          | Text  | None       |
 
-\* GPT-4 Turbo (preview).
-\*\* Google PaLM. No longer available in the `main` branch due to a rough dependency clash. To use Google's API's, run `git checkout google-generativelanguage && npm install`.
+\* Google PaLM. No longer available in the `main` branch due to a rough dependency clash. To use Google's API's, run `git checkout google-generativelanguage && npm install`.
 
 ### Custom wrappers of AI models
 

@@ -9,7 +9,7 @@
     "local": "cross-env NEXT_PUBLIC_DEFAULT_MODEL=local-llm && npm run dev",
     "generate-api-table": "tsc scripts/generateModelTable.ts --outDir . && node scripts/generateModelTable.js",
     "format": "prettier --write \"./**/*.{ts,tsx,md}\"",
-    "update-packages": "npx ncu -u && npm install && npm update",
+    "update-packages": "npx ncu -u --color --cacheClear --install always && npm update",
     "install-local-llm": "npx ipull set .gguf ./models && npx ipull https://huggingface.co/TheBloke/dolphin-2.6-mistral-7B-dpo-laser-GGUF/resolve/main/dolphin-2.6-mistral-7b-dpo-laser.Q4_K_M.gguf",
     "validate-local-llm": "npx --no node-llama-cpp chat --model dolphin-2.6-mistral-7b-dpo-laser.Q4_K_M.gguf",
     "quickstart": "npm install && npm run install-local-llm && npm run local"
@@ -30,7 +30,7 @@
     "next": "^14.1.3",
     "node-fetch": "^3.3.2",
     "node-llama-cpp": "^2.8.8",
-    "openai": "^4.29.1",
+    "openai": "^4.46.1",
     "pdf-parse": "^1.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
