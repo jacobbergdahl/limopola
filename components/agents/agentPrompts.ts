@@ -1,9 +1,9 @@
 import { AGENT_TASK_INDICATION } from "./../../general/constants";
 import { MODEL } from "../../general/constants";
 
-const TEXT_GENERATING_AI = MODEL.Gpt4;
-const TEXT_SUMMARIZING_AI = MODEL.Gpt3_5_turbo;
-const IMAGE_GENERATING_AI = MODEL.StableDiffusionSdXl; // DALL-E 3 currently leads to unexpected CORS issues, but this will probably use DALL-E 3 in the future.
+const TEXT_GENERATING_AI = MODEL.Gpt4; // 4o doesn't work very well for this purpose yet; probably needs more fine-tuning for the individual tasks to use effectively. Claude is probably a better LLM to use for this feature, but I haven't implemented it to this repo yet.
+const TEXT_SUMMARIZING_AI = MODEL.Gpt4_o_mini;
+const IMAGE_GENERATING_AI = MODEL.StableDiffusionSdXl; // DALL-E 3 currently leads to unexpected CORS issues.
 const VIDEO_GENERATING_AI = MODEL.AnimateDiff;
 const VOICE_GENERATING_AI = MODEL.ElevenLabs;
 

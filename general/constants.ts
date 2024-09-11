@@ -19,8 +19,7 @@ export enum MODEL {
   Gpt4_o = "gpt-4o",
   Gpt4_32k = "gpt-4-32k",
   Gpt4_Turbo = "gpt-4-turbo",
-  Gpt3_5_turbo = "gpt-3.5-turbo",
-  Gpt3_5_turbo_16k = "gpt-3.5-turbo-16k",
+  Gpt4_o_mini = "gpt-4o-mini",
   Dalle2 = "dall-e",
   Dalle3 = "dall-e-3",
   StableDiffusionSdXl = "stable-diffusion-xl", // full name: stable-diffusion-xl-base-1.0
@@ -110,20 +109,12 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
         information:
           "Only used for debugging this project. Does not contact any external API. You can send empty messages to this endpoint.",
       };
-    case MODEL.Gpt3_5_turbo:
+    case MODEL.Gpt4_o_mini:
       return {
         status: MODEL_STATUS.Full,
         information:
-          "Same API as is used in the free tier of ChatGPT. Good starting API for text generation.",
-        learnMoreUrl: "https://platform.openai.com/docs/models/gpt-3-5",
-        apiKey: MODEL_API_KEY.OpenAi,
-      };
-    case MODEL.Gpt3_5_turbo_16k:
-      return {
-        status: MODEL_STATUS.Full,
-        information:
-          "Same as gpt-3.5-turbo, but with greater context length (and higher cost).",
-        learnMoreUrl: "https://platform.openai.com/docs/models/gpt-3-5",
+          "OpenAI's affordable and intelligent small model for fast, lightweight tasks.",
+        learnMoreUrl: "https://platform.openai.com/docs/models/gpt-4o-mini",
         apiKey: MODEL_API_KEY.OpenAi,
       };
     case MODEL.Dalle2:
@@ -291,8 +282,7 @@ export const ALL_TEXT_MODELS = [
   MODEL.Gpt4_o,
   MODEL.Gpt4_32k,
   MODEL.Gpt4_Turbo,
-  MODEL.Gpt3_5_turbo,
-  MODEL.Gpt3_5_turbo_16k,
+  MODEL.Gpt4_o_mini,
   MODEL.FactChecker,
   MODEL.WebRetriever,
   MODEL.PdfReader,
@@ -325,8 +315,7 @@ export const ALL_OPEN_AI_MODELS = [
   MODEL.Gpt4_32k,
   MODEL.Gpt4_Turbo,
   MODEL.Gpt4_o,
-  MODEL.Gpt3_5_turbo,
-  MODEL.Gpt3_5_turbo_16k,
+  MODEL.Gpt4_o_mini,
   MODEL.Dalle2,
   MODEL.Dalle3,
 ];

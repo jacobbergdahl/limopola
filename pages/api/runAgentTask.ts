@@ -2,9 +2,11 @@ import { NextApiRequest, NextApiResponse } from "next";
 import {
   DEFAULT_TECHNICAL_VOICE_SIMILARITY_BOOST,
   DEFAULT_TECHNICAL_VOICE_STABILITY,
+  getModelType,
   IMAGE_SIZE_DALL_E_2,
   IMAGE_SIZE_DALL_E_3,
   MODEL,
+  MODEL_TYPE,
   SHOULD_SHOW_ALL_LOGS,
   STATUS_CODE,
 } from "../../general/constants";
@@ -61,21 +63,17 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     isUsingSimilaritySearch: false,
     isGivingAiSearchAccess: false,
     message: "",
-    model: MODEL.Gpt4,
+    model: api,
   };
 
-  if (api === MODEL.Gpt4 || api === MODEL.Gpt4_Turbo) {
+  if (getModelType(api) === MODEL_TYPE.Text) {
     const prompt = appendContextToTextPrompt(
       description,
       context,
       codeContext,
       indication
     );
-    // MODEL.Gpt4_Turbo (which is still in preview) has a few issues. It will wrap output in odd delimiters, even though it's not supposed to. Otherwise, it has a significantly better context length and is faster.
-    return gpt(res, prompt, MODEL.Gpt4, body);
-  } else if (api === MODEL.Gpt3_5_turbo) {
-    const prompt = appendContextToTextPrompt(description, context, codeContext);
-    return gpt(res, prompt, MODEL.Gpt3_5_turbo, body);
+    return gpt(res, prompt, api, body);
   } else if (api === MODEL.StableDiffusionSdXl) {
     return stableDiffusionSdXl(res, description, 1);
   } else if (api === MODEL.Dalle2) {
