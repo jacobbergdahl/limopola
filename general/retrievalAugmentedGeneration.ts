@@ -3,7 +3,7 @@ import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { MemoryVectorStore } from "langchain/vectorstores/memory";
 import { SHOULD_SHOW_ALL_LOGS } from "./constants";
 import { DirectoryLoader } from "langchain/document_loaders/fs/directory";
-import { PDFLoader } from "langchain/document_loaders/fs/pdf";
+import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 import { Document } from "langchain/document";
 import path from "path";
 
