@@ -6,13 +6,13 @@ import {
   STATUS_CODE,
 } from "../../../general/constants";
 import {
+  createEmbeddings,
   createRagPrompt,
   fetchPdfFiles,
   performSimilaritySearchFromDocuments,
   splitDocumentsIntoChunks,
   throwIfPromptIsLong,
-} from "../../../general/retrievalAugmentedGeneration";
-import { OpenAIEmbeddings } from "@langchain/openai";
+} from "../retrievalAugmentedGeneration";
 import { ProcessedBody } from "../../../general/apiHelper";
 
 /**
@@ -25,7 +25,8 @@ export const pdfReader = async (
   processedBody: ProcessedBody
 ) => {
   try {
-    const embeddings = new OpenAIEmbeddings();
+    const embeddings = createEmbeddings();
+
     const pdfFiles = await fetchPdfFiles();
     const chunks = await splitDocumentsIntoChunks(pdfFiles);
     const context = await performSimilaritySearchFromDocuments(

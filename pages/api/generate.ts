@@ -21,6 +21,7 @@ import { pdfReader } from "./aiWrappers/pdfReader";
 import { webConnector } from "./aiWrappers/webConnector";
 import { getProcessedBodyForAiApiCalls } from "../../general/apiHelper";
 import { transformers } from "./aiModels/transformers";
+import { ollama } from "./aiModels/ollama";
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
   const processedBody = getProcessedBodyForAiApiCalls(req);
@@ -72,6 +73,9 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     }
     if (model === MODEL.LocalLlm) {
       return llamaLocal(res, message, processedBody);
+    }
+    if (model === MODEL.LocalOllama) {
+      return ollama(res, message, processedBody);
     }
     if (model === MODEL.FactChecker) {
       return factChecker(res, message);

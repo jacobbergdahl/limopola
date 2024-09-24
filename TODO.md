@@ -15,6 +15,7 @@ This is a list of features, updates, and bug fixes that may be implemented into 
 
 ## API's
 
+- Add Anthropic's Claude API.
 - Add more voices to ElevenLabs.
 - Add more options to API's.
 - Make it possible to use ElevenLabs in Editor mode.
@@ -22,7 +23,7 @@ This is a list of features, updates, and bug fixes that may be implemented into 
 - Add ability to request number of tokens from text generating AI's.
 - Add more options to OpenAI's text API's, including embeddings and more.
 - All text generating API's should support temperature.
-- Improve and speed up local (LLaMa).
+- Improve and speed up local LLMs.
 - Add a streaming option.
 - Add API to describe images. From that, can also make it possible to make another image from the description of the first.
 - Add a "fact-checker" option to all text API's. Call the API twice; the second time asking it to rate the accuracy of the previous message. Show the accurate next to the name (e.g. `Gpt-3.5-turbo (in 1.92s, 90% accurate)`).
@@ -30,6 +31,9 @@ This is a list of features, updates, and bug fixes that may be implemented into 
 
 ## Core
 
+- Add LangGraph.
+- Add Tavily.
+- Add LangSmith.
 - Change the Options into Quick Links, create a modal for resetting data, and also add options for setting themes.
 - Move the "Scroll to bottom" button.
 - Improve the UI of managing contexts.

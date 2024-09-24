@@ -11,7 +11,8 @@ import { llama2 } from "../aiModels/llama";
 import { llamaLocal } from "../aiModels/llamaLocal";
 import { ProcessedBody } from "../../../general/apiHelper";
 import { getSearchQueryPrompt } from "../../../general/webConnectorPrompts";
-import { createRagPrompt } from "../../../general/retrievalAugmentedGeneration";
+import { createRagPrompt } from "../retrievalAugmentedGeneration";
+import { ollama } from "../aiModels/ollama";
 
 const callLlm = async (
   res: NextApiResponse | undefined,
@@ -24,6 +25,9 @@ const callLlm = async (
   }
   if (model === MODEL.LocalLlm) {
     return llamaLocal(res, message, processedBody);
+  }
+  if (model === MODEL.LocalOllama) {
+    return ollama(res, message, processedBody);
   }
   if (ALL_OPEN_AI_MODELS.includes(model)) {
     return gpt(res, message, model, processedBody);

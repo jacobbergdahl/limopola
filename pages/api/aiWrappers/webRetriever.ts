@@ -15,7 +15,7 @@ import {
   createRagPrompt,
   performSimilaritySearchOnArrayOfStrings,
   throwIfPromptIsLong,
-} from "../../../general/retrievalAugmentedGeneration";
+} from "../retrievalAugmentedGeneration";
 import { ProcessedBody } from "../../../general/apiHelper";
 
 const addHttpsToUrl = (url: string): string => {

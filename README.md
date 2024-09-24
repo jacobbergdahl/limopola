@@ -24,7 +24,11 @@ git clone git@github.com:jacobbergdahl/limopola.git && cd limopola/ && npm run q
 
 ## Set-up
 
-The project is very quick and easy to set-up. It requires either an API key from at least one service or setting up a local machine learning model.
+The project is very quick and easy to set-up. You can run LLMs in one of three ways:
+
+- Locally, by pointing to an already installed LLM on your machine or by installing one in this project (`npm run install-local-llm`).
+- Also locally, by serving an LLM through Ollama.
+- Remotely, by using a service provider such as OpenAI.
 
 ### Installation
 
@@ -36,7 +40,7 @@ npm i
 
 You can easily use [llama](https://ai.meta.com/resources/models-and-libraries/llama/) locally on your machine in this project. Depending on your OS and your prior set-ups, you may need to set-up environments using [this guide](https://github.com/cocktailpeanut/dalai#quickstart).
 
-To set up a local LLM, follow these steps:
+To set up a local LLM for this project, follow these steps:
 
 1. Download an LLM from HuggingFace. You can download a recommended model by simply running `npm run install-local-llm`. If you want to download an LLM manually, then I recommend downloading [this model](https://huggingface.co/TheBloke/dolphin-2.6-mistral-7B-dpo-laser-GGUF/blob/main/dolphin-2.6-mistral-7b-dpo-laser.Q4_K_M.gguf). If you want to download a different model, I recommend downloading a 7B version with the `gguf` extension from [TheBloke](https://huggingface.co/TheBloke?search_models=GGUF). Place the model in the `models/` folder (this is done automatically by the `install-local-llm` script).
 2. Validate the model by running `npm run validate-local-llm`. Try saying "Hello" just to check that you get a reasonable output.
@@ -48,7 +52,13 @@ To set up a local LLM, follow these steps:
 - [Get started with node-llama-cpp](https://withcatai.github.io/node-llama-cpp/guide/).
 - [Helpful guide](https://blog.devgenius.io/how-to-generate-html-content-with-ai-using-llama-node-and-express-e1b1e0e1a55b).
 
+#### Alternatively, use Ollama
+
+If you have Ollama on your machine, then you can simply run `ollama serve` to host a server to be used in this project. Change `LOCAL_OLLAMA_MODEL_NAME` in your `.env` file to the LLM you want to use (see `.env.example` for details). If you don't have the LLM installed, you will need to get it using `ollama pull`.
+
 ### Get API keys
+
+_You don't actually need any API keys to use Limopola. All of these keys are optional if you run an LLM locally._
 
 Create a `.env` file from the `.env.example` file, and add API keys. There are instructions in the file for where to get the keys.
 
@@ -59,7 +69,8 @@ Be careful when using the `animate-diff` model as it will likely burn through yo
 - `OPENAI_API_KEY`: Used for all versions of GPT and DALL-E. Using OpenAI costs money. Generate the API key at [https://platform.openai.com/account/api-keys](https://platform.openai.com/account/api-keys).
 - `REPLICATE_API_KEY`: Used for several API's. These API's are free to use for a while, but eventually you'll be asked to pay to continue using them. Generate the API key for free at [https://replicate.com/account](https://replicate.com/account).
 - `ELEVEN_LABS_API_KEY`: Used to generate text-to-speech. This API is also free to use for a while. Generate the API key at [https://docs.elevenlabs.io/api-reference/quick-start/authentication](https://docs.elevenlabs.io/api-reference/quick-start/authentication).
-- `GOOGLE_API_KEY`: Used for Google's text-to-speech LLMs (PaLM). This API is also free to use for a while, but may be region-locked. Generate the API key at [https://makersuite.google.com/app/apikey](https://makersuite.google.com/app/apikey).
+- `SEARCH_API_KEY`: Used by one of the RAG functions. Could likely be replaced with Tavily now. Either way, it's also free to use for a while. Generate the API key at [https://www.searchapi.io/](https://www.searchapi.io/).
+- `GOOGLE_API_KEY`: _Not currently in use on the main branch_. Used for Google's text-to-speech LLMs (PaLM). This API is also free to use for a while, but may be region-locked. Generate the API key at [https://makersuite.google.com/app/apikey](https://makersuite.google.com/app/apikey).
 
 In the future, this project will likely also give you the option of adding an API key to HuggingFace.
 
@@ -93,7 +104,7 @@ This is a list of models currently included in this AI interface. More models wi
 | eleven-labs          | Audio | ElevenLabs |
 | text-bison-001\*     | Text  | Google     |
 | chat-bison-001\*     | Text  | Google     |
-| local-llm            | Text  | None       |
+| local-llm-node-cpp   | Text  | None       |
 | web-llm              | Text  | None       |
 | t-sentiment-analysis | Text  | None       |
 | t-text2text          | Text  | None       |

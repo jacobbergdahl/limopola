@@ -36,7 +36,8 @@ export enum MODEL {
   FactChecker = "gpt-4-fact-checker",
   WebRetriever = "gpt-4-web-retriever",
   PdfReader = "gpt-4-pdf-reader",
-  LocalLlm = "local-llm",
+  LocalLlm = "local-llm-node-cpp",
+  LocalOllama = "local-llm-ollama",
   WebLlm = "web-llm",
   TransformersSentimentAnalysis = "t-sentiment-analysis",
   TransformersText2Text = "t-text2text",
@@ -201,6 +202,12 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
         information: `This model runs locally on your machine. See the README for an explanation on how to get set-up.`,
         learnMoreUrl: "https://github.com/withcatai/node-llama-cpp",
       };
+    case MODEL.LocalOllama:
+      return {
+        status: MODEL_STATUS.Full,
+        information: `This model runs locally on your machine. Unlike local-llm-node-cpp, it requires you to run a separate Ollama server. See the README for an explanation on how to get set-up.`,
+        learnMoreUrl: "https://ollama.com/",
+      };
     case MODEL.TransformersSentimentAnalysis:
       return {
         status: MODEL_STATUS.Full,
@@ -292,6 +299,7 @@ export const ALL_TEXT_MODELS = [
   MODEL.Llama2_13b_chat,
   MODEL.CodeLlama_13b,
   MODEL.LocalLlm,
+  MODEL.LocalOllama,
   MODEL.TransformersSentimentAnalysis,
   MODEL.TransformersText2Text,
   MODEL.PalmTextBison001,
@@ -331,9 +339,12 @@ export const ALL_LLAMA_MODELS_REPLICATE = [
 export const ALL_SLOW_MODELS = [
   MODEL.AnimateDiff,
   MODEL.LocalLlm,
+  MODEL.LocalOllama,
   MODEL.TransformersSentimentAnalysis,
   MODEL.TransformersText2Text,
 ];
+
+export const ALL_LOCAL_MODELS = [MODEL.LocalLlm, MODEL.LocalOllama];
 
 export const ALL_CUSTOM_WRAPPERS = [
   MODEL.FactChecker,

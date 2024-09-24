@@ -1,13 +1,21 @@
 import { OpenAIEmbeddings } from "@langchain/openai";
+import { OllamaEmbeddings } from "@langchain/ollama";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { MemoryVectorStore } from "langchain/vectorstores/memory";
-import { SHOULD_SHOW_ALL_LOGS } from "./constants";
+import { SHOULD_SHOW_ALL_LOGS } from "../../general/constants";
 import { DirectoryLoader } from "langchain/document_loaders/fs/directory";
 import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 import { Document } from "langchain/document";
 import path from "path";
 
 type LangchainDocument = Document<Record<string, any>>;
+type LangchainEmbeddings = OpenAIEmbeddings | OllamaEmbeddings;
+
+export const createEmbeddings = (): LangchainEmbeddings => {
+  return process.env.NEXT_PUBLIC_IS_USING_LOCAL_EMBEDDINGS === "true"
+    ? new OllamaEmbeddings()
+    : new OpenAIEmbeddings();
+};
 
 export const splitTextIntoChunks = async (text: string) => {
   const splitText = await new RecursiveCharacterTextSplitter({
@@ -34,7 +42,7 @@ export const splitDocumentsIntoChunks = async (
 export const performSimilaritySearchFromTexts = async (
   texts: string[],
   prompt: string,
-  embeddings: OpenAIEmbeddings
+  embeddings: LangchainEmbeddings
 ) => {
   const vectorStore = await MemoryVectorStore.fromTexts(texts, {}, embeddings);
 
@@ -50,7 +58,7 @@ export const performSimilaritySearchFromTexts = async (
 export const performSimilaritySearchFromDocuments = async (
   documents: LangchainDocument[],
   prompt: string,
-  embeddings: OpenAIEmbeddings
+  embeddings: LangchainEmbeddings
 ) => {
   console.log("Performing similarity search.");
 
@@ -79,7 +87,7 @@ export const performSimilaritySearchOnArrayOfStrings = async (
   texts: string[],
   prompt: string
 ) => {
-  const embeddings = new OpenAIEmbeddings();
+  const embeddings = createEmbeddings();
 
   const similaritySearchResults = await Promise.all(
     texts.map(async (text, i) => {

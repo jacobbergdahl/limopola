@@ -15,7 +15,9 @@
     "quickstart": "npm install && npm run install-local-llm && npm run local"
   },
   "dependencies": {
-    "@langchain/community": "^0.3.1",
+    "@langchain/community": "^0.3.0",
+    "@langchain/core": "^0.3.1",
+    "@langchain/ollama": "^0.1.0",
     "@langchain/openai": "^0.3.0",
     "@llama-node/llama-cpp": "^0.1.6",
     "@mlc-ai/web-llm": "^0.2.64",
@@ -28,7 +30,7 @@
     "jszip": "^3.10.1",
     "langchain": "^0.3.2",
     "marked": "^14.1.2",
-    "next": "^14.2.13",
+    "next": "^14.2.3",
     "node-fetch": "^3.3.2",
     "node-llama-cpp": "^2.8.16",
     "openai": "^4.62.1",

@@ -5,6 +5,7 @@
     "BEGININSTRUCTION",
     "BEGINRESULT",
     "BEGINRESULTS",
+    "checkpointer",
     "DALL",
     "Dalle",
     "Dalle3",
@@ -14,8 +15,11 @@
     "ENDRESULT",
     "ENDRESULTS",
     "Langchain",
+    "langgraph",
     "Limopola",
+    "ollama",
     "openai",
-    "quickstart"
+    "quickstart",
+    "Tavily"
   ]
 }

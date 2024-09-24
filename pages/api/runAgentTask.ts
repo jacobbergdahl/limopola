@@ -18,32 +18,26 @@ import { elevenLabs } from "./aiModels/elevenLabs";
 import { stableDiffusionSdXl } from "./aiModels/stableDiffusionSdXl";
 import { ProcessedBody } from "../../general/apiHelper";
 
+const RATE_LIMIT_MS = 3000;
 let lastAccessTime = 0;
 let lastDescription = "";
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
-  const currentTimestamp = Date.now();
-  const description = req.body.description;
+  const { description, api, indication, context, codeContext } = req.body;
 
-  if (currentTimestamp - lastAccessTime < 3000) {
+  const isRateLimited = Date.now() - lastAccessTime < RATE_LIMIT_MS;
+  if (isRateLimited) {
     const error =
       description === lastDescription
         ? "The agent appears to be making duplicate requests."
         : "The agent appears to be making more requests than it should be.";
+
     console.error(error);
-    res.status(STATUS_CODE.TooManyRequests).json({
-      error: error,
-    });
-    return;
+    return res.status(STATUS_CODE.TooManyRequests).json({ error });
   }
 
-  lastAccessTime = currentTimestamp;
+  lastAccessTime = Date.now();
   lastDescription = description;
-
-  const api = req.body.api;
-  const indication = req.body.indication;
-  const context = req.body.context;
-  const codeContext = req.body.codeContext;
 
   SHOULD_SHOW_ALL_LOGS && console.log("Request body:", req.body);
 
@@ -66,7 +60,8 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     model: api,
   };
 
-  if (getModelType(api) === MODEL_TYPE.Text) {
+  const modelType = getModelType(api);
+  if (modelType === MODEL_TYPE.Text) {
     const prompt = appendContextToTextPrompt(
       description,
       context,
@@ -91,10 +86,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     );
   }
 
-  res.status(STATUS_CODE.MethodNotAllowed).json({
-    error: {
-      message: `Tried using an API that is not allowed.`,
-    },
+  return res.status(STATUS_CODE.MethodNotAllowed).json({
+    error: { message: `Tried using an API that is not allowed.` },
   });
-  return;
 }

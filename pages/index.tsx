@@ -2,6 +2,7 @@ import Head from "next/head";
 import { useRef, useEffect, useState, useCallback } from "react";
 import {
   ALL_LLAMA_MODELS_REPLICATE,
+  ALL_LOCAL_MODELS,
   ALL_OPEN_AI_MODELS,
   DEFAULT_CONTEXT,
   getModelType,
@@ -176,13 +177,15 @@ export default function Home() {
       ALL_OPEN_AI_MODELS.includes(model) ||
       model === MODEL.PalmChatBison001 ||
       model === MODEL.PalmTextBison001 ||
-      model === MODEL.LocalLlm) &&
+      model === MODEL.LocalLlm ||
+      model === MODEL.LocalOllama) &&
     !isUsingCustomTextGeneratingWrapper;
   const shouldShowTopP =
     selectedModelType === MODEL_TYPE.Text &&
     model !== MODEL.LocalLlm &&
     (ALL_LLAMA_MODELS_REPLICATE.includes(model) ||
-      ALL_OPEN_AI_MODELS.includes(model)) &&
+      ALL_OPEN_AI_MODELS.includes(model) ||
+      model === MODEL.LocalOllama) &&
     !isUsingCustomTextGeneratingWrapper;
   const shouldShowFrequencyPenalty =
     selectedModelType === MODEL_TYPE.Text &&
@@ -291,7 +294,9 @@ export default function Home() {
         `${message.sender.replace("You", "User")}: ${message.content}\n\n`
     );
 
-    const modelNameOrEmpty = model !== MODEL.LocalLlm ? `${model}:` : "";
+    const modelNameOrEmpty = !ALL_LOCAL_MODELS.includes(model)
+      ? `${model}:`
+      : "";
 
     return `${finalMessage.join(
       ""
