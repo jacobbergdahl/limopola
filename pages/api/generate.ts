@@ -1,4 +1,5 @@
 import {
+  ALL_ANTHROPIC_MODELS,
   ALL_LLAMA_MODELS_REPLICATE,
   ALL_OPEN_AI_MODELS,
   MODEL,
@@ -22,6 +23,7 @@ import { webConnector } from "./aiWrappers/webConnector";
 import { getProcessedBodyForAiApiCalls } from "../../general/apiHelper";
 import { transformers } from "./aiModels/transformers";
 import { ollama } from "./aiModels/ollama";
+import { claude } from "./aiModels/claude";
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
   const processedBody = getProcessedBodyForAiApiCalls(req);
@@ -104,6 +106,9 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     }
     if (ALL_OPEN_AI_MODELS.includes(model)) {
       return gpt(res, message, model, processedBody);
+    }
+    if (ALL_ANTHROPIC_MODELS.includes(model)) {
+      return claude(res, message, model, processedBody);
     }
 
     res.status(STATUS_CODE.NotImplemented).json({

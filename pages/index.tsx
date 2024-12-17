@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { useRef, useEffect, useState, useCallback } from "react";
 import {
+  ALL_ANTHROPIC_MODELS,
   ALL_LLAMA_MODELS_REPLICATE,
   ALL_LOCAL_MODELS,
   ALL_OPEN_AI_MODELS,
@@ -175,6 +176,7 @@ export default function Home() {
     selectedModelType === MODEL_TYPE.Text &&
     (ALL_LLAMA_MODELS_REPLICATE.includes(model) ||
       ALL_OPEN_AI_MODELS.includes(model) ||
+      ALL_ANTHROPIC_MODELS.includes(model) ||
       model === MODEL.PalmChatBison001 ||
       model === MODEL.PalmTextBison001 ||
       model === MODEL.LocalLlm ||
@@ -185,6 +187,7 @@ export default function Home() {
     model !== MODEL.LocalLlm &&
     (ALL_LLAMA_MODELS_REPLICATE.includes(model) ||
       ALL_OPEN_AI_MODELS.includes(model) ||
+      ALL_ANTHROPIC_MODELS.includes(model) ||
       model === MODEL.LocalOllama) &&
     !isUsingCustomTextGeneratingWrapper;
   const shouldShowFrequencyPenalty =
@@ -200,6 +203,7 @@ export default function Home() {
   const shouldShowMaxNumberOfTokens =
     (ALL_OPEN_AI_MODELS.includes(model) &&
       selectedModelType === MODEL_TYPE.Text) ||
+    ALL_ANTHROPIC_MODELS.includes(model) ||
     model === MODEL.TransformersText2Text ||
     model === MODEL.LocalLlm;
   const shouldShowMemory =

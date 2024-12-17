@@ -2,6 +2,7 @@ import { NextApiResponse } from "next";
 import fetch from "node-fetch";
 import { gpt } from "../aiModels/gpt";
 import {
+  ALL_ANTHROPIC_MODELS,
   ALL_LLAMA_MODELS_REPLICATE,
   ALL_OPEN_AI_MODELS,
   MODEL,
@@ -13,6 +14,7 @@ import { ProcessedBody } from "../../../general/apiHelper";
 import { getSearchQueryPrompt } from "../../../general/webConnectorPrompts";
 import { createRagPrompt } from "../retrievalAugmentedGeneration";
 import { ollama } from "../aiModels/ollama";
+import { claude } from "../aiModels/claude";
 
 const callLlm = async (
   res: NextApiResponse | undefined,
@@ -31,6 +33,9 @@ const callLlm = async (
   }
   if (ALL_OPEN_AI_MODELS.includes(model)) {
     return gpt(res, message, model, processedBody);
+  }
+  if (ALL_ANTHROPIC_MODELS.includes(model)) {
+    return claude(res, message, model, processedBody);
   }
 
   throw new Error(

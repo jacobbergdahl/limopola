@@ -20,6 +20,8 @@ export enum MODEL {
   Gpt4_32k = "gpt-4-32k",
   Gpt4_Turbo = "gpt-4-turbo",
   Gpt4_o_mini = "gpt-4o-mini",
+  Claude35Sonnet = "claude-3-5-sonnet-latest",
+  Claude35Haiku = "claude-3-5-haiku-latest",
   Dalle2 = "dall-e",
   Dalle3 = "dall-e-3",
   StableDiffusionSdXl = "stable-diffusion-xl", // full name: stable-diffusion-xl-base-1.0
@@ -57,6 +59,7 @@ export enum MODEL_API_KEY {
   ElevenLabs = "ElevenLabs",
   HuggingFace = "HuggingFace",
   Google = "Google",
+  Anthropic = "Anthropic",
   None = "None",
 }
 
@@ -276,6 +279,20 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
         mdNote:
           "Google PaLM. No longer available in the `main` branch due to a rough dependency clash. To use Google's API's, run `git checkout google-generativelanguage && npm install`.",
       };
+    case MODEL.Claude35Sonnet:
+      return {
+        status: MODEL_STATUS.Full,
+        information: `Anthropic's Claude 3.5 Sonnet is a powerful and versatile LLM. It is more intelligent than Haiku, but also more expensive and slower.`,
+        learnMoreUrl: "https://www.anthropic.com/claude/sonnet",
+        apiKey: MODEL_API_KEY.Anthropic,
+      };
+    case MODEL.Claude35Haiku:
+      return {
+        status: MODEL_STATUS.Full,
+        information: `Anthropic's Claude 3.5 Haiku is faster and cheaper than Sonnet, but not as intelligent.`,
+        learnMoreUrl: "https://www.anthropic.com/claude/haiku",
+        apiKey: MODEL_API_KEY.Anthropic,
+      };
   }
 
   return {
@@ -290,6 +307,8 @@ export const ALL_TEXT_MODELS = [
   MODEL.Gpt4_32k,
   MODEL.Gpt4_Turbo,
   MODEL.Gpt4_o_mini,
+  MODEL.Claude35Sonnet,
+  MODEL.Claude35Haiku,
   MODEL.FactChecker,
   MODEL.WebRetriever,
   MODEL.PdfReader,
@@ -327,6 +346,8 @@ export const ALL_OPEN_AI_MODELS = [
   MODEL.Dalle2,
   MODEL.Dalle3,
 ];
+
+export const ALL_ANTHROPIC_MODELS = [MODEL.Claude35Sonnet, MODEL.Claude35Haiku];
 
 export const ALL_LLAMA_MODELS_REPLICATE = [
   MODEL.Llama2_70b,

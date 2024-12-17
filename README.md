@@ -62,11 +62,8 @@ _You don't actually need any API keys to use Limopola. All of these keys are opt
 
 Create a `.env` file from the `.env.example` file, and add API keys. There are instructions in the file for where to get the keys.
 
-Note that OpenAI will charge money from the first API call you make, while all other API's are free for a while and do not require any billing information until you reach a certain quota. Hence, if you are just starting out and want to experiment without paying, then you may want to start by just adding the Replicate key.
-
-Be careful when using the `animate-diff` model as it will likely burn through your free period of Replicate quickly.
-
 - `OPENAI_API_KEY`: Used for all versions of GPT and DALL-E. Using OpenAI costs money. Generate the API key at [https://platform.openai.com/account/api-keys](https://platform.openai.com/account/api-keys).
+- `ANTHROPIC_API_KEY`: Used for Claude. Using Claude costs money. Generate the API key at [https://console.anthropic.com/settings/keys](https://console.anthropic.com/settings/keys).
 - `REPLICATE_API_KEY`: Used for several API's. These API's are free to use for a while, but eventually you'll be asked to pay to continue using them. Generate the API key for free at [https://replicate.com/account](https://replicate.com/account).
 - `ELEVEN_LABS_API_KEY`: Used to generate text-to-speech. This API is also free to use for a while. Generate the API key at [https://docs.elevenlabs.io/api-reference/quick-start/authentication](https://docs.elevenlabs.io/api-reference/quick-start/authentication).
 - `SEARCH_API_KEY`: Used by one of the RAG functions. Could likely be replaced with Tavily now. Either way, it's also free to use for a while. Generate the API key at [https://www.searchapi.io/](https://www.searchapi.io/).
@@ -91,6 +88,8 @@ This is a list of models currently included in this AI interface. More models wi
 | gpt-4-32k            | Text  | OpenAI     |
 | gpt-4-turbo          | Text  | OpenAI     |
 | gpt-4o-mini          | Text  | OpenAI     |
+| claude-3-5-sonnet    | Text  | Anthropic  |
+| claude-3-5-haiku     | Text  | Anthropic  |
 | dall-e               | Image | OpenAI     |
 | dall-e-3             | Image | OpenAI     |
 | stable-diffusion-xl  | Image | Replicate  |
