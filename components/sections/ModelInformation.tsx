@@ -1,5 +1,6 @@
 import {
   MODEL,
+  MODEL_API_KEY,
   MODEL_STATUS,
   getModelInformation,
 } from "../../general/constants";
@@ -22,9 +23,10 @@ export const ModelInformation = ({ model }: ModelInformationProps) => {
         <span className={styles.information}>
           {modelInformation.information}
         </span>
-        {!!modelInformation.apiKey && (
-          <span>API key: {modelInformation.apiKey}</span>
-        )}
+        {!!modelInformation.apiKey &&
+          modelInformation.apiKey !== MODEL_API_KEY.None && (
+            <span>API key: {modelInformation.apiKey}</span>
+          )}
         {!!modelInformation.learnMoreUrl && (
           <a
             className={styles.information}

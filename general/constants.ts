@@ -204,30 +204,35 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
         status: MODEL_STATUS.Full,
         information: `This model runs locally on your machine. See the README for an explanation on how to get set-up.`,
         learnMoreUrl: "https://github.com/withcatai/node-llama-cpp",
+        apiKey: MODEL_API_KEY.None,
       };
     case MODEL.LocalOllama:
       return {
         status: MODEL_STATUS.Full,
         information: `This model runs locally on your machine. Unlike local-llm-node-cpp, it requires you to run a separate Ollama server. See the README for an explanation on how to get set-up.`,
         learnMoreUrl: "https://ollama.com/",
+        apiKey: MODEL_API_KEY.None,
       };
     case MODEL.TransformersSentimentAnalysis:
       return {
         status: MODEL_STATUS.Full,
         information: `This model will perform sentiment analysis on your input. It runs locally in your browser via transformers.js. It will be slow the first time you run it, but it will be cached, and subsequent runs are faster.`,
         learnMoreUrl: "https://huggingface.co/docs/transformers.js/pipelines",
+        apiKey: MODEL_API_KEY.None,
       };
     case MODEL.TransformersText2Text:
       return {
         status: MODEL_STATUS.Full,
         information: `This is a conversational model that runs locally in your browser via transformers.js. It will be slow the first time you run it, but it will be cached, and subsequent runs are faster.`,
         learnMoreUrl: "https://huggingface.co/docs/transformers.js/pipelines",
+        apiKey: MODEL_API_KEY.None,
       };
     case MODEL.WebLlm:
       return {
         status: MODEL_STATUS.Poor,
         information: `Not yet implemented. WebLlm allows you to run local llm's directly in the browser, but it's still very early and there are technical issues with running it.`,
         learnMoreUrl: "https://github.com/mlc-ai/web-llm/tree/main",
+        apiKey: MODEL_API_KEY.None,
       };
     case MODEL.ElevenLabs:
       return {
