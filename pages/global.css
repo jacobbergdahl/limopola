@@ -52,11 +52,11 @@
   --background-size: 100% 100vh;
   --background-color: #784ba0;
   --background-inner-color: #1b2129;
-  --page-filler-color-width: calc(var(--mode-selection-container-width) + 60px);
-  --page-filler-top-height: 60px;
-  --page-filler-top-margin-top: 14px;
+  --page-filler-color-width: calc(var(--mode-selection-container-width) + 30px);
+  --page-filler-top-height: 40px;
+  --page-filler-top-margin-top: 24px;
   --chat-container-margin-bottom: 0px;
-  --page-filler-top-height-editor: 60px;
+  --page-filler-top-height-editor: 40px;
   --page-filler-bottom-height-editor: 0px;
   --page-filler-bottom-width-editor: 0px;
   --background-attachment: fixed;
@@ -65,6 +65,32 @@
 }
 
 [data-theme="Dark"] {
+  --background: radial-gradient(black 15%, transparent 16%) 0 0,
+    radial-gradient(black 15%, transparent 16%) 8px 8px,
+    radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%) 0 1px,
+    radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%) 8px 9px;
+  --background-size: 16px 16px;
+  --background-color: #2f2e36;
+  --background-inner-color: #1b2129;
+  --page-filler-color-width: calc(var(--mode-selection-container-width) + 10px);
+  --page-filler-top-height: 40px;
+  --page-filler-top-margin-top: 24px;
+  --chat-container-margin-bottom: 0px;
+  --page-filler-top-height-editor: 40px;
+  --page-filler-bottom-height-editor: 0px;
+  --page-filler-bottom-width-editor: 0px;
+  --error-color: black;
+  --error-alternate-color: black;
+  --accent-color: rgb(10, 10, 10);
+  --accent-color-secondary: rgb(5, 5, 5);
+  --accent-color-tertiary: black;
+  --contrast-color: #c5c5c5;
+  --font-color: #c5c5c5;
+  --link-color: #c5c5c5;
+  --primary-color: #c5c5c5;
+}
+
+[data-theme="Checkered"] {
   --background: linear-gradient(27deg, #151515 5px, transparent 5px) 0 5px,
     linear-gradient(207deg, #151515 5px, transparent 5px) 10px 0px,
     linear-gradient(27deg, #222 5px, transparent 5px) 0px 10px,
@@ -81,23 +107,6 @@
     );
   --background-size: 20px 20px;
   --background-color: #131313;
-  --background-inner-color: #1b2129;
-  --page-filler-color-width: calc(var(--mode-selection-container-width) + 60px);
-  --page-filler-top-height: 60px;
-  --page-filler-top-margin-top: 14px;
-  --chat-container-margin-bottom: 0px;
-  --page-filler-top-height-editor: 60px;
-  --page-filler-bottom-height-editor: 0px;
-  --page-filler-bottom-width-editor: 0px;
-  --error-color: black;
-  --error-alternate-color: black;
-  --accent-color: rgb(10, 10, 10);
-  --accent-color-secondary: rgb(5, 5, 5);
-  --accent-color-tertiary: black;
-  --contrast-color: #c5c5c5;
-  --font-color: #c5c5c5;
-  --link-color: #c5c5c5;
-  --primary-color: #c5c5c5;
 }
 
 body {
