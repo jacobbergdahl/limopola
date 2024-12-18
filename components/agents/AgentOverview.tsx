@@ -42,7 +42,8 @@ import {
   contextAddedNarration,
   contextAddedVideos,
 } from "./contextCreator";
-import { UiControls } from "../UiControls";
+import { UiControlsChatOptions, UiControlsTheming } from "../UiControls";
+import { HideableUI } from "../HideableUi";
 
 export const AgentOverview = () => {
   const [mission, setMission] = useAtom(agentMissionAtom);
@@ -56,7 +57,14 @@ export const AgentOverview = () => {
   const [imagePrompts, setImagePrompts] = useAtom(agentImagePromptsAtom);
   const [videoPrompts, setVideoPrompts] = useAtom(agentVideoPromptsAtom);
   const [timer, setTimer] = useState<number>(-1);
+  const scrollAnchorRef = useRef(null);
   const isStoppingRef = useRef(false);
+
+  const scrollToBottom = () => {
+    if (scrollAnchorRef?.current != null) {
+      scrollAnchorRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   let timerValue = 0;
   const startTimer = () => {
@@ -456,6 +464,12 @@ export const AgentOverview = () => {
   return (
     <div>
       <div className={styles.pageTopColor}></div>
+      <HideableUI className={`${styles.sidebar} ${styles.leftSidebar}`}>
+        <UiControlsChatOptions
+          handleDownload={() => saveMessagesAsZip(messages, "agent")}
+          handleScrollToBottom={scrollToBottom}
+        />
+      </HideableUI>
       <div className={styles.fixedContentContainer}>
         <div className={styles.missionTextArea}>
           <TextArea
@@ -476,11 +490,12 @@ export const AgentOverview = () => {
         messages={messages}
         emptyHistoryMessage="The Agent mode is a work in progress. Make sure to carefully read the README before using it."
         isLoading={isRunning}
+        scrollAnchorRef={scrollAnchorRef}
         model={MODEL.Debug}
         timer={timer}
       />
       <div className={`${styles.sidebar} ${styles.rightSidebar}`}>
-        <UiControls />
+        <UiControlsTheming />
         <div className={styles.section}>
           <div className={styles.fixedContentRow}>
             {!isRunning && (

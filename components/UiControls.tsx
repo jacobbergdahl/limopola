@@ -26,7 +26,7 @@ const ClickableIcon = ({
   );
 };
 
-export const UiControls = () => {
+export const UiControlsTheming = () => {
   const [isHidingUi, setIsHidingUi] = useAtom(isHidingUiAtom);
   const [theme, setTheme] = useAtom(themeAtom);
 
@@ -46,25 +46,25 @@ export const UiControls = () => {
       >
         <ClickableIcon
           icon="./icons/mdi--theme.svg"
-          alt="Select default theme"
+          alt="Select theme: default"
           onClick={() => handleThemeChange(THEME.Default)}
           isSelected={theme === THEME.Default}
         />
         <ClickableIcon
           icon="./icons/mdi--color.svg"
-          alt="Select default theme"
+          alt="Select theme: colorful"
           onClick={() => handleThemeChange(THEME.Colorful)}
           isSelected={theme === THEME.Colorful}
         />
         <ClickableIcon
           icon="./icons/mdi--surfing.svg"
-          alt="Select default theme"
+          alt="Select theme: gradient"
           onClick={() => handleThemeChange(THEME.Gradient)}
           isSelected={theme === THEME.Gradient}
         />
         <ClickableIcon
           icon="./icons/mdi--moon-and-stars.svg"
-          alt="Select default theme"
+          alt="Select theme: dark"
           onClick={() => handleThemeChange(THEME.Dark)}
           isSelected={theme === THEME.Dark}
         />
@@ -76,6 +76,35 @@ export const UiControls = () => {
           }
           alt={isHidingUi ? "Show UI" : "Hide UI"}
           onClick={() => setIsHidingUi(!isHidingUi)}
+        />
+      </div>
+    </div>
+  );
+};
+
+type UiControlsChatOptionsProps = {
+  handleDownload: () => void;
+  handleScrollToBottom: () => void;
+};
+
+export const UiControlsChatOptions = ({
+  handleDownload,
+  handleScrollToBottom,
+}: UiControlsChatOptionsProps) => {
+  return (
+    <div className={styles.uiControls}>
+      <div className={styles.uiGroup}>
+        <ClickableIcon
+          icon="./icons/mdi--download.svg"
+          alt="Download"
+          onClick={handleDownload}
+        />
+      </div>
+      <div className={styles.uiGroup}>
+        <ClickableIcon
+          icon="./icons/mdi--chevron-double-down.svg"
+          alt="Scroll to bottom"
+          onClick={handleScrollToBottom}
         />
       </div>
     </div>

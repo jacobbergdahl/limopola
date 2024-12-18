@@ -90,7 +90,10 @@ import { ImageSizeDallE3 } from "../components/sections/ImageSizeDallE3";
 import { UrlsToScrape } from "../components/sections/UrlsToScrape";
 import { SimilaritySearch } from "../components/sections/SimilaritySearch";
 import { SearchAccess } from "../components/sections/SearchAccess";
-import { UiControls } from "@/components/UiControls";
+import {
+  UiControlsChatOptions,
+  UiControlsTheming,
+} from "@/components/UiControls";
 import { HideableUI } from "@/components/HideableUi";
 
 // I know, I know, this file is too long. It should, and will, be refactored 🙏
@@ -887,6 +890,12 @@ export default function Home() {
       {inputMode !== INPUT_MODE.Agent && (
         <>
           <HideableUI className={`${styles.sidebar} ${styles.leftSidebar}`}>
+            <UiControlsChatOptions
+              handleDownload={() =>
+                downloadConversation(inputMode, chatHistory, currentEditorText)
+              }
+              handleScrollToBottom={scrollToBottom}
+            />
             <div className={styles.section}>
               <AllTextModels
                 model={model}
@@ -950,7 +959,7 @@ export default function Home() {
           </HideableUI>
 
           <div className={`${styles.sidebar} ${styles.rightSidebar}`}>
-            <UiControls />
+            <UiControlsTheming />
             <HideableUI>
               <div className={styles.section}>
                 <ModelInformation model={model} />
