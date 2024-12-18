@@ -15,6 +15,7 @@
     "quickstart": "npm install && npm run install-local-llm && npm run local"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.33.1",
     "@langchain/community": "^0.3.19",
     "@langchain/core": "^0.3.24",
     "@langchain/ollama": "^0.1.4",
