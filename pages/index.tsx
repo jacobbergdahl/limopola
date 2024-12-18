@@ -90,6 +90,8 @@ import { ImageSizeDallE3 } from "../components/sections/ImageSizeDallE3";
 import { UrlsToScrape } from "../components/sections/UrlsToScrape";
 import { SimilaritySearch } from "../components/sections/SimilaritySearch";
 import { SearchAccess } from "../components/sections/SearchAccess";
+import { UiControls } from "@/components/UiControls";
+import { HideableUI } from "@/components/HideableUi";
 
 // I know, I know, this file is too long. It should, and will, be refactored 🙏
 // ... (maybe)
@@ -876,7 +878,7 @@ export default function Home() {
               timer={timer}
             />
           </div>
-          {!isContextModalOpen && (
+          {!isContextModalOpen && inputMode !== INPUT_MODE.Editor && (
             <div className={styles.pageBottomColor}></div>
           )}
         </main>
@@ -884,7 +886,7 @@ export default function Home() {
 
       {inputMode !== INPUT_MODE.Agent && (
         <>
-          <div className={`${styles.sidebar} ${styles.leftSidebar}`}>
+          <HideableUI className={`${styles.sidebar} ${styles.leftSidebar}`}>
             <div className={styles.section}>
               <AllTextModels
                 model={model}
@@ -945,170 +947,175 @@ export default function Home() {
               )}
             </div>
             <div className={styles.spacing}></div>
-          </div>
+          </HideableUI>
 
           <div className={`${styles.sidebar} ${styles.rightSidebar}`}>
-            <div className={styles.section}>
-              <ModelInformation model={model} />
-            </div>
-            {shouldShowUrlsToScrape && (
-              <UrlsToScrape
-                urlsToScrape={urlsToScrape}
-                setUrlsToScrape={setUrlsToScrape}
-              />
-            )}
-            {shouldShowSimilaritySearch && (
-              <SimilaritySearch
-                isUsingSimilaritySearch={isUsingSimilaritySearch}
-                setIsUsingSimilaritySearch={() =>
-                  setIsUsingSimilaritySearch(!isUsingSimilaritySearch)
-                }
-              />
-            )}
-            {shouldShowMemory && (
+            <UiControls />
+            <HideableUI>
               <div className={styles.section}>
-                <Memory
-                  memory={memory}
-                  handleMemoryChange={handleMemoryChange}
-                  messagesInMemory={messagesInMemory}
-                  handleClearMemory={handleClearMemory}
-                />
+                <ModelInformation model={model} />
               </div>
-            )}
-            {shouldShowInstantMessages && (
-              <div className={styles.section}>
-                <InstantMessages
-                  handleElaborate={handleElaborate}
-                  handleRepeatLastMessage={handleRepeatLastMessage}
-                  handleContinue={handleContinue}
+              {shouldShowUrlsToScrape && (
+                <UrlsToScrape
+                  urlsToScrape={urlsToScrape}
+                  setUrlsToScrape={setUrlsToScrape}
                 />
-              </div>
-            )}
-            {shouldShowTemperature && (
-              <div className={styles.section}>
-                <Temperature
-                  temperature={temperature}
-                  technicalTemperature={technicalTemperature}
-                  handleTemperatureChange={handleTemperatureChange}
-                  isUsingDefault={isTemperatureDefault}
-                  handleCheckboxChange={() =>
-                    setIsTemperatureDefault(!isTemperatureDefault)
+              )}
+              {shouldShowSimilaritySearch && (
+                <SimilaritySearch
+                  isUsingSimilaritySearch={isUsingSimilaritySearch}
+                  setIsUsingSimilaritySearch={() =>
+                    setIsUsingSimilaritySearch(!isUsingSimilaritySearch)
                   }
                 />
-              </div>
-            )}
-            {shouldShowTopP && (
-              <div className={styles.section}>
-                <TopP
-                  topP={topP}
-                  technicalTopP={technicalTopP}
-                  handleTopPChange={handleTopPChange}
-                  isUsingDefault={isTopPDefault}
-                  handleCheckboxChange={() => setIsTopPDefault(!isTopPDefault)}
-                />
-              </div>
-            )}
-            {shouldShowFrequencyPenalty && (
-              <div className={styles.section}>
-                <FrequencyPenalty
-                  frequencyPenalty={frequencyPenalty}
-                  technicalFrequencyPenalty={technicalFrequencyPenalty}
-                  handleFrequencyPenaltyChange={handleFrequencyPenaltyChange}
-                  isUsingDefault={isFrequencyPenaltyDefault}
-                  handleCheckboxChange={() =>
-                    setIsFrequencyPenaltyDefault(!isFrequencyPenaltyDefault)
-                  }
-                />
-              </div>
-            )}
-            {shouldShowPresencePenalty && (
-              <div className={styles.section}>
-                <PresencePenalty
-                  presencePenalty={presencePenalty}
-                  technicalPresencePenalty={technicalPresencePenalty}
-                  handlePresencePenaltyChange={handlePresencePenaltyChange}
-                  isUsingDefault={isPresencePenaltyDefault}
-                  handleCheckboxChange={() =>
-                    setIsPresencePenaltyDefault(!isPresencePenaltyDefault)
-                  }
-                />
-              </div>
-            )}
-            {shouldShowAiSearchAccess && (
-              <SearchAccess
-                isGivingAiSearchAccess={isGivingAiSearchAccess}
-                setIsGivingAiSearchAccess={() =>
-                  setIsGivingAiSearchAccess(!isGivingAiSearchAccess)
-                }
-              />
-            )}
-            {shouldShowRequestedNumberOfTokens && (
-              <div className={styles.section}>
-                <RequestedNumberOfTokens
-                  requestedNumberOfTokens={requestedNumberOfTokens}
-                  setRequestedNumberOfTokens={setRequestedNumberOfTokens}
-                />
-              </div>
-            )}
-            {shouldShowMaxNumberOfTokens && (
-              <div className={styles.section}>
-                <MaxNumberOfTokens
-                  maxNumberOfTokens={maxNumberOfTokens}
-                  setMaxNumberOfTokens={setMaxNumberOfTokens}
-                />
-              </div>
-            )}
-            {shouldShowNumberOfImages && (
-              <div className={styles.section}>
-                <NumberOfImages
-                  numberOfImagesToGenerate={numberOfImagesToGenerate}
-                  setNumberOfImagesToGenerate={setNumberOfImagesToGenerate}
-                />
-              </div>
-            )}
-            {shouldShowImageSizeDallE2 && (
-              <div className={styles.section}>
-                <ImageSizeDallE2
-                  imageSize={imageSizeDallE2}
-                  setImageSize={setImageSizeDallE2}
-                />
-              </div>
-            )}
-            {shouldShowImageSizeDallE3 && (
-              <div className={styles.section}>
-                <ImageSizeDallE3
-                  imageSize={imageSizeDallE3}
-                  setImageSize={setImageSizeDallE3}
-                />
-              </div>
-            )}
-            {shouldShowVoiceSettings && (
-              <>
+              )}
+              {shouldShowMemory && (
                 <div className={styles.section}>
-                  <VoiceStability
-                    voiceStability={voiceStability}
-                    technicalVoiceStability={technicalVoiceStability}
-                    handleVoiceStabilityChange={handleVoiceStabilityChange}
+                  <Memory
+                    memory={memory}
+                    handleMemoryChange={handleMemoryChange}
+                    messagesInMemory={messagesInMemory}
+                    handleClearMemory={handleClearMemory}
                   />
                 </div>
+              )}
+              {shouldShowInstantMessages && (
                 <div className={styles.section}>
-                  <VoiceSimilarityBoost
-                    voiceSimilarityBoost={voiceSimilarityBoost}
-                    technicalVoiceSimilarityBoost={
-                      technicalVoiceSimilarityBoost
-                    }
-                    handleVoiceSimilarityBoostChange={
-                      handleVoiceSimilarityBoostChange
+                  <InstantMessages
+                    handleElaborate={handleElaborate}
+                    handleRepeatLastMessage={handleRepeatLastMessage}
+                    handleContinue={handleContinue}
+                  />
+                </div>
+              )}
+              {shouldShowTemperature && (
+                <div className={styles.section}>
+                  <Temperature
+                    temperature={temperature}
+                    technicalTemperature={technicalTemperature}
+                    handleTemperatureChange={handleTemperatureChange}
+                    isUsingDefault={isTemperatureDefault}
+                    handleCheckboxChange={() =>
+                      setIsTemperatureDefault(!isTemperatureDefault)
                     }
                   />
                 </div>
-              </>
-            )}
-            {shouldShowContexts && (
-              <div className={styles.section}>
-                <AllContexts />
-              </div>
-            )}
+              )}
+              {shouldShowTopP && (
+                <div className={styles.section}>
+                  <TopP
+                    topP={topP}
+                    technicalTopP={technicalTopP}
+                    handleTopPChange={handleTopPChange}
+                    isUsingDefault={isTopPDefault}
+                    handleCheckboxChange={() =>
+                      setIsTopPDefault(!isTopPDefault)
+                    }
+                  />
+                </div>
+              )}
+              {shouldShowFrequencyPenalty && (
+                <div className={styles.section}>
+                  <FrequencyPenalty
+                    frequencyPenalty={frequencyPenalty}
+                    technicalFrequencyPenalty={technicalFrequencyPenalty}
+                    handleFrequencyPenaltyChange={handleFrequencyPenaltyChange}
+                    isUsingDefault={isFrequencyPenaltyDefault}
+                    handleCheckboxChange={() =>
+                      setIsFrequencyPenaltyDefault(!isFrequencyPenaltyDefault)
+                    }
+                  />
+                </div>
+              )}
+              {shouldShowPresencePenalty && (
+                <div className={styles.section}>
+                  <PresencePenalty
+                    presencePenalty={presencePenalty}
+                    technicalPresencePenalty={technicalPresencePenalty}
+                    handlePresencePenaltyChange={handlePresencePenaltyChange}
+                    isUsingDefault={isPresencePenaltyDefault}
+                    handleCheckboxChange={() =>
+                      setIsPresencePenaltyDefault(!isPresencePenaltyDefault)
+                    }
+                  />
+                </div>
+              )}
+              {shouldShowAiSearchAccess && (
+                <SearchAccess
+                  isGivingAiSearchAccess={isGivingAiSearchAccess}
+                  setIsGivingAiSearchAccess={() =>
+                    setIsGivingAiSearchAccess(!isGivingAiSearchAccess)
+                  }
+                />
+              )}
+              {shouldShowRequestedNumberOfTokens && (
+                <div className={styles.section}>
+                  <RequestedNumberOfTokens
+                    requestedNumberOfTokens={requestedNumberOfTokens}
+                    setRequestedNumberOfTokens={setRequestedNumberOfTokens}
+                  />
+                </div>
+              )}
+              {shouldShowMaxNumberOfTokens && (
+                <div className={styles.section}>
+                  <MaxNumberOfTokens
+                    maxNumberOfTokens={maxNumberOfTokens}
+                    setMaxNumberOfTokens={setMaxNumberOfTokens}
+                  />
+                </div>
+              )}
+              {shouldShowNumberOfImages && (
+                <div className={styles.section}>
+                  <NumberOfImages
+                    numberOfImagesToGenerate={numberOfImagesToGenerate}
+                    setNumberOfImagesToGenerate={setNumberOfImagesToGenerate}
+                  />
+                </div>
+              )}
+              {shouldShowImageSizeDallE2 && (
+                <div className={styles.section}>
+                  <ImageSizeDallE2
+                    imageSize={imageSizeDallE2}
+                    setImageSize={setImageSizeDallE2}
+                  />
+                </div>
+              )}
+              {shouldShowImageSizeDallE3 && (
+                <div className={styles.section}>
+                  <ImageSizeDallE3
+                    imageSize={imageSizeDallE3}
+                    setImageSize={setImageSizeDallE3}
+                  />
+                </div>
+              )}
+              {shouldShowVoiceSettings && (
+                <>
+                  <div className={styles.section}>
+                    <VoiceStability
+                      voiceStability={voiceStability}
+                      technicalVoiceStability={technicalVoiceStability}
+                      handleVoiceStabilityChange={handleVoiceStabilityChange}
+                    />
+                  </div>
+                  <div className={styles.section}>
+                    <VoiceSimilarityBoost
+                      voiceSimilarityBoost={voiceSimilarityBoost}
+                      technicalVoiceSimilarityBoost={
+                        technicalVoiceSimilarityBoost
+                      }
+                      handleVoiceSimilarityBoostChange={
+                        handleVoiceSimilarityBoostChange
+                      }
+                    />
+                  </div>
+                </>
+              )}
+              {shouldShowContexts && (
+                <div className={styles.section}>
+                  <AllContexts />
+                </div>
+              )}
+            </HideableUI>
             <div className={styles.spacing}></div>
           </div>
         </>

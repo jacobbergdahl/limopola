@@ -42,6 +42,7 @@ import {
   contextAddedNarration,
   contextAddedVideos,
 } from "./contextCreator";
+import { UiControls } from "../UiControls";
 
 export const AgentOverview = () => {
   const [mission, setMission] = useAtom(agentMissionAtom);
@@ -456,7 +457,7 @@ export const AgentOverview = () => {
     <div>
       <div className={styles.pageTopColor}></div>
       <div className={styles.fixedContentContainer}>
-        <div className={styles.fixedContentRow}>
+        <div className={styles.missionTextArea}>
           <TextArea
             value={mission}
             handleChange={handleMissionChange}
@@ -470,56 +471,6 @@ export const AgentOverview = () => {
             handleKeyDown={handleTextareaKeyPress}
           />
         </div>
-        <div className={styles.fixedContentRow}>
-          {!isRunning && (
-            <Button
-              onClick={() => startNewMission()}
-              value={`Dispatch${
-                wasStopped || isStoppingRef.current ? " new " : " "
-              }agent`}
-              theme={BUTTON_THEME.Positive}
-            />
-          )}
-          {(wasStopped || isStoppingRef.current) && (
-            <Button
-              onClick={handleMissionResume}
-              value="Resume agent"
-              theme={BUTTON_THEME.Neutral}
-            />
-          )}
-          {!isRunning && messages.length > 0 && (
-            <Button
-              onClick={() => saveMessagesAsZip(messages, "agent")}
-              value={`Download all messages`}
-              theme={BUTTON_THEME.Default}
-            />
-          )}
-          {!isRunning && (
-            <Button
-              onClick={handleClearMissionDetails}
-              value="Clear mission details"
-            />
-          )}
-          {!isRunning && (
-            <Button
-              onClick={handleClearChat}
-              value="Clear chat"
-              shouldAskForConfirmation={true}
-            />
-          )}
-          {isRunning && !isStoppingRef.current && (
-            <Button
-              onClick={handleMissionStop}
-              value="Stop agent"
-              theme={BUTTON_THEME.Negative}
-            />
-          )}
-        </div>
-        {isStoppingRef.current && (
-          <div className={styles.fixedContentRow}>
-            <i>The agent will stop after finishing the current task.</i>
-          </div>
-        )}
       </div>
       <ChatHistory
         messages={messages}
@@ -528,6 +479,61 @@ export const AgentOverview = () => {
         model={MODEL.Debug}
         timer={timer}
       />
+      <div className={`${styles.sidebar} ${styles.rightSidebar}`}>
+        <UiControls />
+        <div className={styles.section}>
+          <div className={styles.fixedContentRow}>
+            {!isRunning && (
+              <Button
+                onClick={() => startNewMission()}
+                value={`Dispatch${
+                  wasStopped || isStoppingRef.current ? " new " : " "
+                }agent`}
+                theme={BUTTON_THEME.Positive}
+              />
+            )}
+            {(wasStopped || isStoppingRef.current) && (
+              <Button
+                onClick={handleMissionResume}
+                value="Resume agent"
+                theme={BUTTON_THEME.Neutral}
+              />
+            )}
+            {!isRunning && messages.length > 0 && (
+              <Button
+                onClick={() => saveMessagesAsZip(messages, "agent")}
+                value={`Download all messages`}
+                theme={BUTTON_THEME.Default}
+              />
+            )}
+            {!isRunning && (
+              <Button
+                onClick={handleClearMissionDetails}
+                value="Clear mission details"
+              />
+            )}
+            {!isRunning && (
+              <Button
+                onClick={handleClearChat}
+                value="Clear chat"
+                shouldAskForConfirmation={true}
+              />
+            )}
+            {isRunning && !isStoppingRef.current && (
+              <Button
+                onClick={handleMissionStop}
+                value="Stop agent"
+                theme={BUTTON_THEME.Negative}
+              />
+            )}
+          </div>
+          {isStoppingRef.current && (
+            <div className={styles.fixedContentRow}>
+              <i>The agent will stop after finishing the current task.</i>
+            </div>
+          )}
+        </div>
+      </div>
       <div className={styles.pageBottomColor}></div>
     </div>
   );

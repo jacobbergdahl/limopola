@@ -501,3 +501,10 @@ export type AgentTask = {
   api: MODEL;
   indication?: AGENT_TASK_INDICATION;
 };
+
+export enum THEME {
+  Default = "Default",
+  Colorful = "Colorful",
+  Gradient = "Gradient",
+  Dark = "Dark",
+}

@@ -1,0 +1,45 @@
+.uiControls {
+  display: flex;
+}
+.uiGroup {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid var(--primary-color);
+  border-radius: 10px;
+  background-color: var(--ui-controls-background-color);
+  position: relative;
+  z-index: 4;
+  margin-top: 20px;
+}
+.clickableIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  width: auto;
+  padding: 5px 5px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: inherit;
+  position: relative;
+  z-index: 4;
+}
+.clickableIcon:hover {
+  background-color: var(--ui-controls-hover-color);
+}
+.selected,
+.selected:hover {
+  background-color: var(--primary-color);
+  cursor: default;
+}
+.clickableIcon img {
+  display: block;
+  padding: 0;
+}
+.uiGroup:first-of-type {
+  margin-right: 10px;
+}
+.invisible {
+  visibility: hidden;
+}

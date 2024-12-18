@@ -1,4 +1,5 @@
 import { Checkbox } from "./Checkbox";
+import styles from "./GenericSpinnerComponent.module.css";
 
 export type GenericSpinnerSectionProps = {
   sectionName: string;
@@ -38,6 +39,7 @@ export const GenericSpinnerSection = ({
         value={displayValue}
         onChange={handleSliderChange}
         disabled={isUsingDefault}
+        className={styles.slider}
       />
     </>
   );

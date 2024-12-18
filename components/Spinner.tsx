@@ -1,4 +1,4 @@
-import { ALL_SLOW_MODELS, MODEL } from "../general/constants";
+import { MODEL } from "../general/constants";
 import styles from "./Spinner.module.css";
 
 export enum SPINNER_TYPE {
@@ -16,7 +16,6 @@ type SpinnerProps = {
 
 export const Spinner = ({
   show,
-  model,
   classNames,
   timer,
   spinnerType = SPINNER_TYPE.TRANSPARENT,

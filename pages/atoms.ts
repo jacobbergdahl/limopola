@@ -22,6 +22,7 @@ import {
   MEMORY,
   Message,
   TEXTAREA_STYLE,
+  THEME,
   getDefaultModel,
 } from "../general/constants";
 import { createPlaceHolderChatHistory } from "../general/helpers";
@@ -168,3 +169,5 @@ export const isGivingAiSearchAccessAtom = atomWithStorage(
   "IS_GIVING_AI_SEARCH_ACCESS",
   false
 );
+export const isHidingUiAtom = atomWithStorage("IS_HIDING_UI_ATOM", false);
+export const themeAtom = atomWithStorage("THEME", THEME.Default);

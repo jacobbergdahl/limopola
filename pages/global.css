@@ -2,7 +2,10 @@
   --primary-font: "ColfaxAI", Helvetica, sans-serif;
   --code-font: "Consolas", "Roboto Mono", "Source Code Pro", "ColfaxAI",
     Helvetica, sans-serif, Arial, monospace;
+  --background: none;
+  --background-size: 100%;
   --background-color: #353740;
+  --page-filler-color: var(--background-color);
   --background-inner-color: #1b2129;
   --contrast-color: #fff;
   --font-color: #fff;
@@ -22,10 +25,87 @@
   --error-alternate-color: #600;
   --link-color: #fff;
   --link-hover-color: #bfbfbf;
+  --primary-color: #fff;
+  --ui-controls-background-color: #8e8ea0;
+  --ui-controls-hover-color: #bfbfbf;
+  --mode-selection-container-width: 320px;
+  --page-filler-color-width: 100%;
+  --page-filler-top-margin-top: 0px;
+  --page-filler-top-height: 80px;
+  --page-filler-top-height-editor: 80px;
+  --page-filler-bottom-height: 40px;
+  --page-filler-bottom-height-editor: 120px;
+  --page-filler-bottom-width-editor: 1000px;
+  --chat-container-margin-bottom: 10px;
+  --background-attachment: default;
+}
+
+[data-theme="Colorful"] {
+  --background: none;
+  --background-size: 100%;
+  --background-color: #242b49;
+  --background-inner-color: #1b2129;
+}
+
+[data-theme="Gradient"] {
+  --background: linear-gradient(225deg, #ff3cac 0%, #784ba0 50%, #2b86c5 100%);
+  --background-size: 100% 100vh;
+  --background-color: #784ba0;
+  --background-inner-color: #1b2129;
+  --page-filler-color-width: calc(var(--mode-selection-container-width) + 60px);
+  --page-filler-top-height: 60px;
+  --page-filler-top-margin-top: 14px;
+  --chat-container-margin-bottom: 0px;
+  --page-filler-top-height-editor: 60px;
+  --page-filler-bottom-height-editor: 0px;
+  --page-filler-bottom-width-editor: 0px;
+  --background-attachment: fixed;
+  --textarea-background-color: #171c2c;
+  --textarea-outline-color: #171c2c;
+}
+
+[data-theme="Dark"] {
+  --background: linear-gradient(27deg, #151515 5px, transparent 5px) 0 5px,
+    linear-gradient(207deg, #151515 5px, transparent 5px) 10px 0px,
+    linear-gradient(27deg, #222 5px, transparent 5px) 0px 10px,
+    linear-gradient(207deg, #222 5px, transparent 5px) 10px 5px,
+    linear-gradient(90deg, #1b1b1b 10px, transparent 10px),
+    linear-gradient(
+      #1d1d1d 25%,
+      #1a1a1a 25%,
+      #1a1a1a 50%,
+      transparent 50%,
+      transparent 75%,
+      #242424 75%,
+      #242424
+    );
+  --background-size: 20px 20px;
+  --background-color: #131313;
+  --background-inner-color: #1b2129;
+  --page-filler-color-width: calc(var(--mode-selection-container-width) + 60px);
+  --page-filler-top-height: 60px;
+  --page-filler-top-margin-top: 14px;
+  --chat-container-margin-bottom: 0px;
+  --page-filler-top-height-editor: 60px;
+  --page-filler-bottom-height-editor: 0px;
+  --page-filler-bottom-width-editor: 0px;
+  --error-color: black;
+  --error-alternate-color: black;
+  --accent-color: rgb(10, 10, 10);
+  --accent-color-secondary: rgb(5, 5, 5);
+  --accent-color-tertiary: black;
+  --contrast-color: #c5c5c5;
+  --font-color: #c5c5c5;
+  --link-color: #c5c5c5;
+  --primary-color: #c5c5c5;
 }
 
 body {
-  background: var(--background-color);
+  background: var(--background);
+  background-size: var(--background-size);
+  background-color: var(--background-color);
+  background-repeat: repeat;
+  background-attachment: var(--background-attachment);
   color: #fff;
 }
 

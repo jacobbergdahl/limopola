@@ -37,15 +37,63 @@
 
 .pageBottomColor,
 .pageTopColor {
-  background: var(--background-color);
+  background: var(--page-filler-color);
+  height: 40px;
   position: fixed;
-  width: 100%;
+  width: var(--page-filler-color-width);
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 30px;
+  margin-top: var(--page-filler-top-margin-top);
 }
 .pageBottomColor {
-  height: 120px;
+  height: var(--page-filler-bottom-height-editor);
+  width: var(--page-filler-bottom-width-editor);
   bottom: 0;
 }
 .pageTopColor {
-  height: 80px;
+  height: var(--page-filler-top-height-editor);
   top: 0;
+}
+.missionTextArea {
+  margin-bottom: var(--chat-container-margin-bottom);
+}
+
+.uiControlsWrapper {
+  position: fixed;
+  top: 10px;
+  right: 37px;
+  z-index: 2;
+  margin-left: auto;
+}
+.sidebar {
+  width: 200px;
+  position: fixed;
+  top: 10px;
+  overflow-y: auto;
+  height: 100vh;
+  z-index: 4;
+}
+.leftSidebar {
+  left: 20px;
+}
+.rightSidebar {
+  right: 20px;
+}
+.sidebar .section {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+.sidebar h4 {
+  margin-top: 10px;
+  margin-bottom: 4px;
+  font-weight: normal;
+}
+.sidebar input {
+  width: 100%;
+  margin-bottom: 4px;
+}
+.sidebar input:last-of-type {
+  margin-bottom: 0;
 }

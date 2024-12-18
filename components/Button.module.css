@@ -23,31 +23,27 @@
   border-bottom: 1px solid var(--contrast-color);
   border-radius: 0;
 }
-
-/**
-TODO: Use proper colors and add them as CSS variables
-*/
 .button.positive {
   background: green;
   border: 1px solid green;
-  color: white;
+  color: var(--primary-color);
 }
 .button.positive:hover,
 .button.positive.selected {
   background: darkgreen;
   border: 1px solid darkgreen;
-  color: white;
+  color: var(--primary-color);
 }
 .button.negative {
   background: var(--error-color);
-  border: 1px solid white;
-  color: white;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
 }
 .button.negative:hover,
 .button.negative.selected {
   background: var(--error-alternate-color);
-  border: 1px solid white;
-  color: white;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
 }
 .button.neutral {
   background: yellow;

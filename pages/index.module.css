@@ -1,14 +1,15 @@
 @font-face {
   font-family: "ColfaxAI";
-  src: url(https://cdn.openai.com/API/fonts/ColfaxAIRegular.woff2)
-      format("woff2"),
+  src:
+    url(https://cdn.openai.com/API/fonts/ColfaxAIRegular.woff2) format("woff2"),
     url(https://cdn.openai.com/API/fonts/ColfaxAIRegular.woff) format("woff");
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: "ColfaxAI";
-  src: url(https://cdn.openai.com/API/fonts/ColfaxAIBold.woff2) format("woff2"),
+  src:
+    url(https://cdn.openai.com/API/fonts/ColfaxAIBold.woff2) format("woff2"),
     url(https://cdn.openai.com/API/fonts/ColfaxAIBold.woff) format("woff");
   font-weight: bold;
   font-style: normal;
@@ -60,7 +61,7 @@
 .modeSelectionContainer .modeSelectionContainerInner {
   margin-left: auto;
   margin-right: auto;
-  width: 320px;
+  width: var(--mode-selection-container-width);
   display: flex;
   flex-direction: row;
 }
@@ -73,7 +74,7 @@
   margin-right: 0;
 }
 .chatContainer textarea {
-  margin-bottom: 10px;
+  margin-bottom: var(--chat-container-margin-bottom);
   margin-top: 10px;
   margin-left: auto;
   margin-right: auto;
@@ -104,16 +105,20 @@
 }
 .pageBottomColor,
 .pageTopColor {
-  background: var(--background-color);
+  background: var(--page-filler-color);
   height: 40px;
   position: fixed;
-  width: 100%;
+  width: var(--page-filler-color-width);
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 30px;
+  margin-top: var(--page-filler-top-margin-top);
 }
 .pageBottomColor {
   bottom: 0;
 }
 .pageTopColor {
-  height: 80px;
+  height: var(--page-filler-top-height);
   top: 0;
 }
 .editorContainer .editorSpinner {
@@ -146,6 +151,7 @@
   top: 10px;
   overflow-y: auto;
   height: 100vh;
+  z-index: 4;
 }
 .leftSidebar {
   left: 20px;

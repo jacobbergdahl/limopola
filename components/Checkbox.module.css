@@ -7,6 +7,7 @@
   margin-right: 10px;
   transform: scale(1.5);
   vertical-align: middle;
+  accent-color: var(--accent-color-tertiary);
 }
 .checkBox span {
   vertical-align: middle;
