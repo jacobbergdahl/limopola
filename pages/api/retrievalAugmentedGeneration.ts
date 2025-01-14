@@ -5,11 +5,21 @@ import { MemoryVectorStore } from "langchain/vectorstores/memory";
 import { SHOULD_SHOW_ALL_LOGS } from "../../general/constants";
 import { DirectoryLoader } from "langchain/document_loaders/fs/directory";
 import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
+import { CSVLoader } from "@langchain/community/document_loaders/fs/csv";
+import { DocxLoader } from "@langchain/community/document_loaders/fs/docx";
+import { PPTXLoader } from "@langchain/community/document_loaders/fs/pptx";
 import { Document } from "langchain/document";
 import path from "path";
+import ExcelJS from "exceljs";
+import { writeFileSync, statSync, readdirSync } from "fs";
 
 type LangchainDocument = Document<Record<string, any>>;
 type LangchainEmbeddings = OpenAIEmbeddings | OllamaEmbeddings;
+
+let cachedDocuments: LangchainDocument[] | null = null;
+// Intentionally left unused
+let lastCacheTime = 0;
+const CACHE_DURATION = 60 * 60 * 1000;
 
 export const createEmbeddings = (): LangchainEmbeddings => {
   return process.env.NEXT_PUBLIC_IS_USING_LOCAL_EMBEDDINGS === "true"
@@ -130,15 +140,125 @@ export const createRagPrompt = (userPrompt: string, context: string) => {
   `;
 };
 
-export const fetchPdfFiles = async () => {
-  const pdfDirectoryPath = path.join(process.cwd(), "/data/pdf/");
-  console.log(`Retrieving PDFs from ${pdfDirectoryPath}`);
+const convertExcelToCSV = async (filePath: string): Promise<string | null> => {
+  const csvPath = filePath.replace(/\.(xlsx|xls)$/, ".csv");
+  const excelStats = statSync(filePath);
 
-  const directoryLoader = new DirectoryLoader(pdfDirectoryPath, {
+  try {
+    const csvStats = statSync(csvPath);
+    if (csvStats.mtime > excelStats.mtime) {
+      SHOULD_SHOW_ALL_LOGS &&
+        console.log(`Using existing CSV file for ${path.basename(filePath)}`);
+      return null;
+    }
+  } catch (e) {
+    // CSV doesn't exist, continue with conversion
+  }
+
+  console.log(`Converting ${path.basename(filePath)} to CSV`);
+  const workbook = new ExcelJS.Workbook();
+
+  try {
+    await workbook.xlsx.readFile(filePath);
+
+    let csvContent = "";
+    workbook.eachSheet((worksheet) => {
+      worksheet.eachRow((row) => {
+        csvContent += Array.isArray(row.values)
+          ? row.values
+              .slice(1)
+              // This map is a nightmare; there should probably be an easier way of extracting(correct) values from Excel cells.
+              .map((cell: any) => {
+                if (!cell) {
+                  return "";
+                }
+
+                let cellValue = cell.toString().trim();
+                if (
+                  !cellValue.includes("[object Object]") &&
+                  cellValue.length > 0 &&
+                  cellValue !== ","
+                ) {
+                  return cellValue;
+                }
+
+                if (typeof cell === "object") {
+                  if ("result" in cell || "sharedFormula" in cell) {
+                    cellValue = String(cell.result || "");
+                  }
+                  if ("formula" in cell) {
+                    cellValue += String(cell.formula || "");
+                  }
+                  if ("richText" in cell) {
+                    cellValue += String(
+                      cell.richText?.map((rt: any) => rt.text).join("") || ""
+                    );
+                  }
+                  if ("value" in cell) {
+                    cellValue += String(cell.value || "");
+                  }
+                  if ("hyperlink" in cell) {
+                    cellValue += String(cell.hyperlink || "");
+                  }
+                  cellValue += String(cell.numericValue || "");
+                  cellValue += String(cell.text || "");
+                  cellValue += String(cell.toString() || "");
+                }
+
+                cellValue = cellValue.replaceAll("[object Object]", "").trim();
+                return cellValue;
+              })
+              .map((value) => (value.includes(",") ? `"${value}"` : value))
+              .join(",") + "\n"
+          : "";
+      });
+    });
+
+    console.log("csvContent:", csvContent);
+
+    writeFileSync(csvPath, csvContent);
+    return csvContent;
+  } catch (error) {
+    const errorMessage = `Error processing ${path.basename(filePath)}: ${error}\n\nThe error above may be a red herring. A more common reason for this function failing is that the excel file is open. Make sure to close it if you do have it open.`;
+    console.error(errorMessage);
+    throw error;
+  }
+};
+
+export const fetchDataFiles = async () => {
+  const currentTime = Date.now();
+
+  // We are currently not caching the documents, which means that the documents are loaded anew every time. You could uncomment the code below if your data is static. I might make this into a prop/setting in the future.
+  const shouldReturnCachedDocuments = false; // cachedDocuments && currentTime - lastCacheTime < CACHE_DURATION;
+
+  if (shouldReturnCachedDocuments) {
+    console.log("Returning cached documents");
+    return cachedDocuments;
+  }
+
+  const dataDirectoryPath = path.join(process.cwd(), "/data/");
+  console.log(`Retrieving data files from ${dataDirectoryPath}`);
+
+  // LangChainJS doesn't have an xlsx loader (though the Python package does, so we might get one in the JS version in the future). For now, we convert Excel files to CSV.
+  const files = readdirSync(dataDirectoryPath);
+  for (const file of files) {
+    if (file.match(/\.(xlsx|xls)$/)) {
+      await convertExcelToCSV(path.join(dataDirectoryPath, file));
+    }
+  }
+
+  const directoryLoader = new DirectoryLoader(dataDirectoryPath, {
     ".pdf": (path: string) => new PDFLoader(path),
+    ".pptx": (path: string) => new PPTXLoader(path),
+    ".docx": (path: string) => new DocxLoader(path),
+    ".csv": (path: string) => new CSVLoader(path),
   });
 
-  return await directoryLoader.load();
+  // Update cache
+  cachedDocuments = await directoryLoader.load();
+  lastCacheTime = currentTime;
+
+  return cachedDocuments;
 };
 
 export const getPageContentFromDocuments = (

@@ -8,27 +8,27 @@ import {
 import {
   createEmbeddings,
   createRagPrompt,
-  fetchPdfFiles,
+  fetchDataFiles,
   performSimilaritySearchFromDocuments,
   splitDocumentsIntoChunks,
   throwIfPromptIsLong,
 } from "../retrievalAugmentedGeneration";
 import { ProcessedBody } from "../../../general/apiHelper";
+import { claude } from "../aiModels/claude";
 
 /**
- * Retrieves data from pdf files
+ * Uses RAG to retrieve data from files in the data folder
  */
-export const pdfReader = async (
+export const dataReader = async (
   res: NextApiResponse,
-  message,
-  model = MODEL.Gpt4,
+  message: string,
+  model = MODEL.Gpt4_o,
   processedBody: ProcessedBody
 ) => {
   try {
     const embeddings = createEmbeddings();
-
-    const pdfFiles = await fetchPdfFiles();
-    const chunks = await splitDocumentsIntoChunks(pdfFiles);
+    const files = await fetchDataFiles();
+    const chunks = await splitDocumentsIntoChunks(files);
     const context = await performSimilaritySearchFromDocuments(
       chunks,
       message,
@@ -41,6 +41,10 @@ export const pdfReader = async (
       console.log("Prompt after reading pdf files\n", prompt);
 
     throwIfPromptIsLong(prompt);
+
+    if (model === MODEL.Claude35Haiku || model === MODEL.Claude35Sonnet) {
+      return claude(res, prompt, model, processedBody);
+    }
 
     return gpt(res, prompt, model, processedBody);
   } catch (error: any) {

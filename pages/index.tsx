@@ -173,9 +173,10 @@ export default function Home() {
 
   const isFactChecking = model === MODEL.FactChecker;
   const isUsingWebRetriever = model === MODEL.WebRetriever;
-  const isUsingPdfReader = model === MODEL.PdfReader;
+  const isUsingDataReader =
+    model === MODEL.GptDataReader || model === MODEL.ClaudeDataReader;
   const isUsingCustomTextGeneratingWrapper =
-    isFactChecking || isUsingWebRetriever || isUsingPdfReader;
+    isFactChecking || isUsingWebRetriever || isUsingDataReader;
   const shouldShowUrlsToScrape = isUsingWebRetriever;
   const shouldShowTemperature =
     selectedModelType === MODEL_TYPE.Text &&
@@ -316,12 +317,14 @@ export default function Home() {
     const contextWithPrompt =
       !!currentlySelectedContext.content &&
       currentlySelectedContext.content.length > 0
-        ? currentlySelectedContext.content + "\n\n" + prompt
+        ? `BEGINSTATICCONTEXT
+          ${currentlySelectedContext.content}
+          ENDSTATICCONTEXT
+          ${prompt}
+        `
         : prompt;
 
-    if (isUsingCustomTextGeneratingWrapper) {
-      return prompt;
-    } else if (
+    if (
       selectedModelType === MODEL_TYPE.Text &&
       inputMode === INPUT_MODE.Chat
     ) {
@@ -485,7 +488,7 @@ export default function Home() {
       if (selectedModelType === MODEL_TYPE.Text) {
         const formattedContext =
           currentlySelectedContext.title !== DEFAULT_CONTEXT.title
-            ? ` (as ${currentlySelectedContext.title} ${timeToGenerate})`
+            ? ` (with context ${currentlySelectedContext.title} ${timeToGenerate})`
             : ` (${timeToGenerate})`;
         const sender = model + formattedContext;
 

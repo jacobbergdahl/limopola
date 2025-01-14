@@ -32,9 +32,9 @@ export const parseTextResponse = (text: string): string => {
   const doesTextStartAndEndWithHtml =
     startsOrEndsWithHtmlTagRegexPattern.test(processedText);
 
-  const doesTextStartWithMarkdownHeader = processedText.startsWith("#");
-  const doesTextContainMarkdownLinks = /\[.*?\]\(.*?\)/.test(processedText);
-  if (doesTextStartWithMarkdownHeader || doesTextContainMarkdownLinks) {
+  const doesTextLikelyContainMarkdown =
+    /(^#)|\[.*?\]\(.*?\)|(\*\*.*?\*\*)|(\*.*?\*)|(_.*?_)/.test(processedText);
+  if (doesTextLikelyContainMarkdown) {
     processedText = parseMarkdownToHtml(processedText);
   }
 

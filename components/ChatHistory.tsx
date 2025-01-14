@@ -1,7 +1,25 @@
-import { MutableRefObject } from "react";
+import { MutableRefObject, useEffect, useState } from "react";
 import { MODEL, MODEL_TYPE, Message, getModelType } from "../general/constants";
 import styles from "./ChatHistory.module.css";
 import { SPINNER_TYPE, Spinner } from "./Spinner";
+
+const getEmptyHistoryMessage = (): string => {
+  const emptyHistoryMessages = [
+    "Hello? Is anybody out there? Type away to kick things off!",
+    "Blank slate alert! Your first message could be legendary.",
+    "Waiting on you to make the first move! Don’t leave me hanging.",
+    "Empty chat, infinite possibilities. Start typing to begin!",
+    "One small step for you, one giant leap for conversation. Start typing!",
+    "Be the hero this chat needs. Rescue me from emptiness!",
+    "No messages yet. A perfect moment to set the tone—type away!",
+    "Dare to fill the void? I can’t wait to see what you’ll say!",
+    "Wanna chat? I’m all ears (or code, technically).",
+  ];
+
+  return emptyHistoryMessages[
+    Math.floor(Math.random() * emptyHistoryMessages.length)
+  ];
+};
 
 type ChatHistoryType = {
   messages: Message[];
@@ -22,8 +40,18 @@ export const ChatHistory = ({
   model,
   handleAutoMessage,
   timer,
-  emptyHistoryMessage = "The chat history is empty",
+  emptyHistoryMessage,
 }: ChatHistoryType) => {
+  const [currentEmptyMessage, setCurrentEmptyMessage] = useState<string>(
+    emptyHistoryMessage || getEmptyHistoryMessage()
+  );
+
+  useEffect(() => {
+    if (messages.length === 0 && !emptyHistoryMessage) {
+      setCurrentEmptyMessage(getEmptyHistoryMessage());
+    }
+  }, [messages.length]);
+
   const hasCurrentlySelectedAudioModel =
     getModelType(model) === MODEL_TYPE.Audio;
   const hasCurrentlySelectedFactChecker = model === MODEL.FactChecker;
@@ -112,7 +140,7 @@ export const ChatHistory = ({
         );
       })}
       {messages.length === 0 && !isLoading && (
-        <span className={styles.emptyChat}>{emptyHistoryMessage}</span>
+        <span className={styles.emptyChat}>{currentEmptyMessage}</span>
       )}
       <Spinner
         show={isLoading}

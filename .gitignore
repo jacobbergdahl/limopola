@@ -19,7 +19,7 @@
 /models/*
 !/models/.gitkeep
 database.db
-/data/pdf/
+/data/
 
 # debug
 npm-debug.log*

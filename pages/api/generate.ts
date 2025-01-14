@@ -18,7 +18,7 @@ import { factChecker } from "./aiWrappers/factChecker";
 import { NextApiRequest, NextApiResponse } from "next";
 import { palm } from "./aiModels/palm";
 import { webRetriever } from "./aiWrappers/webRetriever";
-import { pdfReader } from "./aiWrappers/pdfReader";
+import { dataReader } from "./aiWrappers/dataReader";
 import { webConnector } from "./aiWrappers/webConnector";
 import { getProcessedBodyForAiApiCalls } from "../../general/apiHelper";
 import { transformers } from "./aiModels/transformers";
@@ -92,8 +92,11 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
         isUsingSimilaritySearch
       );
     }
-    if (model === MODEL.PdfReader) {
-      return pdfReader(res, message, MODEL.Gpt4, processedBody);
+    if (model === MODEL.GptDataReader) {
+      return dataReader(res, message, MODEL.Gpt4_o, processedBody);
+    }
+    if (model === MODEL.ClaudeDataReader) {
+      return dataReader(res, message, MODEL.Claude35Sonnet, processedBody);
     }
     if (
       model === MODEL.TransformersSentimentAnalysis ||

@@ -37,7 +37,8 @@ export enum MODEL {
   PalmChatBison001 = "chat-bison-001",
   FactChecker = "gpt-4-fact-checker",
   WebRetriever = "gpt-4-web-retriever",
-  PdfReader = "gpt-4-pdf-reader",
+  GptDataReader = "gpt-data-reader",
+  ClaudeDataReader = "claude-data-reader",
   LocalLlm = "local-llm-node-cpp",
   LocalOllama = "local-llm-ollama",
   WebLlm = "web-llm",
@@ -258,13 +259,21 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
         mdNote:
           "A custom implementation of a web retriever. Reads data from the internet and sends it to GPT-4. A form of RAG.",
       };
-    case MODEL.PdfReader:
+    case MODEL.GptDataReader:
       return {
         status: MODEL_STATUS.Full,
-        information: `A custom implementation of a pdf reader using GPT-4 as a basis. To use it, add (a) pdf file(s) to ~/data/pdf/. The AI will fetch all pdf files from that directory and perform a similarity search to find the relevant information based on your prompt.`,
+        information: `Uses RAG and GPT-4o to retrieve data from files in the data folder. Can read PDF, Word, PowerPoint, Excel, and CSV files.`,
         apiKey: MODEL_API_KEY.OpenAi,
         mdNote:
-          "A custom implementation of a pdf reader. Reads data from pdf files and sends it to GPT-4. A form of RAG.",
+          "Uses RAG and GPT-4o to retrieve data from files in the data folder. Can read PDF, Word, PowerPoint, Excel, and CSV files.",
+      };
+    case MODEL.ClaudeDataReader:
+      return {
+        status: MODEL_STATUS.Full,
+        information: `Uses RAG and Claude to retrieve data from files in the data folder. Can read PDF, Word, PowerPoint, Excel, and CSV files. While Claude is used to process the data, OpenAI embeddings are used to perform the similarity search, hence both the OpenAI and Anthropic API keys are required.`,
+        apiKey: MODEL_API_KEY.Anthropic,
+        mdNote:
+          "Uses RAG and Claude to retrieve data from files in the data folder. Can read PDF, Word, PowerPoint, Excel, and CSV files.",
       };
     case MODEL.PalmChatBison001:
       return {
@@ -316,7 +325,8 @@ export const ALL_TEXT_MODELS = [
   MODEL.Claude35Haiku,
   MODEL.FactChecker,
   MODEL.WebRetriever,
-  MODEL.PdfReader,
+  MODEL.GptDataReader,
+  MODEL.ClaudeDataReader,
   MODEL.Llama2_70b,
   MODEL.Llama2_13b,
   MODEL.Llama2_70b_chat,
@@ -375,7 +385,8 @@ export const ALL_LOCAL_MODELS = [MODEL.LocalLlm, MODEL.LocalOllama];
 export const ALL_CUSTOM_WRAPPERS = [
   MODEL.FactChecker,
   MODEL.WebRetriever,
-  MODEL.PdfReader,
+  MODEL.GptDataReader,
+  MODEL.ClaudeDataReader,
 ];
 
 export enum MEMORY {

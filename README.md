@@ -81,42 +81,44 @@ npm run dev
 
 This is a list of models currently included in this AI interface. More models will be added in the future.
 
-| Model                | Type  | API Source |
-| -------------------- | ----- | ---------- |
-| gpt-4                | Text  | OpenAI     |
-| gpt-4o               | Text  | OpenAI     |
-| gpt-4-32k            | Text  | OpenAI     |
-| gpt-4-turbo          | Text  | OpenAI     |
-| gpt-4o-mini          | Text  | OpenAI     |
-| claude-3-5-sonnet    | Text  | Anthropic  |
-| claude-3-5-haiku     | Text  | Anthropic  |
-| dall-e               | Image | OpenAI     |
-| dall-e-3             | Image | OpenAI     |
-| stable-diffusion-xl  | Image | Replicate  |
-| llama-2-70b          | Text  | Replicate  |
-| llama-2-13b          | Text  | Replicate  |
-| llama-2-70b-chat     | Text  | Replicate  |
-| llama-2-13b-chat     | Text  | Replicate  |
-| codellama-34b        | Text  | Replicate  |
-| text-to-pokemon      | Image | Replicate  |
-| animate-diff         | Video | Replicate  |
-| eleven-labs          | Audio | ElevenLabs |
-| text-bison-001\*     | Text  | Google     |
-| chat-bison-001\*     | Text  | Google     |
-| local-llm-node-cpp   | Text  | None       |
-| web-llm              | Text  | None       |
-| t-sentiment-analysis | Text  | None       |
-| t-text2text          | Text  | None       |
+| Model                    | Type  | API Source |
+| ------------------------ | ----- | ---------- |
+| gpt-4                    | Text  | OpenAI     |
+| gpt-4o                   | Text  | OpenAI     |
+| gpt-4-32k                | Text  | OpenAI     |
+| gpt-4-turbo              | Text  | OpenAI     |
+| gpt-4o-mini              | Text  | OpenAI     |
+| claude-3-5-sonnet-latest | Text  | Anthropic  |
+| claude-3-5-haiku-latest  | Text  | Anthropic  |
+| dall-e                   | Image | OpenAI     |
+| dall-e-3                 | Image | OpenAI     |
+| stable-diffusion-xl      | Image | Replicate  |
+| llama-2-70b              | Text  | Replicate  |
+| llama-2-13b              | Text  | Replicate  |
+| llama-2-70b-chat         | Text  | Replicate  |
+| llama-2-13b-chat         | Text  | Replicate  |
+| codellama-34b            | Text  | Replicate  |
+| text-to-pokemon          | Image | Replicate  |
+| animate-diff             | Video | Replicate  |
+| eleven-labs              | Audio | ElevenLabs |
+| text-bison-001\*         | Text  | Google     |
+| chat-bison-001\*         | Text  | Google     |
+| local-llm-node-cpp       | Text  | None       |
+| local-llm-ollama         | Text  | None       |
+| web-llm                  | Text  | None       |
+| t-sentiment-analysis     | Text  | None       |
+| t-text2text              | Text  | None       |
 
 \* Google PaLM. No longer available in the `main` branch due to a rough dependency clash. To use Google's API's, run `git checkout google-generativelanguage && npm install`.
 
 ### Custom wrappers of AI models
 
-| Model               | Type | API Source | Note                                                                                                           |
-| ------------------- | ---- | ---------- | -------------------------------------------------------------------------------------------------------------- |
-| gpt-4-fact-checker  | Text | OpenAI     | A custom implementation of a fact-checker. Uses GPT-4 to rate the accuracy of any statement.                   |
-| gpt-4-web-retriever | Text | OpenAI     | A custom implementation of a web retriever. Reads data from the internet and sends it to GPT-4. A form of RAG. |
-| gpt-4-pdf-reader    | Text | OpenAI     | A custom implementation of a pdf reader. Reads data from pdf files and sends it to GPT-4. A form of RAG.       |
+| Model               | Type | API Source | Note                                                                                                                      |
+| ------------------- | ---- | ---------- | ------------------------------------------------------------------------------------------------------------------------- |
+| gpt-4-fact-checker  | Text | OpenAI     | A custom implementation of a fact-checker. Uses GPT-4 to rate the accuracy of any statement.                              |
+| gpt-4-web-retriever | Text | OpenAI     | A custom implementation of a web retriever. Reads data from the internet and sends it to GPT-4. A form of RAG.            |
+| gpt-data-reader     | Text | OpenAI     | Uses RAG and GPT-4o to retrieve data from files in the data folder. Can read PDF, Word, PowerPoint, Excel, and CSV files. |
+| claude-data-reader  | Text | Anthropic  | Uses RAG and Claude to retrieve data from files in the data folder. Can read PDF, Word, PowerPoint, Excel, and CSV files. |
 
 ## Modes
 

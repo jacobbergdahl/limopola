@@ -59,6 +59,9 @@
 .modalOverlay .smallTextarea {
   width: calc(100% - 100px);
 }
+.modalOverlay .contextList {
+  margin: 40px 50px 0 50px;
+}
 .modalOverlay .contextListItem {
   background: var(--accent-color);
 }
