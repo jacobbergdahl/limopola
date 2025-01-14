@@ -18,6 +18,24 @@
   margin-bottom: 10px;
   white-space: pre-wrap;
 }
+.chatHistory .message p,
+.chatHistory .message ol,
+.chatHistory .message ul,
+.chatHistory .message li,
+.chatHistory .message h1,
+.chatHistory .message h2,
+.chatHistory .message h3,
+.chatHistory .message h4,
+.chatHistory .message h5,
+.chatHistory .message h6,
+.chatHistory .message span {
+  margin: 0;
+  white-space: initial;
+  color: white;
+}
+.chatHistory .message li {
+  margin-bottom: 10px;
+}
 .chatHistory .message .imageWrapper {
   display: flex;
   justify-content: flex-start;

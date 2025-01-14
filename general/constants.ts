@@ -104,7 +104,8 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
     case MODEL.Gpt4_o:
       return {
         status: MODEL_STATUS.Full,
-        information: "GPT-4o (Omni) is the most advanced AI model from OpenAI.",
+        information:
+          "GPT-4o is an AI model from OpenAI. It is faster and cheaper than GPT-4, and the OpenAI default, though GPT-4 tends to perform a little bit better.",
         learnMoreUrl: "https://platform.openai.com/docs/models/gpt-4o",
         apiKey: MODEL_API_KEY.OpenAi,
       };

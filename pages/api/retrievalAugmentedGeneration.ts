@@ -167,7 +167,7 @@ const convertExcelToCSV = async (filePath: string): Promise<string | null> => {
         csvContent += Array.isArray(row.values)
           ? row.values
               .slice(1)
-              // This map is a nightmare; there should probably be an easier way of extracting(correct) values from Excel cells.
+              // This map feels unnecessarily complex; there should probably be an easier way of extracting (correct) values from Excel cells.
               .map((cell: any) => {
                 if (!cell) {
                   return "";
@@ -219,7 +219,7 @@ const convertExcelToCSV = async (filePath: string): Promise<string | null> => {
     writeFileSync(csvPath, csvContent);
     return csvContent;
   } catch (error) {
-    const errorMessage = `Error processing ${path.basename(filePath)}: ${error}\n\nThe error above may be a red herring. A more common reason for this function failing is that the excel file is open. Make sure to close it if you do have it open.`;
+    const errorMessage = `Error processing ${path.basename(filePath)}: ${error}\n\nThe error above may be a red herring. A more common reason for this function failing is that the Excel file is open. Make sure to close it if you do have it open.`;
     console.error(errorMessage);
     throw error;
   }

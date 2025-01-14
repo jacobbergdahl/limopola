@@ -52,7 +52,10 @@ export const gpt = async (
       messages: [
         {
           role: "user",
-          content: message,
+          // This is the only place in the codebase where explicitly tell the AI to not use markdown.
+          // GPT-4o loves to return markdown, and it is very inconsistent and really messes with the UI.
+          // We have a function for parsing markdown to HTML, but it still makes a mess of the UI.
+          content: "Do not use markdown in your response.\n\n" + message,
         },
       ],
     });
