@@ -734,11 +734,8 @@ export default function Home() {
     setIsPresencePenaltyDefault(true);
     setIsGivingAiSearchAccess(false);
   };
-  const handleElaborate = () =>
-    onSubmit(
-      "Please elaborate on your previous message. Explain in greater detail what you just wrote."
-    );
-  const handleContinue = () => onSubmit("Please continue on your last post.");
+  const handleOneWordMessage = () =>
+    onSubmit("Please respond in just one word.");
   const handleRepeatLastMessage = () => {
     const latestMessageByUser = getLatestMessageByUser(chatHistory);
     if (latestMessageByUser) {
@@ -991,9 +988,8 @@ export default function Home() {
               {shouldShowInstantMessages && (
                 <div className={styles.section}>
                   <InstantMessages
-                    handleElaborate={handleElaborate}
+                    handleOneWordMessage={handleOneWordMessage}
                     handleRepeatLastMessage={handleRepeatLastMessage}
-                    handleContinue={handleContinue}
                   />
                 </div>
               )}
