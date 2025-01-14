@@ -183,11 +183,11 @@ These are example screenshots of the application.
 
 ### Chat UI
 
-![Screenshot of the chat UI](./public/screenshot1.png)
+![image](https://github.com/user-attachments/assets/cb031d5a-d6be-4b65-abeb-b69f26205bb6)
 
 ### Editor UI
 
-![Screenshot of the editor UI](./public/screenshot2.png)
+![image](https://github.com/user-attachments/assets/37b8c167-3dca-4b5c-85ad-260fd0ffadd4)
 
 ## Videos
 
