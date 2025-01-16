@@ -5,7 +5,7 @@ import {
   parseTextResponse,
 } from "../../../general/helpers";
 import { NextApiResponse } from "next";
-import { LlamaModel, LlamaContext, LlamaChatSession } from "node-llama-cpp";
+import { LlamaChatSession, getLlama } from "node-llama-cpp";
 import { ProcessedBody } from "../../../general/apiHelper";
 
 const modelName =
@@ -23,7 +23,7 @@ export const llamaLocal = async (
   processedBody: ProcessedBody
 ) => {
   console.log(
-    `The backend is calling your local machine learning model at ${modelPath}.`
+    `The backend is calling your local machine learning model at ${modelPath} through node-llama-cpp.`
   );
 
   const abortController = new AbortController();
@@ -38,11 +38,14 @@ export const llamaLocal = async (
   }
 
   try {
-    const model = new LlamaModel({
+    const llama = await getLlama();
+    const model = await llama.loadModel({
       modelPath: modelPath,
     });
-    const context = new LlamaContext({ model });
-    const session = new LlamaChatSession({ context });
+    const context = await model.createContext();
+    const session = new LlamaChatSession({
+      contextSequence: context.getSequence(),
+    });
     const output = await session.prompt(message, {
       temperature: processedBody.temperature,
       maxTokens: processedBody.maxNumberOfTokens,
@@ -52,7 +55,7 @@ export const llamaLocal = async (
 
     abortController.abort();
 
-    console.log("Output from your local llm before parsing:", output);
+    console.log("Output from your local LLM before parsing:", output);
     const result = parseTextResponse(output);
 
     if (!res) {
