@@ -22,6 +22,7 @@ let lastCacheTime = 0;
 const CACHE_DURATION = 60 * 60 * 1000;
 
 export const createEmbeddings = (): LangchainEmbeddings => {
+  // This could be a prop/setting in the future
   return process.env.NEXT_PUBLIC_IS_USING_LOCAL_EMBEDDINGS === "true"
     ? new OllamaEmbeddings()
     : new OpenAIEmbeddings();
@@ -142,11 +143,12 @@ export const createRagPrompt = (userPrompt: string, context: string) => {
 
 const convertExcelToCSV = async (filePath: string): Promise<string | null> => {
   const csvPath = filePath.replace(/\.(xlsx|xls)$/, ".csv");
-  const excelStats = statSync(filePath);
 
   try {
+    const excelStats = statSync(filePath);
     const csvStats = statSync(csvPath);
-    if (csvStats.mtime > excelStats.mtime) {
+    const doesCsvExist = csvStats.mtime > excelStats.mtime;
+    if (doesCsvExist) {
       SHOULD_SHOW_ALL_LOGS &&
         console.log(`Using existing CSV file for ${path.basename(filePath)}`);
       return null;
@@ -177,6 +179,7 @@ const convertExcelToCSV = async (filePath: string): Promise<string | null> => {
                 if (
                   !cellValue.includes("[object Object]") &&
                   cellValue.length > 0 &&
+                  // Don't return empty cells that only contain a comma; these are likely artifacts from Excel's internal representation
                   cellValue !== ","
                 ) {
                   return cellValue;
@@ -208,13 +211,12 @@ const convertExcelToCSV = async (filePath: string): Promise<string | null> => {
                 cellValue = cellValue.replaceAll("[object Object]", "").trim();
                 return cellValue;
               })
+              // If a cell value contains commas, wrap it in quotes to preserve it as a single CSV field
               .map((value) => (value.includes(",") ? `"${value}"` : value))
               .join(",") + "\n"
           : "";
       });
     });
-
-    console.log("csvContent:", csvContent);
 
     writeFileSync(csvPath, csvContent);
     return csvContent;

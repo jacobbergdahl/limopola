@@ -15,6 +15,7 @@ import {
 } from "../retrievalAugmentedGeneration";
 import { ProcessedBody } from "../../../general/apiHelper";
 import { claude } from "../aiModels/claude";
+import { extractErrorMessage } from "@/general/helpers";
 
 /**
  * Uses RAG to retrieve data from files in the data folder
@@ -48,8 +49,10 @@ export const dataReader = async (
 
     return gpt(res, prompt, model, processedBody);
   } catch (error: any) {
+    const errorMessage = extractErrorMessage(error);
+    console.error(error);
     res
       .status(STATUS_CODE.InternalServerError)
-      .json({ error: error.message || "An error occurred" });
+      .json({ error: errorMessage || "An error occurred" });
   }
 };

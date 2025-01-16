@@ -10,7 +10,7 @@ const parseMarkdownToHtml = (markdown: string): string => {
 
 export const parseTextResponse = (text: string): string => {
   let processedText = text
-    // It's rare that the LLM will output delimiters, but it could happen if it gets confused
+    // It's rare that the LLM will output delimiters, but it could happen with some LLMs
     .replace(/BEGINCONTEXT/g, "")
     .replace(/ENDCONTEXT/g, "")
     .replace(/BEGINRESULTS/g, "")
@@ -21,10 +21,11 @@ export const parseTextResponse = (text: string): string => {
     .replace(/ENDCODE/g, "")
     .replace(/BEGININSTRUCTION/g, "")
     .replace(/ENDINSTRUCTION/g, "")
-    .replace("\n\n<end>", "")
-    .replace("\n\n</end>", "")
     .replace(/""""/g, "")
     .replace(/"""/g, "")
+    // This is a common stop token for LLMs
+    .replace("\n\n<end>", "")
+    .replace("\n\n</end>", "")
     .trim();
 
   const startsOrEndsWithHtmlTagRegexPattern = /^<[^>]+>[\s\S]*<\/[^>]+>$/;
