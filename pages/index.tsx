@@ -19,7 +19,10 @@ import {
 import {
   downloadConversation,
   getCtrlKey,
+  getEditorPrompt,
   getLatestMessageByUser,
+  postProcessEditorResponse,
+  removeOverlap,
 } from "../general/helpers";
 import styles from "./index.module.css";
 import {
@@ -333,7 +336,7 @@ export default function Home() {
       selectedModelType === MODEL_TYPE.Text &&
       inputMode === INPUT_MODE.Editor
     ) {
-      return prompt;
+      return getEditorPrompt(prompt);
     }
 
     return contextWithPrompt;
@@ -603,12 +606,14 @@ export default function Home() {
           new Error(`Request failed with status ${response.status}`)
       );
     } else {
-      const isTheLastCharacterASpace = currentEditorText.slice(-1) === " ";
-      setCurrentEditorText(
-        currentEditorText +
-          (isTheLastCharacterASpace ? "" : " ") +
-          data.result.trim()
+      const postProcessedAiResponse = postProcessEditorResponse(data.result);
+
+      const textWithoutOverlap = removeOverlap(
+        currentEditorText,
+        postProcessedAiResponse
       );
+
+      setCurrentEditorText(textWithoutOverlap.trim());
     }
 
     scrollToBottom();

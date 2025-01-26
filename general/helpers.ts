@@ -85,6 +85,14 @@ export const parseTextResponse = (text: string): string => {
   return processedText;
 };
 
+export const postProcessEditorResponse = (response: string) => {
+  return response
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#039;/g, "'");
+};
+
 export const enum OperatingSystem {
   Windows = 0,
   Mac,
@@ -366,6 +374,58 @@ export const saveMessagesAsZip = async (
   saveAs(content, `${zipFileName}.zip`);
 };
 
+export const removeOverlap = (
+  firstString: string,
+  secondString: string
+): string => {
+  const firstStringTrimmed = firstString.trim();
+  const secondStringTrimmed = secondString.trim();
+
+  // The maximum possible overlap cannot exceed the length of the shorter string
+  const maxOverlap = Math.min(
+    firstStringTrimmed.length,
+    secondStringTrimmed.length
+  );
+
+  // Check overlaps from the largest down to the smallest
+  for (let overlap = maxOverlap; overlap > 0; overlap--) {
+    const endOfFirstString = firstStringTrimmed.slice(-overlap);
+    const startOfSecondString = secondStringTrimmed.slice(0, overlap);
+
+    // If the end of 'a' is the same as the start of 'b', we found our overlap
+    if (endOfFirstString === startOfSecondString) {
+      const isTheLastCharacterOfFirstStringASpaceOrNewline =
+        endOfFirstString.slice(-1) === " " ||
+        endOfFirstString.slice(-1) === "\n";
+
+      // Return 'a' plus the non-overlapping remainder of 'b'
+      return (
+        firstStringTrimmed +
+        (!isTheLastCharacterOfFirstStringASpaceOrNewline ? " " : "") +
+        secondStringTrimmed.slice(overlap).trim()
+      );
+    }
+  }
+
+  const isTheLastCharacterOfFirstStringASpaceOrNewline =
+    firstStringTrimmed.slice(-1) === " " ||
+    firstStringTrimmed.slice(-1) === "\n";
+
+  const isFirstCharacterOfSecondStringASpaceOrNewline =
+    secondStringTrimmed.slice(0, 1) === " " ||
+    secondStringTrimmed.slice(0, 1) === "\n";
+
+  // If there's no overlap at all, just concatenate
+  return (
+    firstStringTrimmed +
+    (!isTheLastCharacterOfFirstStringASpaceOrNewline &&
+    !isFirstCharacterOfSecondStringASpaceOrNewline
+      ? " "
+      : "") +
+    secondStringTrimmed
+  );
+};
+
 export const createPlaceHolderChatHistory = (numberOfMessages: number) => {
   const messages = [];
   for (let i = 0; i < numberOfMessages; i++) {
@@ -392,5 +452,15 @@ export const extractErrorMessage = (error: any) => {
   } else if (error?.response?.data?.error?.message) {
     errorMessage = error.response.data.error.message;
   }
-  return errorMessage;
+  return (
+    errorMessage ||
+    "An unknown error occurred. There may be more information in the console."
+  );
+};
+
+export const getEditorPrompt = (prompt: string) => {
+  return (
+    prompt +
+    "\n\nContinue the text above without asking any questions or any input from the user."
+  );
 };

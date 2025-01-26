@@ -123,7 +123,7 @@
 }
 .editorContainer .editorSpinner {
   position: fixed;
-  top: 50%;
+  top: 230px;
   left: 50%;
   transform: translate(-50%, -50%);
 }
