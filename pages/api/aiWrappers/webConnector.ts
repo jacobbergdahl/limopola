@@ -6,6 +6,7 @@ import {
   ALL_LLAMA_MODELS_REPLICATE,
   ALL_OPEN_AI_MODELS,
   MODEL,
+  SHOULD_SHOW_ALL_LOGS,
   STATUS_CODE,
 } from "../../../general/constants";
 import { llama2 } from "../aiModels/llama";
@@ -15,6 +16,7 @@ import { getSearchQueryPrompt } from "../../../general/webConnectorPrompts";
 import { createRagPrompt } from "../retrievalAugmentedGeneration";
 import { ollama } from "../aiModels/ollama";
 import { claude } from "../aiModels/claude";
+import { extractErrorMessage } from "@/general/helpers";
 
 const callLlm = async (
   res: NextApiResponse | undefined,
@@ -46,6 +48,7 @@ const callLlm = async (
 const processSearchQueryResults = (response: string | void): string => {
   // If the AI does not need to do a web search to find the answer, it should only return with "-"
   if (!response || response.length <= 1) {
+    console.log("The AI will not perform a web search.");
     return "";
   }
 
@@ -119,8 +122,10 @@ const performWebSearch = async (searchQuery: string) => {
     });
   }
 
-  console.log(`Finished web search`);
-  console.log(contextString);
+  if (SHOULD_SHOW_ALL_LOGS) {
+    console.log(`Finished web search:`);
+    console.log(contextString);
+  }
 
   return contextString;
 };
@@ -137,7 +142,7 @@ export const webConnector = async (
 ) => {
   try {
     console.log(
-      `The back-end is asking AI model ${model} if it needs to access the internet`
+      `The back-end is asking AI model ${model} if it needs to access the internet.`
     );
 
     const searchPrompt = getSearchQueryPrompt(message);
@@ -170,8 +175,10 @@ export const webConnector = async (
 
     return callLlm(res, finalPrompt, model, processedBody);
   } catch (error: any) {
+    const errorMessage = extractErrorMessage(error);
+    console.error(error);
     res
       .status(STATUS_CODE.InternalServerError)
-      .json({ error: error.message || "An error occurred" });
+      .json({ error: { message: errorMessage } });
   }
 };

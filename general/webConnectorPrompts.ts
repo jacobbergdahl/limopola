@@ -1,11 +1,11 @@
 const SEARCH_QUERY_PROMPT = `
-You will find a user prompt at the bottom of this instruction, delimited by quadrupled quotation marks. I want you to tell me if you already have all of the information necessary to answer the question. If you do, then simply return a one character response. If you do need to search the web, then please return a concise search query.
+You will find a user prompt at the bottom of this instruction, delimited by quadrupled quotation marks. I want you to tell me if you already have all of the information necessary to answer the question. If you do not need to search the web, then simply return a one character response. If you do need to search the web, then please return a concise search query.
 
 Note that today's date is ${new Date().toLocaleDateString()}.
 
 # Example input 1
 
-Who is the current president of the United States?
+Who is the president of the United States?
 
 # Example output 1
 
@@ -69,7 +69,7 @@ today's top news stories
 
 ------
 
-User input:
+User instruction:
 
 `;
 export const getSearchQueryPrompt = (userPrompt: string) => {
