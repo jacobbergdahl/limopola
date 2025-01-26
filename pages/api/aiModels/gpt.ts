@@ -37,13 +37,6 @@ export const gpt = async (
   try {
     const completion = await openai.chat.completions.create({
       model: model,
-      /**
-       * n determines the number of replies that the AI generates.
-       * I could add a field for the user to set this, but the challenge is
-       * how to present this in the UI. Additionally, using this prop
-       * can quickly add up expenses, so its usefulness is questionable.
-       */
-      n: 1,
       temperature: temperature,
       frequency_penalty: frequencyPenalty,
       presence_penalty: presencePenalty,
@@ -52,10 +45,17 @@ export const gpt = async (
       messages: [
         {
           role: "user",
-          // This is the only place in the codebase where explicitly tell the AI to not use markdown.
+          // This is the only place in the codebase where explicitly tell the AI not to use markdown.
           // GPT-4o loves to return markdown, and it is very inconsistent and really messes with the UI.
           // We have a function for parsing markdown to HTML, but it still makes a mess of the UI.
-          content: "Do not use markdown in your response.\n\n" + message,
+          // Since the message could be very long, this instruction is not bullet-proof.
+          // It could be added at the end, but adding it at the end could affect the user's prompt.
+          // If the user explicitly mentions markdown, then we don't add the instruction.
+          content:
+            message.toLowerCase().indexOf("markdown") > -1 ||
+            message.toLowerCase().indexOf("md") > -1
+              ? message
+              : "Do not use markdown in your response.\n\n" + message,
         },
       ],
     });
@@ -64,29 +64,20 @@ export const gpt = async (
       (console.log("Response from OpenAI:", completion),
       console.log("End of response from OpenAI"));
 
-    let text = "";
-    // This will be true if n is greater than 1
-    if (completion.choices.length > 1) {
-      completion.choices.forEach((choice, i) => {
-        text += `${i > 0 ? "\n\n" : ""}Answer ${i + 1}:\n ${
-          choice.message.content
-        }`;
-      });
-    } else {
-      text = completion.choices[0].message.content;
-    }
+    const text = completion.choices[0].message.content;
 
-    const output = parseTextResponse(text);
     SHOULD_SHOW_ALL_LOGS &&
       (console.log("\nOutput from OpenAI before parsing:\n", text),
       console.log());
+
+    const output = parseTextResponse(text);
 
     if (!res) {
       return output;
     }
 
     res.status(STATUS_CODE.Ok).json({ result: output });
-  } catch (error) {
+  } catch (error: any) {
     const errorMessage = extractErrorMessage(error);
     console.error(error);
     res
