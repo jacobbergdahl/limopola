@@ -3,6 +3,7 @@ import {
   AGENT_TASK_STATUS,
   AgentTask,
   MODEL,
+  SHOULD_SHOW_ALL_LOGS,
 } from "../../general/constants";
 import {
   AGENT_PROMPT_GENERATE_IMAGE_PROMPTS,
@@ -92,6 +93,10 @@ export const createListOfTasks = async (
   ) {
     taskString = ONLY_IMAGE_TASK_LIST;
   } else {
+    SHOULD_SHOW_ALL_LOGS &&
+      console.log(
+        "The agent is creating a list of tasks to resolve the mission."
+      );
     response = await fetch("/api/createAgentTasks", {
       method: "POST",
       headers: {

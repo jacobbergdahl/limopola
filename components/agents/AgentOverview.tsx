@@ -480,7 +480,7 @@ export const AgentOverview = () => {
             placeholder={
               isRunning
                 ? mission
-                : `Enter the agent's mission. Press ${getCtrlKey()} + Enter, or the button below, to dispatch the agent.`
+                : `Enter the agent's mission. Press ${getCtrlKey()} + Enter to dispatch the agent.`
             }
             handleKeyDown={handleTextareaKeyPress}
           />

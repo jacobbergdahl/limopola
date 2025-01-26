@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import {
+  ALL_ANTHROPIC_MODELS,
   DEFAULT_TECHNICAL_VOICE_SIMILARITY_BOOST,
   DEFAULT_TECHNICAL_VOICE_STABILITY,
   getModelType,
@@ -17,6 +18,7 @@ import { animateDiff } from "./aiModels/animateDiff";
 import { elevenLabs } from "./aiModels/elevenLabs";
 import { stableDiffusionSdXl } from "./aiModels/stableDiffusionSdXl";
 import { ProcessedBody } from "../../general/apiHelper";
+import { claude } from "./aiModels/claude";
 
 const RATE_LIMIT_MS = 3000;
 let lastAccessTime = 0;
@@ -35,6 +37,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     console.error(error);
     return res.status(STATUS_CODE.TooManyRequests).json({ error });
   }
+  const model = api as MODEL;
 
   lastAccessTime = Date.now();
   lastDescription = description;
@@ -57,10 +60,10 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     isUsingSimilaritySearch: false,
     isGivingAiSearchAccess: false,
     message: "",
-    model: api,
+    model: model,
   };
 
-  const modelType = getModelType(api);
+  const modelType = getModelType(model);
   if (modelType === MODEL_TYPE.Text) {
     const prompt = appendContextToTextPrompt(
       description,
@@ -68,16 +71,21 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
       codeContext,
       indication
     );
-    return gpt(res, prompt, api, body);
-  } else if (api === MODEL.StableDiffusionSdXl) {
+
+    if (ALL_ANTHROPIC_MODELS.includes(model)) {
+      return claude(res, prompt, model, body);
+    }
+
+    return gpt(res, prompt, model, body);
+  } else if (model === MODEL.StableDiffusionSdXl) {
     return stableDiffusionSdXl(res, description, 1);
-  } else if (api === MODEL.Dalle2) {
-    return dalle(res, description, 1, IMAGE_SIZE_DALL_E_2.Large, api);
-  } else if (api === MODEL.Dalle3) {
-    return dalle(res, description, 1, IMAGE_SIZE_DALL_E_3.One, api);
-  } else if (api === MODEL.AnimateDiff) {
+  } else if (model === MODEL.Dalle2) {
+    return dalle(res, description, 1, IMAGE_SIZE_DALL_E_2.Large, model);
+  } else if (model === MODEL.Dalle3) {
+    return dalle(res, description, 1, IMAGE_SIZE_DALL_E_3.One, model);
+  } else if (model === MODEL.AnimateDiff) {
     return animateDiff(res, description);
-  } else if (api === MODEL.ElevenLabs) {
+  } else if (model === MODEL.ElevenLabs) {
     return elevenLabs(
       res,
       description,
