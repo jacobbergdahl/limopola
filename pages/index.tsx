@@ -226,7 +226,6 @@ export default function Home() {
     selectedModelType === MODEL_TYPE.Text &&
     inputMode === INPUT_MODE.Chat &&
     !isFactChecking;
-  // TODO: Enable for editor
   const shouldShowContexts =
     inputMode === INPUT_MODE.Chat &&
     !isFactChecking &&

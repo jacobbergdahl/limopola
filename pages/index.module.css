@@ -116,6 +116,7 @@
 }
 .pageBottomColor {
   bottom: 0;
+  width: 250px;
 }
 .pageTopColor {
   height: var(--page-filler-top-height);
@@ -131,17 +132,20 @@
   display: none;
 }
 @media screen and (min-width: 1000px) {
-  .conversationContainer textarea {
+  .conversationContainer textarea,
+  .pageBottomColor {
     width: 540px;
   }
 }
 @media screen and (min-width: 1200px) {
-  .conversationContainer textarea {
+  .conversationContainer textarea,
+  .pageBottomColor {
     width: 700px;
   }
 }
 @media screen and (min-width: 1400px) {
-  .conversationContainer textarea {
+  .conversationContainer textarea,
+  .pageBottomColor {
     width: 860px;
   }
 }

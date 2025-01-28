@@ -444,18 +444,30 @@ export const clearLocalStorage = () => {
 };
 
 export const extractErrorMessage = (error: any) => {
-  let errorMessage = error?.message;
-  if (error?.response?.data?.message) {
-    errorMessage = error.response.data.message;
-  } else if (error?.response?.error?.message) {
-    errorMessage = error.response.error.message;
-  } else if (error?.response?.data?.error?.message) {
-    errorMessage = error.response.data.error.message;
+  if (typeof error === "string") {
+    return error;
   }
-  return (
-    errorMessage ||
-    "An unknown error occurred. There may be more information in the console."
-  );
+
+  const errorMessage =
+    error?.message ||
+    error?.response?.data?.message ||
+    error?.response?.error?.message ||
+    error?.response?.data?.error?.message ||
+    error?.error?.message ||
+    error?.error?.error?.message;
+
+  if (errorMessage) {
+    try {
+      const parsedError = JSON.parse(errorMessage);
+      return (
+        parsedError?.error?.message || parsedError?.message || errorMessage
+      );
+    } catch {
+      return errorMessage;
+    }
+  }
+
+  return "An unknown error occurred. There may be more information in the console.";
 };
 
 export const getEditorPrompt = (prompt: string) => {

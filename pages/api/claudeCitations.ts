@@ -130,17 +130,23 @@ export const claudeWithCitations = async (
       console.log("Response from Anthropic with citations:", completion);
 
     const content = completion.content;
-    const output = content.map((block: TextBlock) => {
-      if (block.type === "text") {
-        return {
-          text: block.text,
-          citations: block.citations || [],
-        };
+    const output = content.map(
+      (block: TextBlock | { type: string; [key: string]: any }) => {
+        if (block.type === "text") {
+          return {
+            text: block.text,
+            citations: block.citations || [],
+          } as TextBlock;
+        }
+        return null;
       }
-      return block;
-    });
+    );
 
     const formattedMessage = output.reduce((acc, block) => {
+      if (!block) {
+        return acc;
+      }
+
       const text = block.text || "";
       const citations = block.citations || [];
 
