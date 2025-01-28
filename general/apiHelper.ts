@@ -7,7 +7,6 @@ import {
   MODEL,
 } from "./constants";
 
-// TODO: Use ProcessedBody in all AI calls
 export type ProcessedBody = {
   message: string;
   model: MODEL;
@@ -27,7 +26,6 @@ export type ProcessedBody = {
   isGivingAiSearchAccess: boolean | undefined;
 };
 
-// TODO: The plan is to use this function everywhere a ProcessedBody is created
 export const getProcessedBodyForAiApiCalls = (
   req: NextApiRequest
 ): ProcessedBody => {

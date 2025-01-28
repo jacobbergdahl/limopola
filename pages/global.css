@@ -118,11 +118,31 @@ body {
   color: #fff;
 }
 
-/** Needs to be in the global CSS due to being used in the parsed API responses */
+/**
+  Below styles need to be in the global CSS due to being used in the parsed API responses.
+  This is the only place in the codebase where we may use the !important flag for CSS.
+*/
+
 main .inline-code {
   color: #eaeff4;
   background-color: #1b2129;
   padding: 1px 6px;
   border-radius: 4px;
   font-family: var(--code-font);
+}
+
+main .citation {
+  display: block;
+  margin: 20px 10px 10px 10px !important;
+  border: 1px solid var(--font-color-faded);
+  padding: 10px;
+  color: var(--font-color-faded) !important;
+}
+
+main .citation span {
+  color: var(--font-color-faded) !important;
+}
+
+main .citation-text {
+  font-style: italic;
 }

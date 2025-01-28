@@ -12,36 +12,31 @@ This is a list of features, updates, and bug fixes that may be implemented into 
 - Use em or rem for fonts. In fact, all px values should be rem.
 - Add more Typescript types.
 - Add a linter.
+- Use ProcessedBody and getProcessedBodyForAiApiCalls in all AI calls.
 
 ## API's
 
-- Add Anthropic's Claude API.
 - Add more voices to ElevenLabs.
 - Add more options to API's.
 - Make it possible to use ElevenLabs in Editor mode.
-- Add the ability to choose the number of replies from the the OpenAI text generation API's.
-- Add ability to request number of tokens from text generating AI's.
-- Add more options to OpenAI's text API's, including embeddings and more.
-- All text generating API's should support temperature.
-- Improve and speed up local LLMs.
 - Add a streaming option.
 - Add API to describe images. From that, can also make it possible to make another image from the description of the first.
-- Add a "fact-checker" option to all text API's. Call the API twice; the second time asking it to rate the accuracy of the previous message. Show the accurate next to the name (e.g. `Gpt-3.5-turbo (in 1.92s, 90% accurate)`).
-- Add many more models provided by Replicate and/or HuggingFace.
+- Add more models provided by Replicate and/or HuggingFace.
+- Add option to always provide LLM's with the current date and time.
+- Add structured outputs API.
+- Add abort/cancel button to API's (the choice of abort or cancel would depend on whether the AI has abort signals).
+- Improve the styling of the citations created by Claude Citations. (Make citations collapsible?).
 
 ## Core
 
+- Add a reasoning mode.
 - Add LangGraph.
 - Add Tavily.
 - Add LangSmith.
-- Change the Options into Quick Links, create a modal for resetting data, and also add options for setting themes.
-- Move the "Scroll to bottom" button.
-- Improve the UI of managing contexts.
 - Make it possible to retroactively create memory (click on posts to add to memory).
 - Make it possible to use contexts in Editor mode.
 - Add button to quickly copy code from code blocks.
-- Improve the "code style" mode with syntax highlighting.
-- Add syntax highlighting to code returned from the API.
+- Add syntax highlighting to code blocks.
 
 ## Agents
 
@@ -50,23 +45,12 @@ Agents are still in a very early version, and unexpected bugs still occur. Many 
 - Allow the user to set what API's the agents have access to. The user should be able to set what AI to use for each function, e.g., generating text, summarizing text, generating images, etc. Assigning an AI to generate text should be the only required AI, everything else should be optional. Not only does both the FE and BE need to handle this, but the prompt that creates the list of tasks need to be dynamically changed as well. The user should not need to supply as many API keys as they do now.
 - Check if the context is too long to process. If so, use chunks.
 - If the context is too long for both API's mentioned above, then create summaries of the arrays context that fall within the context limit.
-- After the agent has finished, perhaps the final product can be combined in a pleasant way? It would be nice to be able to save the output with the press of a button. If it makes a website, it would be nice if it could correctly save each message in the correct format and zip it.
 - The user should have an option that makes it so that the agent waits after having generated the list of tasks, and asks the user to confirm the tasks before continuing. The user can then choose to edit the list of tasks before the AI continues, or just approve the tasks the AI made.
-
-Documentation:
-
-- Add example output alongside the example input.
 
 ## Nice-to-have
 
 - Save and present how many tokens was used for a reply.
-- Can any of the APi's be given an internet connection?
 - Add an information tab or a tooltip mode.
 - Make all menus collapsible.
-- Add themes to customize the UI.
-- Add .env variable to choose not to save anything to local storage.
-- Images, video, and audio don't get saved when refreshing. A first step could be to show a different element when the element is undefined, a latter step to save it in an SQLite database.
-
-## Future
-
-When the UI is a bit more stable, it could be hosted online on Netlify, whereafter users could add their API keys to the online UI. I think it would need a lot more documentation and a UI rework before making this happen, however.
+- Add setting to choose not to save anything to local storage (likely through a .env variable, otherwise this setting itself would be required to be saved somewhere).
+- Images, video, and audio don't get saved when refreshing. A first step could be to show a different element when the element is undefined, a latter step to save the objects.

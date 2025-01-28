@@ -24,6 +24,7 @@ import { getProcessedBodyForAiApiCalls } from "../../general/apiHelper";
 import { transformers } from "./aiModels/transformers";
 import { ollama } from "./aiModels/ollama";
 import { claude } from "./aiModels/claude";
+import { claudeWithCitations } from "./claudeCitations";
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
   const processedBody = getProcessedBodyForAiApiCalls(req);
@@ -97,6 +98,9 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     }
     if (model === MODEL.ClaudeDataReader) {
       return dataReader(res, message, MODEL.Claude35Sonnet, processedBody);
+    }
+    if (model === MODEL.ClaudeCitations) {
+      return claudeWithCitations(res, message, undefined, processedBody);
     }
     if (
       model === MODEL.TransformersSentimentAnalysis ||

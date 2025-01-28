@@ -22,6 +22,7 @@ export enum MODEL {
   Gpt4_o_mini = "gpt-4o-mini",
   Claude35Sonnet = "claude-3-5-sonnet-latest",
   Claude35Haiku = "claude-3-5-haiku-latest",
+  ClaudeCitations = "claude-citations",
   Dalle2 = "dall-e",
   Dalle3 = "dall-e-3",
   StableDiffusionSdXl = "stable-diffusion-xl", // full name: stable-diffusion-xl-base-1.0
@@ -301,6 +302,15 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
         learnMoreUrl: "https://www.anthropic.com/claude/sonnet",
         apiKey: MODEL_API_KEY.Anthropic,
       };
+    case MODEL.ClaudeCitations:
+      return {
+        status: MODEL_STATUS.Full,
+        information: `Uses RAG and Claude 3.5 Sonnet to read the PDF files in your data folder, answer your instructions, and provide citations of its answer.`,
+        learnMoreUrl:
+          "https://docs.anthropic.com/en/docs/build-with-claude/citations",
+        apiKey: MODEL_API_KEY.Anthropic,
+        mdNote: `Uses RAG and Claude 3.5 Sonnet to read the PDF files in your data folder, answer your instructions, and provide citations of its answer.`,
+      };
     case MODEL.Claude35Haiku:
       return {
         status: MODEL_STATUS.Full,
@@ -324,6 +334,7 @@ export const ALL_TEXT_MODELS = [
   MODEL.Gpt4_o_mini,
   MODEL.Claude35Sonnet,
   MODEL.Claude35Haiku,
+  MODEL.ClaudeCitations,
   MODEL.FactChecker,
   MODEL.WebRetriever,
   MODEL.GptDataReader,
@@ -363,6 +374,7 @@ export const ALL_OPEN_AI_MODELS = [
   MODEL.Dalle3,
 ];
 
+// Intentionally not including ClaudeCitations here, as it's a special case (it uses one of these models under the hood)
 export const ALL_ANTHROPIC_MODELS = [MODEL.Claude35Sonnet, MODEL.Claude35Haiku];
 
 export const ALL_LLAMA_MODELS_REPLICATE = [
@@ -388,6 +400,7 @@ export const ALL_CUSTOM_WRAPPERS = [
   MODEL.WebRetriever,
   MODEL.GptDataReader,
   MODEL.ClaudeDataReader,
+  MODEL.ClaudeCitations,
 ];
 
 export enum MEMORY {

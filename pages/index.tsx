@@ -179,7 +179,10 @@ export default function Home() {
   const isUsingDataReader =
     model === MODEL.GptDataReader || model === MODEL.ClaudeDataReader;
   const isUsingCustomTextGeneratingWrapper =
-    isFactChecking || isUsingWebRetriever || isUsingDataReader;
+    isFactChecking ||
+    isUsingWebRetriever ||
+    isUsingDataReader ||
+    model === MODEL.ClaudeCitations;
   const shouldShowUrlsToScrape = isUsingWebRetriever;
   const shouldShowTemperature =
     selectedModelType === MODEL_TYPE.Text &&

@@ -1,10 +1,10 @@
-# Limopola: An AI Interface
+# Limopola: An AI Platform
 
 ![Banner](./public/banner.png)
 
-Limopola is an AI interface to interact with various large language models (LLMs). It allows you to communicate with text, image, video, and audio AI through both chat and editors. Beyond that, it offers many features that the likes of ChatGPT, Google Bard, and Bing AI are missing (at the time of writing). Such features include the ability to remember conversations, setting multiple contexts (as in static prompts that get appended to your prompts), setting properties such as temperature, and starting conversations with one AI and continuing them with another.
+Limopola is an AI platform for interacting with large language models (LLMs) and other forms of generative AI. It allows you to communicate with text, image, video, and audio AI through numerous modes, such as chat, editor, and agent. Limopola is made for power users, and thus offers advanced features that mainstream platforms do not.
 
-The name is a silly portmanteau of the words link, model, portal, and language. Limopola is indeed a portal or a link that allows you to communicate with a wide range of AI's.
+The name is a silly portmanteau of the words link (li), model (mo), portal (po), and language (la). Limopola is indeed a portal or a link that allows you to communicate with a wide range of AI's.
 
 The project is built with NextJS (a meta-framework of ReactJS). It uses TypeScript for typing and Jotai for state management. It has a tiny SQLite database that is only used for one table of information. Most information is stored in the client's local storage.
 
@@ -26,7 +26,7 @@ git clone git@github.com:jacobbergdahl/limopola.git && cd limopola/ && npm run q
 
 The project is very quick and easy to set-up. You can run LLMs in one of three ways:
 
-- Locally, by pointing to an already installed LLM on your machine or by installing one in this project (`npm run install-local-llm`).
+- Locally, by pointing to an already installed LLM on your machine or by installing one in this project (`npm run install-local-llm` to quickly download a default model).
 - Also locally, by serving an LLM through Ollama.
 - Remotely, by using a service provider such as OpenAI.
 
@@ -113,12 +113,13 @@ This is a list of models currently included in this AI interface. More models wi
 
 ### Custom wrappers of AI models
 
-| Model               | Type | API Source | Note                                                                                                                      |
-| ------------------- | ---- | ---------- | ------------------------------------------------------------------------------------------------------------------------- |
-| gpt-4-fact-checker  | Text | OpenAI     | A custom implementation of a fact-checker. Uses GPT-4 to rate the accuracy of any statement.                              |
-| gpt-4-web-retriever | Text | OpenAI     | A custom implementation of a web retriever. Reads data from the internet and sends it to GPT-4. A form of RAG.            |
-| gpt-data-reader     | Text | OpenAI     | Uses RAG and GPT-4o to retrieve data from files in the data folder. Can read PDF, Word, PowerPoint, Excel, and CSV files. |
-| claude-data-reader  | Text | Anthropic  | Uses RAG and Claude to retrieve data from files in the data folder. Can read PDF, Word, PowerPoint, Excel, and CSV files. |
+| Model               | Type | API Source | Note                                                                                                                                     |
+| ------------------- | ---- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| claude-citations    | Text | Anthropic  | Uses RAG and Claude 3.5 Sonnet to read the PDF files in your data folder, answer your instructions, and provide citations of its answer. |
+| gpt-4-fact-checker  | Text | OpenAI     | A custom implementation of a fact-checker. Uses GPT-4 to rate the accuracy of any statement.                                             |
+| gpt-4-web-retriever | Text | OpenAI     | A custom implementation of a web retriever. Reads data from the internet and sends it to GPT-4. A form of RAG.                           |
+| gpt-data-reader     | Text | OpenAI     | Uses RAG and GPT-4o to retrieve data from files in the data folder. Can read PDF, Word, PowerPoint, Excel, and CSV files.                |
+| claude-data-reader  | Text | Anthropic  | Uses RAG and Claude to retrieve data from files in the data folder. Can read PDF, Word, PowerPoint, Excel, and CSV files.                |
 
 ## Modes
 
