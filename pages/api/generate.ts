@@ -25,6 +25,7 @@ import { transformers } from "./aiModels/transformers";
 import { ollama } from "./aiModels/ollama";
 import { claude } from "./aiModels/claude";
 import { claudeWithCitations } from "./claudeCitations";
+import { hackathonCustomerSupport } from "./aiWrappers/hackathonCustomerSupport";
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
   const processedBody = getProcessedBodyForAiApiCalls(req);
@@ -53,6 +54,9 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   }
 
   try {
+    if (model === MODEL.HackathonCustomerSupport) {
+      return hackathonCustomerSupport(res, message);
+    }
     if (isGivingAiSearchAccess) {
       return webConnector(res, message, model, processedBody);
     }

@@ -45,6 +45,7 @@ export enum MODEL {
   WebLlm = "web-llm",
   TransformersSentimentAnalysis = "t-sentiment-analysis",
   TransformersText2Text = "t-text2text",
+  HackathonCustomerSupport = "customer-support",
   Debug = "debug",
 }
 
@@ -318,6 +319,12 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
         learnMoreUrl: "https://www.anthropic.com/claude/haiku",
         apiKey: MODEL_API_KEY.Anthropic,
       };
+    case MODEL.HackathonCustomerSupport:
+      return {
+        status: MODEL_STATUS.Unknown,
+        information: `An assistant for customer support representatives -- only it's working great yet. Check out hackathon.md and implement it. Uses OpenAI's API, unless you want to use something else. Note that every message is treated as a new conversation.`,
+        apiKey: MODEL_API_KEY.OpenAi,
+      };
   }
 
   return {
@@ -352,6 +359,8 @@ export const ALL_TEXT_MODELS = [
   MODEL.PalmChatBison001,
   MODEL.Debug,
 ];
+
+export const ALL_HACKATHON_MODELS = [MODEL.HackathonCustomerSupport];
 
 export const ALL_VIDEO_MODELS = [MODEL.AnimateDiff];
 

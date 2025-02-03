@@ -2,6 +2,7 @@ import Head from "next/head";
 import { useRef, useEffect, useState, useCallback } from "react";
 import {
   ALL_ANTHROPIC_MODELS,
+  ALL_HACKATHON_MODELS,
   ALL_LLAMA_MODELS_REPLICATE,
   ALL_LOCAL_MODELS,
   ALL_OPEN_AI_MODELS,
@@ -98,6 +99,7 @@ import {
   UiControlsTheming,
 } from "@/components/UiControls";
 import { HideableUI } from "@/components/HideableUi";
+import { AllHackathonProjects } from "@/components/sections/AllHackathonProjects";
 
 // I know, I know, this file is too long. It should, and will, be refactored 🙏
 // ... (maybe)
@@ -174,6 +176,7 @@ export default function Home() {
   const chatRef = useRef(null);
   const textareaRef = useRef(null);
 
+  const isUsingHackathonWrapper = ALL_HACKATHON_MODELS.includes(model);
   const isFactChecking = model === MODEL.FactChecker;
   const isUsingWebRetriever = model === MODEL.WebRetriever;
   const isUsingDataReader =
@@ -193,7 +196,8 @@ export default function Home() {
       model === MODEL.PalmTextBison001 ||
       model === MODEL.LocalLlm ||
       model === MODEL.LocalOllama) &&
-    !isUsingCustomTextGeneratingWrapper;
+    !isUsingCustomTextGeneratingWrapper &&
+    !isUsingHackathonWrapper;
   const shouldShowTopP =
     selectedModelType === MODEL_TYPE.Text &&
     model !== MODEL.LocalLlm &&
@@ -201,15 +205,18 @@ export default function Home() {
       ALL_OPEN_AI_MODELS.includes(model) ||
       ALL_ANTHROPIC_MODELS.includes(model) ||
       model === MODEL.LocalOllama) &&
-    !isUsingCustomTextGeneratingWrapper;
+    !isUsingCustomTextGeneratingWrapper &&
+    !isUsingHackathonWrapper;
   const shouldShowFrequencyPenalty =
     selectedModelType === MODEL_TYPE.Text &&
     ALL_OPEN_AI_MODELS.includes(model) &&
-    !isUsingCustomTextGeneratingWrapper;
+    !isUsingCustomTextGeneratingWrapper &&
+    !isUsingHackathonWrapper;
   const shouldShowPresencePenalty =
     selectedModelType === MODEL_TYPE.Text &&
     ALL_OPEN_AI_MODELS.includes(model) &&
-    !isUsingCustomTextGeneratingWrapper;
+    !isUsingCustomTextGeneratingWrapper &&
+    !isUsingHackathonWrapper;
   const shouldShowVoiceSettings = selectedModelType === MODEL_TYPE.Audio;
   const shouldShowRequestedNumberOfTokens = false;
   const shouldShowMaxNumberOfTokens =
@@ -217,11 +224,12 @@ export default function Home() {
       selectedModelType === MODEL_TYPE.Text) ||
     ALL_ANTHROPIC_MODELS.includes(model) ||
     model === MODEL.TransformersText2Text ||
-    model === MODEL.LocalLlm;
+    (model === MODEL.LocalLlm && !isUsingHackathonWrapper);
   const shouldShowMemory =
     selectedModelType === MODEL_TYPE.Text &&
     inputMode === INPUT_MODE.Chat &&
-    !isUsingCustomTextGeneratingWrapper;
+    !isUsingCustomTextGeneratingWrapper &&
+    !isUsingHackathonWrapper;
   const shouldShowInstantMessages =
     selectedModelType === MODEL_TYPE.Text &&
     inputMode === INPUT_MODE.Chat &&
@@ -231,7 +239,8 @@ export default function Home() {
     !isFactChecking &&
     model !== MODEL.TransformersSentimentAnalysis &&
     model !== MODEL.TransformersText2Text &&
-    selectedModelType !== MODEL_TYPE.Audio;
+    selectedModelType !== MODEL_TYPE.Audio &&
+    !isUsingHackathonWrapper;
   const shouldShowNumberOfImages =
     selectedModelType === MODEL_TYPE.Image && model !== MODEL.Dalle3;
   const shouldShowImageSizeDallE2 = model === MODEL.Dalle2;
@@ -241,7 +250,8 @@ export default function Home() {
     selectedModelType === MODEL_TYPE.Text &&
     inputMode === INPUT_MODE.Chat &&
     model !== MODEL.TransformersSentimentAnalysis &&
-    !isUsingCustomTextGeneratingWrapper;
+    !isUsingCustomTextGeneratingWrapper &&
+    !isUsingHackathonWrapper;
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -319,6 +329,10 @@ export default function Home() {
   };
 
   const getFinalPrompt = (prompt: string) => {
+    if (isUsingHackathonWrapper) {
+      return prompt;
+    }
+
     const contextWithPrompt =
       !!currentlySelectedContext.content &&
       currentlySelectedContext.content.length > 0
@@ -744,8 +758,11 @@ export default function Home() {
     setIsPresencePenaltyDefault(true);
     setIsGivingAiSearchAccess(false);
   };
-  const handleOneWordMessage = () =>
-    onSubmit("Please respond in just one word.");
+
+  const handleCustomInstantMessage = (message: string) => {
+    onSubmit(message);
+  };
+
   const handleRepeatLastMessage = () => {
     const latestMessageByUser = getLatestMessageByUser(chatHistory);
     if (latestMessageByUser) {
@@ -904,6 +921,12 @@ export default function Home() {
               handleScrollToBottom={scrollToBottom}
             />
             <div className={styles.section}>
+              <AllHackathonProjects
+                model={model}
+                handleModelChange={handleModelChange}
+              />
+            </div>
+            <div className={styles.section}>
               <AllTextModels
                 model={model}
                 handleModelChange={handleModelChange}
@@ -998,7 +1021,7 @@ export default function Home() {
               {shouldShowInstantMessages && (
                 <div className={styles.section}>
                   <InstantMessages
-                    handleOneWordMessage={handleOneWordMessage}
+                    handleCustomInstantMessage={handleCustomInstantMessage}
                     handleRepeatLastMessage={handleRepeatLastMessage}
                   />
                 </div>

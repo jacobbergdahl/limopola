@@ -17,9 +17,10 @@ export const ModelInformation = ({ model }: ModelInformationProps) => {
     <>
       <h3>Model information</h3>
       <div className={styles.sectionInner}>
-        {modelInformation.status !== MODEL_STATUS.Full && (
-          <span className={styles.status}>{modelInformation.status}</span>
-        )}
+        {modelInformation.status !== MODEL_STATUS.Full &&
+          modelInformation.status !== MODEL_STATUS.Unknown && (
+            <span className={styles.status}>{modelInformation.status}</span>
+          )}
         <span className={styles.information}>
           {modelInformation.information}
         </span>
