@@ -28,6 +28,7 @@ import { transformers } from "./aiModels/transformers";
 import { ollama } from "./aiModels/ollama";
 import { claude } from "./aiModels/claude";
 import { claudeWithCitations } from "./claudeCitations";
+import { azure } from "./aiModels/azure";
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
   const processedBody = getProcessedBodyForAiApiCalls(req);
@@ -114,6 +115,9 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     }
     if (model === MODEL.PalmChatBison001 || model === MODEL.PalmTextBison001) {
       return palm(res, message, model, temperature);
+    }
+    if (model === MODEL.Azure) {
+      return azure(res, message, processedBody);
     }
     if (ALL_OPEN_AI_MODELS.includes(model)) {
       return gpt(res, message, model, processedBody);

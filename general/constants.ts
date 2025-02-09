@@ -43,6 +43,7 @@ export enum MODEL {
   WebRetriever = "gpt-4-web-retriever",
   GptDataReader = "gpt-data-reader",
   ClaudeDataReader = "claude-data-reader",
+  Azure = "azure",
   LocalLlm = "local-node-llama-cpp",
   LocalOllama = "local-ollama",
   WebLlm = "web-llm",
@@ -65,6 +66,7 @@ export enum MODEL_API_KEY {
   HuggingFace = "HuggingFace",
   Google = "Google",
   Anthropic = "Anthropic",
+  Azure = "Azure",
   None = "None",
 }
 
@@ -150,13 +152,6 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
         learnMoreUrl: "https://replicate.com/blog/run-sdxl-with-an-api",
         apiKey: MODEL_API_KEY.Replicate,
       };
-    case MODEL.Llama3_8b_instruct:
-      return {
-        status: MODEL_STATUS.Full,
-        information: "An 8 billion parameter language model from Meta.",
-        learnMoreUrl: "https://replicate.com/meta/meta-llama-3-8b-instruct/api",
-        apiKey: MODEL_API_KEY.Replicate,
-      };
     case MODEL.DeepSeek_67b:
       return {
         status: MODEL_STATUS.Full,
@@ -169,6 +164,13 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
         status: MODEL_STATUS.Full,
         information: "A 70 billion parameter language model from Meta.",
         learnMoreUrl: "https://replicate.com/meta/meta-llama-3-70b-instruct",
+        apiKey: MODEL_API_KEY.Replicate,
+      };
+    case MODEL.Llama3_8b_instruct:
+      return {
+        status: MODEL_STATUS.Full,
+        information: "An 8 billion parameter language model from Meta.",
+        learnMoreUrl: "https://replicate.com/meta/meta-llama-3-8b-instruct/api",
         apiKey: MODEL_API_KEY.Replicate,
       };
     case MODEL.Llama2_70b_chat:
@@ -319,6 +321,16 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
         mdNote:
           "Google PaLM. No longer available in the `main` branch due to a rough dependency clash. To use Google's API's, run `git checkout google-generativelanguage && npm install`.",
       };
+    case MODEL.Azure:
+      return {
+        status: MODEL_STATUS.Full,
+        information: `The way LLM's are served through the Azure API is a bit different as you configure your own model id's, hence you configure which AI model you want to use through a .env variable.`,
+        learnMoreUrl:
+          "https://github.com/Azure/azure-sdk-for-js/tree/main/sdk/openai/openai",
+        mdNote:
+          "Supports any LLM served through Azure OpenAI. Due to how you configure your own model id's in Azure, you will need to enter the actual your LLM model into your `.env` file (using `.env.example` as a reference).",
+        apiKey: MODEL_API_KEY.Azure,
+      };
     case MODEL.Claude35Sonnet:
       return {
         status: MODEL_STATUS.Full,
@@ -358,6 +370,7 @@ export const ALL_TEXT_MODELS = [
   MODEL.Gpt4_o_mini,
   MODEL.Claude35Sonnet,
   MODEL.Claude35Haiku,
+  MODEL.Azure,
   MODEL.ClaudeCitations,
   MODEL.FactChecker,
   MODEL.WebRetriever,

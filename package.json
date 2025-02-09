@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.36.3",
+    "@azure/openai": "^2.0.0",
     "@langchain/community": "^0.3.27",
     "@langchain/core": "^0.3.36",
     "@langchain/ollama": "^0.1.5",
@@ -39,7 +40,7 @@
     "node-fetch": "^3.3.2",
     "node-llama-cpp": "^3.4.2",
     "officeparser": "^4.2.0",
-    "openai": "^4.80.1",
+    "openai": "^4.83.0",
     "pdf-parse": "^1.1.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

@@ -24,10 +24,11 @@ git clone git@github.com:jacobbergdahl/limopola.git && cd limopola/ && npm run q
 
 ## Set-up
 
-The project is very quick and easy to set-up. You can run LLMs in one of three ways:
+The project is very quick and easy to set-up. You can run LLMs in one of four ways:
 
 - Locally, by pointing to an already installed LLM on your machine or by installing one in this project (`npm run install-local-llm` to quickly download a default model).
 - Also locally, by serving an LLM through Ollama.
+- Locally, just using your web browser.
 - Remotely, by using a service provider such as OpenAI.
 
 ### Installation
@@ -58,7 +59,7 @@ If you have Ollama on your machine, then you can simply run `ollama serve` to ho
 
 ### Get API keys
 
-_You don't actually need any API keys to use Limopola. All of these keys are optional if you run an LLM locally._
+_You don't actually need any API keys to use Limopola. All of these keys are optional if you choose to run an LLM locally._
 
 Create a `.env` file from the `.env.example` file, and add API keys. There are instructions in the file for where to get the keys.
 
@@ -68,6 +69,7 @@ Create a `.env` file from the `.env.example` file, and add API keys. There are i
 - `ELEVEN_LABS_API_KEY`: Used to generate text-to-speech. This API is also free to use for a while. Generate the API key at [https://docs.elevenlabs.io/api-reference/quick-start/authentication](https://docs.elevenlabs.io/api-reference/quick-start/authentication).
 - `SEARCH_API_KEY`: Used by one of the RAG functions. Could likely be replaced with Tavily now. Either way, it's also free to use for a while. Generate the API key at [https://www.searchapi.io/](https://www.searchapi.io/).
 - `GOOGLE_API_KEY`: _Not currently in use on the main branch_. Used for Google's text-to-speech LLMs (PaLM). This API is also free to use for a while, but may be region-locked. Generate the API key at [https://makersuite.google.com/app/apikey](https://makersuite.google.com/app/apikey).
+- `AZURE_API_KEY`: Used for Azure OpenAI. You can run any LLM supported by Azure OpenAI by configuring `AZURE_MODEL_ID`, `AZURE_ENDPOINT`, and `AZURE_API_VERSION` in your `.env` file.
 
 In the future, this project will likely also give you the option of adding an API key to HuggingFace.
 
@@ -106,6 +108,7 @@ This is a list of models currently included in this AI interface. More models wi
 | eleven-labs              | Audio | ElevenLabs |
 | text-bison-001\*         | Text  | Google     |
 | chat-bison-001\*         | Text  | Google     |
+| azure\*\*                | Text  | Azure      |
 | local-node-llama-cpp     | Text  | None       |
 | local-ollama             | Text  | None       |
 | web-llm                  | Text  | None       |
@@ -113,6 +116,7 @@ This is a list of models currently included in this AI interface. More models wi
 | t-text2text              | Text  | None       |
 
 \* Google PaLM. No longer available in the `main` branch due to a rough dependency clash. To use Google's API's, run `git checkout google-generativelanguage && npm install`.
+\*\* Supports any LLM served through Azure OpenAI. Due to how you configure your own model id's in Azure, you will need to enter the actual your LLM model into your `.env` file (using `.env.example` as a reference).
 
 ### Custom wrappers of AI models
 
