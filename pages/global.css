@@ -120,7 +120,7 @@ body {
 
 /**
   Below styles need to be in the global CSS due to being used in the parsed API responses.
-  This is the only place in the codebase where we may use the !important flag for CSS.
+  This is one of the few places in the codebase where we may use the !important flag for CSS.
 */
 
 main .inline-code {

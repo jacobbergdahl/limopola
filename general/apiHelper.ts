@@ -24,6 +24,9 @@ export type ProcessedBody = {
   urlsToScrape: string | undefined;
   isUsingSimilaritySearch: boolean | undefined;
   isGivingAiSearchAccess: boolean | undefined;
+  shouldAskBeforeSearching: boolean | undefined;
+  returnEmptyStringIfNoSearch: boolean | undefined;
+  returnOnlineSearchResultsWithoutAskingLLM: boolean | undefined;
 };
 
 export const getProcessedBodyForAiApiCalls = (
@@ -54,6 +57,10 @@ export const getProcessedBodyForAiApiCalls = (
   const urlsToScrape = req.body.urlsToScrape || "";
   const isUsingSimilaritySearch = !!req.body.isUsingSimilaritySearch;
   const isGivingAiSearchAccess = !!req.body.isGivingAiSearchAccess;
+  const shouldAskBeforeSearching = !!req.body.shouldAskBeforeSearching;
+  const returnEmptyStringIfNoSearch = !!req.body.returnEmptyStringIfNoSearch;
+  const returnOnlineSearchResultsWithoutAskingLLM =
+    !!req.body.returnOnlineSearchResultsWithoutAskingLLM;
 
   return {
     message,
@@ -76,5 +83,8 @@ export const getProcessedBodyForAiApiCalls = (
     urlsToScrape,
     isUsingSimilaritySearch,
     isGivingAiSearchAccess,
+    shouldAskBeforeSearching,
+    returnEmptyStringIfNoSearch,
+    returnOnlineSearchResultsWithoutAskingLLM,
   } as ProcessedBody;
 };

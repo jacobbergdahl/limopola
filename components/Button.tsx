@@ -10,7 +10,7 @@ export enum BUTTON_THEME {
 
 type ButtonProps = {
   value: any;
-  onClick?: MouseEventHandler<HTMLInputElement>;
+  onClick?: MouseEventHandler<HTMLInputElement> | (() => void);
   isSelected?: boolean;
   disabled?: boolean;
   className?: string;

@@ -2,7 +2,7 @@ import Head from "next/head";
 import { useRef, useEffect, useState, useCallback } from "react";
 import {
   ALL_ANTHROPIC_MODELS,
-  ALL_LLAMA_MODELS_REPLICATE,
+  ALL_MODELS_THROUGH_REPLICATE,
   ALL_LOCAL_MODELS,
   ALL_OPEN_AI_MODELS,
   DEFAULT_CONTEXT,
@@ -98,6 +98,7 @@ import {
   UiControlsTheming,
 } from "@/components/UiControls";
 import { HideableUI } from "@/components/HideableUi";
+import { ReasoningOverview } from "@/components/reasoning/ReasoningOverview";
 
 // I know, I know, this file is too long. It should, and will, be refactored 🙏
 // ... (maybe)
@@ -186,7 +187,7 @@ export default function Home() {
   const shouldShowUrlsToScrape = isUsingWebRetriever;
   const shouldShowTemperature =
     selectedModelType === MODEL_TYPE.Text &&
-    (ALL_LLAMA_MODELS_REPLICATE.includes(model) ||
+    (ALL_MODELS_THROUGH_REPLICATE.includes(model) ||
       ALL_OPEN_AI_MODELS.includes(model) ||
       ALL_ANTHROPIC_MODELS.includes(model) ||
       model === MODEL.PalmChatBison001 ||
@@ -197,7 +198,7 @@ export default function Home() {
   const shouldShowTopP =
     selectedModelType === MODEL_TYPE.Text &&
     model !== MODEL.LocalLlm &&
-    (ALL_LLAMA_MODELS_REPLICATE.includes(model) ||
+    (ALL_MODELS_THROUGH_REPLICATE.includes(model) ||
       ALL_OPEN_AI_MODELS.includes(model) ||
       ALL_ANTHROPIC_MODELS.includes(model) ||
       model === MODEL.LocalOllama) &&
@@ -249,7 +250,9 @@ export default function Home() {
         document.activeElement !== textareaRef?.current;
 
       const shouldHandleKeyDown =
-        !isContextModalOpen && inputMode !== INPUT_MODE.Agent;
+        !isContextModalOpen &&
+        inputMode !== INPUT_MODE.Agent &&
+        inputMode !== INPUT_MODE.Reasoning;
 
       if (!shouldHandleKeyDown) {
         return;
@@ -781,7 +784,6 @@ export default function Home() {
         <title>Limopola</title>
         <link rel="icon" href="/favicon.png" />
       </Head>
-
       {inputMode === INPUT_MODE.Chat && (
         <div className={styles.pageTopColor}></div>
       )}
@@ -813,89 +815,101 @@ export default function Home() {
               setInputMode(INPUT_MODE.Agent);
             }}
           />
+          <Button
+            value="Reasoning"
+            isSelected={inputMode === INPUT_MODE.Reasoning}
+            onClick={() => {
+              setInputMode(INPUT_MODE.Reasoning);
+            }}
+          />
         </div>
       </div>
-
-      {inputMode === INPUT_MODE.Agent ? (
+      {inputMode === INPUT_MODE.Agent && (
         <main className={`${styles.conversationContainer}`}>
           <AgentOverview />
         </main>
-      ) : (
-        <main
-          className={`${styles.conversationContainer} ${
-            inputMode === INPUT_MODE.Chat
-              ? styles.chatContainer
-              : styles.editorContainer
-          }`}
-        >
-          {inputMode === INPUT_MODE.Chat && (
-            <ChatHistory
-              messages={chatHistory}
-              isLoading={isLoading}
-              chatRef={chatRef}
-              scrollAnchorRef={scrollAnchorRef}
-              handleAutoMessage={handleAutoMessage}
-              model={model}
-              timer={timer}
-            />
-          )}
-          <div
-            className={`${styles.textAreaContainer}${
-              textAreaStyle === TEXTAREA_STYLE.Code &&
-              inputMode === INPUT_MODE.Editor
-                ? " " + styles.textAreaCode
-                : ""
-            }${isContextModalOpen ? " " + styles.hidden : ""}`}
-          >
-            {/* Should probably just render two different textareas for each mode now */}
-            <TextArea
-              rows={4}
-              name="message"
-              placeholder={
-                inputMode === INPUT_MODE.Chat
-                  ? "Press T or enter to focus. Hold shift and press enter to add a new line. Press enter to send."
-                  : `Press T or enter to focus. Hold ${getCtrlKey()} and press enter to ask the AI to continue from the bottom of your text.`
-              }
-              value={
-                inputMode === INPUT_MODE.Chat ? currentInput : currentEditorText
-              }
-              handleChange={(e) =>
-                inputMode === INPUT_MODE.Chat
-                  ? setCurrentInput(e.target.value)
-                  : setCurrentEditorText(e.target.value)
-              }
-              handleKeyDown={handleTextareaKeyPress}
-              ref={textareaRef}
-              disabled={
-                (inputMode === INPUT_MODE.Editor && isLoading) ||
-                isContextModalOpen
-              }
-              shouldSpellCheck={
-                textAreaStyle !== TEXTAREA_STYLE.Code &&
-                inputMode === INPUT_MODE.Editor
-              }
-            />
-            {inputMode === INPUT_MODE.Editor && (
-              <TextAreaStyleSelector
-                textAreaStyle={textAreaStyle}
-                setTextAreaStyle={setTextAreaStyle}
-              />
-            )}
-            <Spinner
-              show={inputMode === INPUT_MODE.Editor && isLoading}
-              model={model}
-              classNames={styles.editorSpinner}
-              timer={timer}
-            />
-          </div>
-          {!isContextModalOpen && inputMode !== INPUT_MODE.Editor && (
-            <div className={styles.pageBottomColor}></div>
-          )}
+      )}
+      {inputMode === INPUT_MODE.Reasoning && (
+        <main className={`${styles.conversationContainer}`}>
+          <ReasoningOverview />
         </main>
       )}
-
-      {inputMode !== INPUT_MODE.Agent && (
+      {(inputMode === INPUT_MODE.Chat || inputMode === INPUT_MODE.Editor) && (
         <>
+          <main
+            className={`${styles.conversationContainer} ${
+              inputMode === INPUT_MODE.Chat
+                ? styles.chatContainer
+                : styles.editorContainer
+            }`}
+          >
+            {inputMode === INPUT_MODE.Chat && (
+              <ChatHistory
+                messages={chatHistory}
+                isLoading={isLoading}
+                chatRef={chatRef}
+                scrollAnchorRef={scrollAnchorRef}
+                handleAutoMessage={handleAutoMessage}
+                model={model}
+                timer={timer}
+              />
+            )}
+            <div
+              className={`${styles.textAreaContainer}${
+                textAreaStyle === TEXTAREA_STYLE.Code &&
+                inputMode === INPUT_MODE.Editor
+                  ? " " + styles.textAreaCode
+                  : ""
+              }${isContextModalOpen ? " " + styles.hidden : ""}`}
+            >
+              {/* Should probably just render two different textareas for each mode now */}
+              <TextArea
+                rows={4}
+                name="message"
+                placeholder={
+                  inputMode === INPUT_MODE.Chat
+                    ? "Press T or enter to focus. Hold shift and press enter to add a new line. Press enter to send."
+                    : `Press T or enter to focus. Hold ${getCtrlKey()} and press enter to ask the AI to continue from the bottom of your text.`
+                }
+                value={
+                  inputMode === INPUT_MODE.Chat
+                    ? currentInput
+                    : currentEditorText
+                }
+                handleChange={(e) =>
+                  inputMode === INPUT_MODE.Chat
+                    ? setCurrentInput(e.target.value)
+                    : setCurrentEditorText(e.target.value)
+                }
+                handleKeyDown={handleTextareaKeyPress}
+                ref={textareaRef}
+                disabled={
+                  (inputMode === INPUT_MODE.Editor && isLoading) ||
+                  isContextModalOpen
+                }
+                shouldSpellCheck={
+                  textAreaStyle !== TEXTAREA_STYLE.Code &&
+                  inputMode === INPUT_MODE.Editor
+                }
+              />
+              {inputMode === INPUT_MODE.Editor && (
+                <TextAreaStyleSelector
+                  textAreaStyle={textAreaStyle}
+                  setTextAreaStyle={setTextAreaStyle}
+                />
+              )}
+              <Spinner
+                show={inputMode === INPUT_MODE.Editor && isLoading}
+                model={model}
+                classNames={styles.editorSpinner}
+                timer={timer}
+              />
+            </div>
+            {!isContextModalOpen && inputMode !== INPUT_MODE.Editor && (
+              <div className={styles.pageBottomColor}></div>
+            )}
+          </main>
+
           <HideableUI className={`${styles.sidebar} ${styles.leftSidebar}`}>
             <UiControlsChatOptions
               handleDownload={() =>

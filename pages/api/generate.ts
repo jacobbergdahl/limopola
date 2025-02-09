@@ -1,6 +1,6 @@
 import {
   ALL_ANTHROPIC_MODELS,
-  ALL_LLAMA_MODELS_REPLICATE,
+  ALL_MODELS_THROUGH_REPLICATE,
   ALL_OPEN_AI_MODELS,
   MODEL,
   STATUS_CODE,
@@ -9,7 +9,7 @@ import { dalle } from "./aiModels/dalle";
 import { debug } from "./aiModels/debug";
 import { gpt } from "./aiModels/gpt";
 import { stableDiffusionSdXl } from "./aiModels/stableDiffusionSdXl";
-import { llama2 } from "./aiModels/llama";
+import { replicateService } from "./aiModels/replicate";
 import { textToPokemon } from "./aiModels/textToPokemon";
 import { animateDiff } from "./aiModels/animateDiff";
 import { llamaLocal } from "./aiModels/llamaLocal";
@@ -20,7 +20,10 @@ import { palm } from "./aiModels/palm";
 import { webRetriever } from "./aiWrappers/webRetriever";
 import { dataReader } from "./aiWrappers/dataReader";
 import { webConnector } from "./aiWrappers/webConnector";
-import { getProcessedBodyForAiApiCalls } from "../../general/apiHelper";
+import {
+  getProcessedBodyForAiApiCalls,
+  ProcessedBody,
+} from "../../general/apiHelper";
 import { transformers } from "./aiModels/transformers";
 import { ollama } from "./aiModels/ollama";
 import { claude } from "./aiModels/claude";
@@ -29,6 +32,7 @@ import { claudeWithCitations } from "./claudeCitations";
 export default async function (req: NextApiRequest, res: NextApiResponse) {
   const processedBody = getProcessedBodyForAiApiCalls(req);
   const model = processedBody.model;
+  console.log(model);
   const message = processedBody.message;
   const numberOfImages = processedBody.numberOfImages;
   const imageSize = processedBody.imageSize;
@@ -65,8 +69,8 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     if (model === MODEL.StableDiffusionSdXl) {
       return stableDiffusionSdXl(res, message, numberOfImages);
     }
-    if (ALL_LLAMA_MODELS_REPLICATE.includes(model)) {
-      return llama2(res, message, model, processedBody);
+    if (ALL_MODELS_THROUGH_REPLICATE.includes(model)) {
+      return replicateService(res, message, model, processedBody);
     }
     if (model === MODEL.AnimateDiff) {
       return animateDiff(res, message);
@@ -150,3 +154,28 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     }
   }
 }
+
+export const callLlm = async (
+  res: NextApiResponse | undefined,
+  message: string,
+  model: MODEL,
+  processedBody: ProcessedBody
+) => {
+  if (ALL_MODELS_THROUGH_REPLICATE.includes(model)) {
+    return replicateService(res, message, model, processedBody);
+  }
+  if (model === MODEL.LocalLlm) {
+    return llamaLocal(res, message, processedBody);
+  }
+  if (model === MODEL.LocalOllama) {
+    return ollama(res, message, processedBody);
+  }
+  if (ALL_OPEN_AI_MODELS.includes(model)) {
+    return gpt(res, message, model, processedBody);
+  }
+  if (ALL_ANTHROPIC_MODELS.includes(model)) {
+    return claude(res, message, model, processedBody);
+  }
+
+  throw new Error("The selected AI model cannot be used for this operation.");
+};

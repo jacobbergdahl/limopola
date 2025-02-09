@@ -44,6 +44,7 @@ import {
 } from "./contextCreator";
 import { UiControlsChatOptions, UiControlsTheming } from "../UiControls";
 import { HideableUI } from "../HideableUi";
+import { BackgroundVideo } from "../BackgroundVideo";
 
 export const AgentOverview = () => {
   const [mission, setMission] = useAtom(agentMissionAtom);
@@ -438,7 +439,7 @@ export const AgentOverview = () => {
         handleClearMissionDetails();
         setIsRunning(false);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
       let errorMessage: string =
         error?.message ||
@@ -463,7 +464,9 @@ export const AgentOverview = () => {
 
   return (
     <div>
-      <div className={styles.pageTopColor}></div>
+      {!process.env.NEXT_PUBLIC_AGENT_BACKGROUND_VIDEO_SRC && (
+        <div className={styles.pageTopColor}></div>
+      )}
       <HideableUI className={`${styles.sidebar} ${styles.leftSidebar}`}>
         <UiControlsChatOptions
           handleDownload={() => saveMessagesAsZip(messages, "agent")}
@@ -480,7 +483,7 @@ export const AgentOverview = () => {
             placeholder={
               isRunning
                 ? mission
-                : `Enter the agent's mission. Press ${getCtrlKey()} + Enter to dispatch the agent.`
+                : `Enter the agent's mission. Press ${getCtrlKey()} + Enter, or the button in the top right, to dispatch the agent.`
             }
             handleKeyDown={handleTextareaKeyPress}
           />
@@ -549,7 +552,10 @@ export const AgentOverview = () => {
           )}
         </div>
       </div>
-      <div className={styles.pageBottomColor}></div>
+      {!process.env.NEXT_PUBLIC_AGENT_BACKGROUND_VIDEO_SRC && (
+        <div className={styles.pageBottomColor}></div>
+      )}
+      <BackgroundVideo isRunning={isRunning} type="agent" />
     </div>
   );
 };

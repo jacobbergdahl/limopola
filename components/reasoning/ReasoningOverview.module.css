@@ -83,7 +83,6 @@
 .sidebar .section {
   display: flex;
   flex-direction: column;
-  margin-top: 20px;
 }
 .sidebar h4 {
   margin-top: 10px;
@@ -94,11 +93,19 @@
   width: 100%;
   margin-bottom: 4px;
 }
-.sidebar input:last-of-type {
-  margin-bottom: 0;
-}
 .sidebar .spacing {
   height: 30px;
+}
+.sidebar h3 {
+  color: var(--font-color);
+  font-size: 20px;
+  margin-top: 26px;
+  line-height: 0;
+  padding: 0;
+  margin-bottom: 30px;
+}
+.sectionFirst {
+  margin-top: 20px;
 }
 .conversationContainer pre,
 .conversationContainer code {

@@ -47,6 +47,19 @@ Agents are still in a very early version, and unexpected bugs still occur. Many 
 - If the context is too long for both API's mentioned above, then create summaries of the arrays context that fall within the context limit.
 - The user should have an option that makes it so that the agent waits after having generated the list of tasks, and asks the user to confirm the tasks before continuing. The user can then choose to edit the list of tasks before the AI continues, or just approve the tasks the AI made.
 
+## Reasoning
+
+The model-agnostic reasoning mode is in an extremely early stage. A lot of basic features are yet to be implemented, and bugs may occur.
+
+- Implement proper error handling when API's fail.
+- Make it possible to continue the conversation with the reasoning AI. (The most obvious major missing feature.)
+- Make it possible to choose what LLM to use for online search.
+- Make it possible to search through other API's than searchapi.io.
+- Add fact-checking (auto or manual (e.g., post result)).
+- Show how long it took for each step not just during the generation but after the final result has returned.
+- Test local AI more with reasoning.
+- After stopping the AI, it should be possible to resume it again. Unfortunately, because I have 0 IQ, I kind of built it in a way where's it non-trivial to be able to resume it again (unlike the agents, which I built before this, which is further evidence of my lack of IQ). Still, this shouldn't be too difficult to fix. Probably just need to extract the steps in startReasoning() into individual functions and badabing badaboom.
+
 ## Nice-to-have
 
 - Save and present how many tokens was used for a reply.

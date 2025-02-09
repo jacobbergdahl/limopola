@@ -20,7 +20,9 @@ import {
   INPUT_MODE,
   IS_DEBUGGING,
   MEMORY,
+  MODEL,
   Message,
+  REASONING_ONLINE_SEARCH,
   TEXTAREA_STYLE,
   THEME,
   getDefaultModel,
@@ -131,6 +133,23 @@ export const isPresencePenaltyDefaultAtom = atomWithStorage(
   "IS_PRESENCE_PENALTY_DEFAULT",
   true
 );
+export const urlsToScrapeAtom = atomWithStorage("URLS_TO_SCRAPE", "");
+export const isUsingSimilaritySearchAtom = atomWithStorage(
+  "IS_USING_SIMILARITY_SEARCH",
+  false
+);
+export const isGivingAiSearchAccessAtom = atomWithStorage(
+  "IS_GIVING_AI_SEARCH_ACCESS",
+  false
+);
+export const isHidingUiAtom = atomWithStorage("IS_HIDING_UI_ATOM", false);
+export const themeAtom = atomWithStorage("THEME", THEME.Default);
+
+/******************************************
+ *
+ *                AGENT
+ *
+ ******************************************/
 
 export const agentMessagesAtom = atomWithStorage(
   "AGENT_MESSAGES",
@@ -160,14 +179,68 @@ export const agentVideoPromptsAtom = atomWithStorage(
 );
 export const isAgentRunningAtom = atomWithStorage("AGENT_RUNNING", false);
 export const wasAgentStoppedAtom = atomWithStorage("AGENT_STOPPED", false);
-export const urlsToScrapeAtom = atomWithStorage("URLS_TO_SCRAPE", "");
-export const isUsingSimilaritySearchAtom = atomWithStorage(
-  "IS_USING_SIMILARITY_SEARCH",
+
+/******************************************
+ *
+ *                REASONING
+ *
+ ******************************************/
+
+export const reasoningTextAtom = atomWithStorage("REASONING_TEXT", "");
+
+export const reasoningAnswerModelAtom = atomWithStorage(
+  "REASONING_ANSWER_MODEL",
+  MODEL.Claude35Sonnet
+);
+export const reasoningFirstTakeModelAtom = atomWithStorage(
+  "REASONING_FIRST_TAKE_MODEL",
+  MODEL.Llama3_70b_instruct as MODEL | "None"
+);
+export const reasoningOnlineSearchAtom = atomWithStorage(
+  "REASONING_ONLINE_SEARCH",
+  REASONING_ONLINE_SEARCH.LetAiChoose
+);
+export const reasoningStepsCompletedAtom = atomWithStorage(
+  "REASONING_STEPS_COMPLETED",
+  [] as string[]
+);
+export const reasoningOngoingStepAtom = atomWithStorage(
+  "REASONING_ONGOING_STEP",
+  ""
+);
+export const reasoningOnlineSearchResultAtom = atomWithStorage(
+  "REASONING_ONLINE_SEARCH_RESULT",
+  ""
+);
+export const reasoningFirstTakeResultAtom = atomWithStorage(
+  "REASONING_FIRST_TAKE_RESULT",
+  ""
+);
+export const reasoningReasoningResultAtom = atomWithStorage(
+  "REASONING_REASONING_RESULT",
+  ""
+);
+export const reasoningFinalAnswerResultAtom = atomWithStorage(
+  "REASONING_FINAL_ANSWER_RESULT",
+  ""
+);
+export const isReasoningRunningAtom = atomWithStorage(
+  "REASONING_RUNNING",
   false
 );
-export const isGivingAiSearchAccessAtom = atomWithStorage(
-  "IS_GIVING_AI_SEARCH_ACCESS",
+export const wasReasoningStoppedAtom = atomWithStorage(
+  "REASONING_STOPPED",
   false
 );
-export const isHidingUiAtom = atomWithStorage("IS_HIDING_UI_ATOM", false);
-export const themeAtom = atomWithStorage("THEME", THEME.Default);
+export const canReasoningBeStoppedAtom = atomWithStorage(
+  "REASONING_CAN_BE_STOPPED",
+  false
+);
+export const wasReasoningFinishedAtom = atomWithStorage(
+  "WAS_REASONING_FINISHED",
+  false
+);
+export const reasoningMessagesAtom = atomWithStorage(
+  "REASONING_MESSAGES",
+  [] as Message[]
+);

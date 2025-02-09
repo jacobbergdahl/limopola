@@ -1,4 +1,4 @@
-import { useState, useEffect, MouseEvent } from "react";
+import { useState, useEffect } from "react";
 import { Context } from "../../general/constants";
 import { Button, SubtleButton } from "../Button";
 import { useAtom } from "jotai";

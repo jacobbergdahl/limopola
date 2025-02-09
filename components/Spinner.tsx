@@ -8,8 +8,8 @@ export enum SPINNER_TYPE {
 
 type SpinnerProps = {
   show: boolean;
-  model: MODEL;
-  timer: number;
+  model?: MODEL;
+  timer?: number;
   classNames?: string;
   spinnerType?: SPINNER_TYPE;
 };
@@ -34,7 +34,9 @@ export const Spinner = ({
         }
         alt="Loading"
       />
-      {timer >= 0 && <span className={styles.timer}>{timer.toFixed(2)}s</span>}
+      {!!timer && timer >= 0 && (
+        <span className={styles.timer}>{timer.toFixed(2)}s</span>
+      )}
     </div>
   );
 };
