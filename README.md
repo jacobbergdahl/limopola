@@ -116,6 +116,7 @@ This is a list of models currently included in this AI interface. More models wi
 | t-text2text              | Text  | None       |
 
 \* Google PaLM. No longer available in the `main` branch due to a rough dependency clash. To use Google's API's, run `git checkout google-generativelanguage && npm install`.
+
 \*\* Supports any LLM served through Azure OpenAI. Due to how you configure your own model id's in Azure, you will need to enter the actual your LLM model into your `.env` file (using `.env.example` as a reference).
 
 ### Custom wrappers of AI models
@@ -164,13 +165,9 @@ For most purposes in this mode, I would recommend you to _not_ use an LLM fine-t
 
 ### Agent
 
-Below is a video example of dispatching an autonomous AI agent to create a fan website a Super Mario. The agent has been given the following mission:
+https://github.com/user-attachments/assets/353c1d19-de7c-43f3-943f-b13ceca465d4
 
-> Build a fan website about Super Mario. The website should be a single-page application. It should feature facts about Mario, along with some generated images of him in modern-day scenarios.
-
-https://github.com/jacobbergdahl/limopola/assets/13106411/0141e096-ba3d-4452-a10e-6038c09bb6a2
-
-The agent mode is still a work in progress. It may crash, and certain actions may not always work correctly. The agent will continuously report its progress in the console.
+The agent mode is still a work in progress. It may crash, and does not yet offer much customization without making code changes. The agent will continuously report its progress in the console.
 
 **Please be careful when using the agent mode. It still needs much testing, and it could potentially make very expensive API calls. Even if you stop it, it will still try to finish whatever API call it has started on its current task.**
 
@@ -193,6 +190,8 @@ Examples of missions:
 Currently, this mode _requires_ you to have a number of API keys. It may crash if you don't have `OPENAI_API_KEY`, `REPLICATE_API_KEY`, and `ELEVEN_LABS_API_KEY` set. In the future, users should be able to choose what API's the AI has access to. Currently, that list is limited to a small number of API's.
 
 ### Reasoning
+
+https://github.com/user-attachments/assets/039f39ad-3a6f-4b68-8995-6c83e010e8c3
 
 The reasoning mode (or Chain of Thought (CoT) mode) is the most recent addition to Limopola. This mode is heavily inspired by DeepSeek R1, as I pondered if it was possible to make any LLM reason the way R1 does. In theory, this mode does give any LLM the ability to reason like R1 does through few-shot prompting. In reality, many LLM's are incapable of reasoning like R1 does (because they're dumb enough or have been trained in a very specific way).
 
