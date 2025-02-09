@@ -157,8 +157,14 @@ export const AgentOverview = () => {
       console.log(prompt);
       const response = await runTask(task, context, undefined, prompt);
       const data = await response.json();
-      const result = data.result;
-      results.push(result[0]);
+      const result: string | string[] = data.result;
+      if (Array.isArray(result)) {
+        for (const image of result) {
+          results.push(image);
+        }
+      } else {
+        results.push(result);
+      }
     }
     SHOULD_SHOW_ALL_LOGS &&
       console.log("Created the following result(s)", results);
@@ -395,10 +401,10 @@ export const AgentOverview = () => {
         currentTasks = currentTasks.map((task) =>
           task.id === idOfCurrentTask ? currentTask : task
         );
-        setTasks(currentTasks);
       } else {
         setIsRunning(false);
       }
+      setTasks(currentTasks);
       if (isStoppingRef.current) {
         console.log("The agent has intentionally stopped per your request");
         isStoppingRef.current = false;
@@ -524,13 +530,13 @@ export const AgentOverview = () => {
                 theme={BUTTON_THEME.Default}
               />
             )}
-            {!isRunning && (
+            {!isRunning && tasks.length > 0 && (
               <Button
                 onClick={handleClearMissionDetails}
                 value="Clear mission details"
               />
             )}
-            {!isRunning && (
+            {!isRunning && messages.length > 0 && (
               <Button
                 onClick={handleClearChat}
                 value="Clear chat"

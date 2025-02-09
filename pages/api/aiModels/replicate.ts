@@ -12,7 +12,7 @@ const replicate = new Replicate({
   auth: process.env.REPLICATE_API_KEY,
 });
 
-const getReplicateUrl = (model: MODEL) => {
+const getReplicateEndpoint = (model: MODEL) => {
   if (model === MODEL.Llama2_13b_chat) {
     return "a16z-infra/llama-2-13b-chat:2a7f981751ec7fdf87b5b91ad4db53683a98082e9ff7bfd12c8cd5ea85980a52";
   } else if (model === MODEL.Llama2_70b_chat) {
@@ -43,7 +43,7 @@ export const replicateService = async (
   console.log(`The backend is calling ${model} through Replicate.`);
   const { temperature, topP } = processedBody;
   try {
-    const completion = await replicate.run(getReplicateUrl(model), {
+    const completion = await replicate.run(getReplicateEndpoint(model), {
       input: {
         prompt: message,
         temperature: temperature,

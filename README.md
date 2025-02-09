@@ -94,6 +94,9 @@ This is a list of models currently included in this AI interface. More models wi
 | claude-3-5-haiku-latest  | Text  | Anthropic  |
 | dall-e                   | Image | OpenAI     |
 | dall-e-3                 | Image | OpenAI     |
+| flux-1.1-pro-ultra       | Image | Replicate  |
+| flux-1.1-pro             | Image | Replicate  |
+| flux-schnell             | Image | Replicate  |
 | stable-diffusion-xl      | Image | Replicate  |
 | deepseek-67b-base        | Text  | Replicate  |
 | llama-2-70b              | Text  | Replicate  |

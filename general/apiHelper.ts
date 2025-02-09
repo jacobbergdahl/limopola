@@ -2,6 +2,8 @@ import { NextApiRequest } from "next";
 import {
   DEFAULT_TECHNICAL_VOICE_SIMILARITY_BOOST,
   DEFAULT_TECHNICAL_VOICE_STABILITY,
+  FLUX_MODE,
+  IMAGE_ASPECT_RATIO,
   IMAGE_SIZE_DALL_E_2,
   IMAGE_SIZE_DALL_E_3,
   MODEL,
@@ -27,6 +29,8 @@ export type ProcessedBody = {
   shouldAskBeforeSearching: boolean | undefined;
   returnEmptyStringIfNoSearch: boolean | undefined;
   returnOnlineSearchResultsWithoutAskingLLM: boolean | undefined;
+  aspectRatio: IMAGE_ASPECT_RATIO | undefined;
+  fluxMode: FLUX_MODE | undefined;
 };
 
 export const getProcessedBodyForAiApiCalls = (
@@ -61,6 +65,8 @@ export const getProcessedBodyForAiApiCalls = (
   const returnEmptyStringIfNoSearch = !!req.body.returnEmptyStringIfNoSearch;
   const returnOnlineSearchResultsWithoutAskingLLM =
     !!req.body.returnOnlineSearchResultsWithoutAskingLLM;
+  const aspectRatio = req.body.aspectRatio;
+  const fluxMode = req.body.fluxMode;
 
   return {
     message,
@@ -86,5 +92,7 @@ export const getProcessedBodyForAiApiCalls = (
     shouldAskBeforeSearching,
     returnEmptyStringIfNoSearch,
     returnOnlineSearchResultsWithoutAskingLLM,
+    aspectRatio,
+    fluxMode,
   } as ProcessedBody;
 };

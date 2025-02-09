@@ -15,6 +15,8 @@ import {
   DEFAULT_TOP_P,
   DEFAULT_VOICE_SIMILARITY_BOOST,
   DEFAULT_VOICE_STABILITY,
+  FLUX_MODE,
+  IMAGE_ASPECT_RATIO,
   IMAGE_SIZE_DALL_E_2,
   IMAGE_SIZE_DALL_E_3,
   INPUT_MODE,
@@ -63,6 +65,11 @@ export const imageSizeDallE3Atom = atomWithStorage(
   "IMAGE_SIZE_DALL_E_3",
   IMAGE_SIZE_DALL_E_3.One
 );
+export const imageAspectRatioAtom = atomWithStorage(
+  "IMAGE_ASPECT_RATIO",
+  IMAGE_ASPECT_RATIO.Landscape
+);
+export const fluxModeAtom = atomWithStorage("FLUX_MODE", FLUX_MODE.Normal);
 export const requestedNumberOfTokensAtom = atomWithStorage(
   "NUMBER_OF_TOKENS",
   0

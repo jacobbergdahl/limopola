@@ -37,7 +37,7 @@ import {
   getReasoningAnswerPrompt,
   getReasoningPrompt,
 } from "./reasoningFunctions";
-import { ReasoningChoiceContainer } from "./ReasoningChoiceContainer";
+import { GenericSectionChoiceContainer } from "../sections/GenericSectionChoiceContainer";
 import { ReasoningStepsHistory } from "./ReasoningStepsHistory";
 import { BackgroundVideo } from "../BackgroundVideo";
 
@@ -454,21 +454,21 @@ export const ReasoningOverview = () => {
               </div>
             )}
             <HideableUI className={styles.section}>
-              <ReasoningChoiceContainer
+              <GenericSectionChoiceContainer
                 title="Main model"
                 buttonTexts={REASONING_ANSWER_MODELS}
                 selectedButton={reasoningAnswerModel}
                 handleButtonClick={setReasoningAnswerModel}
                 disabled={isRunning}
               />
-              <ReasoningChoiceContainer
+              <GenericSectionChoiceContainer
                 title="First take model"
                 buttonTexts={REASONING_FIRST_TAKE_MODELS}
                 selectedButton={reasoningFirstTakeModel}
                 handleButtonClick={setReasoningFirstTakeModel}
                 disabled={isRunning}
               />
-              <ReasoningChoiceContainer
+              <GenericSectionChoiceContainer
                 title="Online search"
                 buttonTexts={[
                   REASONING_ONLINE_SEARCH.LetAiChoose,

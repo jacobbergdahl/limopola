@@ -39,8 +39,8 @@ export const azure = async (
     const client = new AzureOpenAI({
       apiKey: apiKey,
       // It's an interesting choice to make apiVersion required and then not provide a "-latest" option, which is otherwise a standard practice.
-      // It does make sense with Azure's philosophy of stability. In a production-quality application, you would want stability and likely not just
-      // use whatever is the latest. However, it's an odd emission to not allow for it as many businesses are still in the prototyping phase of LLM's.
+      // It does make sense with Azure's philosophy of stability: In a production-quality application, you would want stability.
+      // However, it's an odd emission to not even allow for it as many businesses are still in the prototyping phase of LLM's.
       // You can find the latest information on api versions at these URL's:
       // https://learn.microsoft.com/en-us/azure/ai-services/openai/reference
       // https://learn.microsoft.com/en-us/azure/ai-services/openai/api-version-deprecation

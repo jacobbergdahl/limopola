@@ -1,5 +1,6 @@
 import {
   ALL_ANTHROPIC_MODELS,
+  ALL_FLUX_MODELS,
   ALL_MODELS_THROUGH_REPLICATE,
   ALL_OPEN_AI_MODELS,
   MODEL,
@@ -29,6 +30,7 @@ import { ollama } from "./aiModels/ollama";
 import { claude } from "./aiModels/claude";
 import { claudeWithCitations } from "./claudeCitations";
 import { azure } from "./aiModels/azure";
+import { flux } from "./aiModels/flux";
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
   const processedBody = getProcessedBodyForAiApiCalls(req);
@@ -63,6 +65,9 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     }
     if (model === MODEL.Dalle2 || model === MODEL.Dalle3) {
       return dalle(res, message, numberOfImages, imageSize, model);
+    }
+    if (ALL_FLUX_MODELS.includes(model)) {
+      return flux(res, message, model, processedBody);
     }
     if (model === MODEL.TextToPokemon) {
       return textToPokemon(res, message, numberOfImages);

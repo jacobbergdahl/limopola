@@ -15,6 +15,9 @@ import {
   SHOULD_SHOW_ALL_LOGS,
   STATUS_CODE,
   TEXTAREA_STYLE,
+  ALL_IMAGE_ASPECT_RATIOS,
+  ALL_FLUX_MODES,
+  ALL_FLUX_MODELS,
 } from "../general/constants";
 import {
   downloadConversation,
@@ -30,7 +33,9 @@ import {
   chatInputAtom,
   currentlySelectedContextAtom,
   editorTextAtom,
+  fluxModeAtom,
   frequencyPenaltyAtom,
+  imageAspectRatioAtom,
   imageSizeDallE2Atom,
   imageSizeDallE3Atom,
   inputModeAtom,
@@ -99,6 +104,7 @@ import {
 } from "@/components/UiControls";
 import { HideableUI } from "@/components/HideableUi";
 import { ReasoningOverview } from "@/components/reasoning/ReasoningOverview";
+import { GenericSectionChoiceContainer } from "@/components/sections/GenericSectionChoiceContainer";
 
 // I know, I know, this file is too long. It should, and will, be refactored 🙏
 // ... (maybe)
@@ -134,6 +140,8 @@ export default function Home() {
   );
   const [imageSizeDallE2, setImageSizeDallE2] = useAtom(imageSizeDallE2Atom);
   const [imageSizeDallE3, setImageSizeDallE3] = useAtom(imageSizeDallE3Atom);
+  const [imageAspectRatio, setImageAspectRatio] = useAtom(imageAspectRatioAtom);
+  const [fluxMode, setFluxMode] = useAtom(fluxModeAtom);
   const [requestedNumberOfTokens, setRequestedNumberOfTokens] = useAtom(
     requestedNumberOfTokensAtom
   );
@@ -236,9 +244,12 @@ export default function Home() {
     model !== MODEL.TransformersText2Text &&
     selectedModelType !== MODEL_TYPE.Audio;
   const shouldShowNumberOfImages =
-    selectedModelType === MODEL_TYPE.Image && model !== MODEL.Dalle3;
+    selectedModelType === MODEL_TYPE.Image &&
+    (model === MODEL.Dalle2 || model === MODEL.FluxSchnell);
   const shouldShowImageSizeDallE2 = model === MODEL.Dalle2;
   const shouldShowImageSizeDallE3 = model === MODEL.Dalle3;
+  const shouldShowImageAspectRatio = ALL_FLUX_MODELS.includes(model);
+  const shouldShowFluxMode = model === MODEL.Flux11ProUltra;
   const shouldShowSimilaritySearch = model === MODEL.WebRetriever;
   const shouldShowAiSearchAccess =
     selectedModelType === MODEL_TYPE.Text &&
@@ -387,6 +398,8 @@ export default function Home() {
       numberOfImages: numberOfImagesToGenerate,
       imageSize: model === MODEL.Dalle2 ? imageSizeDallE2 : imageSizeDallE3,
       model: model,
+      aspectRatio: imageAspectRatio,
+      fluxMode: fluxMode,
     });
   };
 
@@ -515,7 +528,13 @@ export default function Home() {
           newMemoryHistory
         );
       } else if (selectedModelType === MODEL_TYPE.Image) {
-        const imageUrls = data.result;
+        const result: string | string[] = data.result;
+        let imageUrls: string[] = [];
+        if (Array.isArray(result)) {
+          imageUrls = result;
+        } else {
+          imageUrls = [result];
+        }
         const apiMessage: Message = {
           imageUrls: imageUrls,
           sender: model + ` (${timeToGenerate})`,
@@ -1116,6 +1135,26 @@ export default function Home() {
                   <ImageSizeDallE3
                     imageSize={imageSizeDallE3}
                     setImageSize={setImageSizeDallE3}
+                  />
+                </div>
+              )}
+              {shouldShowFluxMode && (
+                <div className={styles.section}>
+                  <GenericSectionChoiceContainer
+                    title="Mode"
+                    selectedButton={fluxMode}
+                    buttonTexts={ALL_FLUX_MODES}
+                    handleButtonClick={setFluxMode}
+                  />
+                </div>
+              )}
+              {shouldShowImageAspectRatio && (
+                <div className={styles.section}>
+                  <GenericSectionChoiceContainer
+                    title="Image aspect ratio"
+                    selectedButton={imageAspectRatio}
+                    buttonTexts={ALL_IMAGE_ASPECT_RATIOS}
+                    handleButtonClick={setImageAspectRatio}
                   />
                 </div>
               )}

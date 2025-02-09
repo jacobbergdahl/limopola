@@ -25,6 +25,9 @@ export enum MODEL {
   ClaudeCitations = "claude-citations",
   Dalle2 = "dall-e",
   Dalle3 = "dall-e-3",
+  Flux11ProUltra = "flux-1.1-pro-ultra",
+  Flux11Pro = "flux-1.1-pro",
+  FluxSchnell = "flux-schnell",
   StableDiffusionSdXl = "stable-diffusion-xl", // full name: stable-diffusion-xl-base-1.0
   DeepSeek_67b = "deepseek-67b-base",
   Llama2_70b = "llama-2-70b",
@@ -157,6 +160,33 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
         status: MODEL_STATUS.Full,
         information: "A 67 billion parameter language model from DeepSeek.",
         learnMoreUrl: "https://replicate.com/deepseek-ai/deepseek-67b-base",
+        apiKey: MODEL_API_KEY.Replicate,
+      };
+    case MODEL.Flux11ProUltra:
+      return {
+        status: MODEL_STATUS.Full,
+        information:
+          "FLUX1.1 [pro] in ultra and raw modes. Images are up to 4 megapixels. Use raw mode for realism.",
+        learnMoreUrl:
+          "https://replicate.com/black-forest-labs/flux-1.1-pro-ultra/api",
+        apiKey: MODEL_API_KEY.Replicate,
+      };
+    case MODEL.Flux11Pro:
+      return {
+        status: MODEL_STATUS.Full,
+        information:
+          "Faster, better FLUX Pro. Text-to-image model with excellent image quality, prompt adherence, and output diversity. A little bit cheaper than Ultra.",
+        learnMoreUrl:
+          "https://replicate.com/black-forest-labs/flux-1.1-pro/api",
+        apiKey: MODEL_API_KEY.Replicate,
+      };
+    case MODEL.FluxSchnell:
+      return {
+        status: MODEL_STATUS.Full,
+        information:
+          "Significantly cheaper and faster than Flux Pro or Ultra Pro.",
+        learnMoreUrl:
+          "https://replicate.com/black-forest-labs/flux-1.1-pro/api",
         apiKey: MODEL_API_KEY.Replicate,
       };
     case MODEL.Llama3_70b_instruct:
@@ -400,6 +430,9 @@ export const ALL_AUDIO_MODELS = [MODEL.ElevenLabs];
 export const ALL_IMAGE_MODELS = [
   MODEL.Dalle2,
   MODEL.Dalle3,
+  MODEL.Flux11ProUltra,
+  MODEL.Flux11Pro,
+  MODEL.FluxSchnell,
   MODEL.StableDiffusionSdXl,
   MODEL.TextToPokemon,
 ];
@@ -412,6 +445,12 @@ export const ALL_OPEN_AI_MODELS = [
   MODEL.Gpt4_o_mini,
   MODEL.Dalle2,
   MODEL.Dalle3,
+];
+
+export const ALL_FLUX_MODELS = [
+  MODEL.Flux11ProUltra,
+  MODEL.Flux11Pro,
+  MODEL.FluxSchnell,
 ];
 
 // Intentionally not including ClaudeCitations here, as it's a special case (it uses one of these models under the hood)
@@ -502,6 +541,31 @@ export enum IMAGE_SIZE_DALL_E_3 {
   Two = "1792x1024",
   Three = "1024x1792",
 }
+
+export enum IMAGE_ASPECT_RATIO {
+  Landscape = "16:9",
+  Portrait = "9:16",
+  Square = "1:1",
+  SocialMedia = "4:5",
+  PhotoPrint = "2:3",
+  PhotoPrintAlt = "3:2",
+}
+
+export const ALL_IMAGE_ASPECT_RATIOS = [
+  IMAGE_ASPECT_RATIO.Landscape,
+  IMAGE_ASPECT_RATIO.Portrait,
+  IMAGE_ASPECT_RATIO.Square,
+  IMAGE_ASPECT_RATIO.SocialMedia,
+  IMAGE_ASPECT_RATIO.PhotoPrint,
+  IMAGE_ASPECT_RATIO.PhotoPrintAlt,
+];
+
+export enum FLUX_MODE {
+  Normal = "normal",
+  Raw = "raw",
+}
+
+export const ALL_FLUX_MODES = [FLUX_MODE.Normal, FLUX_MODE.Raw];
 
 export const getDefaultModel = (): MODEL => {
   if (!!process.env.NEXT_PUBLIC_DEFAULT_MODEL) {

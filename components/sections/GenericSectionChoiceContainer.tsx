@@ -1,7 +1,7 @@
 import { Button } from "../Button";
-import styles from "./ReasoningChoiceContainer.module.css";
+import styles from "./GenericSectionChoiceContainer.module.css";
 
-type ReasoningChoiceContainerProps = {
+type GenericSectionChoiceContainerProps = {
   title: string;
   selectedButton: string;
   buttonTexts: string[];
@@ -10,14 +10,14 @@ type ReasoningChoiceContainerProps = {
   additionalInformation?: string;
 };
 
-export const ReasoningChoiceContainer = ({
+export const GenericSectionChoiceContainer = ({
   title,
   selectedButton,
   buttonTexts,
   handleButtonClick,
   disabled = false,
   additionalInformation,
-}: ReasoningChoiceContainerProps) => {
+}: GenericSectionChoiceContainerProps) => {
   return (
     <>
       <h3>{title}</h3>
