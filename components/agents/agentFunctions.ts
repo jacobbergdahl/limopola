@@ -6,7 +6,7 @@ import {
   SHOULD_SHOW_ALL_LOGS,
 } from "../../general/constants";
 import {
-  AGENT_PROMPT_GENERATE_IMAGE_PROMPTS,
+  AGENT_PROMPT_GENERATE_IMAGE_PROMPTS_PLAIN,
   AGENT_PROMPT_GENERATE_VIDEO_PROMPTS,
 } from "./agentPrompts";
 import {
@@ -166,7 +166,7 @@ export const runTask = async (
 
 const getBaseInstructions = (indication: AGENT_TASK_INDICATION) => {
   if (indication === AGENT_TASK_INDICATION.Image) {
-    return AGENT_PROMPT_GENERATE_IMAGE_PROMPTS;
+    return AGENT_PROMPT_GENERATE_IMAGE_PROMPTS_PLAIN;
   } else if (indication === AGENT_TASK_INDICATION.Video) {
     return AGENT_PROMPT_GENERATE_VIDEO_PROMPTS;
   } else if (indication === AGENT_TASK_INDICATION.Code) {
@@ -213,6 +213,9 @@ export const getAgentPromptForRequestingPrompts = (
   `;
 };
 
+const PROMPT_INSTRUCTION_BASIS =
+  'Make your answer fully complete, considering all context provided. Do not respond with "sure", "ok", or anything similar. Assume that your output will be used in its full form for a body of work.\n\n';
+
 export const appendContextToTextPrompt = (
   prompt: string,
   context: string,
@@ -226,7 +229,7 @@ export const appendContextToTextPrompt = (
     indication !== AGENT_TASK_INDICATION.Narration;
 
   if (!hasContext && !hasRelevantIndication) {
-    return prompt;
+    return PROMPT_INSTRUCTION_BASIS + prompt;
   }
 
   if (hasContext && !hasRelevantIndication) {
@@ -235,6 +238,7 @@ export const appendContextToTextPrompt = (
     ${context}
     ENDCONTEXT
     BEGININSTRUCTION
+    ${PROMPT_INSTRUCTION_BASIS}
     ${prompt}
     ENDINSTRUCTION
     `;

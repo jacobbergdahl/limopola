@@ -21,7 +21,7 @@ const getNumberOfAsterisks = (numberOfNotes: number): string => {
 const getNotesSection = (notes: string[]): string => {
   return notes
     .map((note, index) => `${getNumberOfAsterisks(index + 1)} ${note}`)
-    .join("\n");
+    .join("\n\n");
 };
 
 const generateModelTables = () => {

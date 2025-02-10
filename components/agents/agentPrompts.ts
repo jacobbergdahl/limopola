@@ -2,8 +2,8 @@ import { AGENT_TASK_INDICATION } from "./../../general/constants";
 import { MODEL } from "../../general/constants";
 
 const TEXT_GENERATING_AI = MODEL.Gpt4; // 4o doesn't work very well for this purpose yet; probably needs more fine-tuning for the individual tasks to use effectively. Claude could work better than GPT-4, but will need adjusted prompts.
-const TEXT_SUMMARIZING_AI = MODEL.Gpt4_o_mini;
-const IMAGE_GENERATING_AI = MODEL.StableDiffusionSdXl; // DALL-E 3 currently leads to unexpected CORS issues.
+const TEXT_SUMMARIZING_AI = MODEL.Gpt4; // Gpt-4o Mini could have worked well for this, but its output looks too chat-tuned for an agent mode.
+const IMAGE_GENERATING_AI = MODEL.Flux11ProUltra; // FluxSchnell would be quite a bit cheaper to use. Stable Diffusion XL works. DALL-E 3 will likely lead to unexpected CORS issues.
 const VIDEO_GENERATING_AI = MODEL.AnimateDiff;
 const VOICE_GENERATING_AI = MODEL.ElevenLabs;
 
@@ -151,7 +151,8 @@ In the far future, humanity has mastered the art of terraforming barren planets.
 
 `;
 
-export const AGENT_PROMPT_GENERATE_IMAGE_PROMPTS = `
+// This prompt should be used for DALL-E and Stable Diffusion XL. In the future, when the user can select image generating model manually, this prompt should be automatically selected for the right models.
+export const AGENT_PROMPT_GENERATE_IMAGE_PROMPTS_DESCRIPTIVE = `
 I need you to generate prompts for the image generating algorithm ${IMAGE_GENERATING_AI}. At the bottom of this prompt is an instructed which will tell you exactly how many images you should create, and perhaps some information to use as a basis for the image prompts. If there is additional information for you on the prompt(s) you are supposed to create, then it will be wrapped in BEGINCONTEXT and ENDCONTEXT tags below. The final instructions are at the bottom, wrapped in BEGININSTRUCTION and ENDINSTRUCTION tags.
 
 The prompts you create will be given to ${IMAGE_GENERATING_AI}. Unless the instruction below tells you otherwise, it is very important that all of the images you create have the same art style and are consistent. Please note that ${IMAGE_GENERATING_AI} does not understand what art style it used for the previous image it created. Each image exists in a vacuum, so you can't tell it "please use the same art style as the previous image". It doesn't understand that. Therefore, please create as detailed prompts as possible. Don't just describe the image, but also use words describing the art style, colors, and more. You can use terms like "watercolor", "painting", "photography", "4k", "8k", and more to create a very precise prompt. No matter what, unless very specifically asked not to, your prompt should include terms like "best quality".
@@ -196,6 +197,94 @@ Create prompts for four images corresponding to the five pages of the story abou
 2. A high-quality digital painting portraying Bella, a charming little white kitten with twinkling blue eyes and a vibrant pink bow around her neck, and Draco, a friendly but lonely large red dragon. Bella is bravely walking up the hill and introducing herself to the dragon, Draco. Draco shares his feelings of isolation and loneliness with Bella, who responds with comfort and reassurance.
 3. A high-quality digital painting portraying Bella, a charming little white kitten with twinkling blue eyes and a vibrant pink bow around her neck, and Draco, a friendly but lonely large red dragon. Draco and Bella playing together in the meadow, sharing stories, and enjoying each other's company amidst the awe-struck townsfolk, symbolizing the blossoming of their unusual, yet genuine, friendship.
 4. A high-quality digital painting portraying Bella, a charming little white kitten with twinkling blue eyes and a vibrant pink bow around her neck, and Draco, a friendly but lonely large red dragon. An emotional final scene of Bella and Draco living happily in the town. They are surrounded by townsfolk who no longer fear dragons, signifying the changed mindset of the people, captivating not only the beauty of their friendship but also its transformative impact on their world.
+`;
+
+// Works better with Flux than the prompt above.
+export const AGENT_PROMPT_GENERATE_IMAGE_PROMPTS_PLAIN = `
+I need you to generate prompts for the image generating algorithm ${IMAGE_GENERATING_AI}. At the bottom of this prompt is an instructed which will tell you exactly how many images you should create, and perhaps some information to use as a basis for the image prompts. If there is additional information for you on the prompt(s) you are supposed to create, then it will be wrapped in BEGINCONTEXT and ENDCONTEXT tags below. The final instructions are at the bottom, wrapped in BEGININSTRUCTION and ENDINSTRUCTION tags.
+
+The prompts you create will be given to ${IMAGE_GENERATING_AI}. Unless the instruction below tells you otherwise, it is very important that all of the images you create have the same art style and are consistent. Please note that ${IMAGE_GENERATING_AI} does not understand what art style it used for the previous image it created. Each image exists in a vacuum, so you can't tell it "please use the same art style as the previous image". It doesn't understand that. Therefore, please create detailed prompts if necessary. However, don't assume that the users want a specific art style unless they asked for it. Oftentimes, less is more. ${IMAGE_GENERATING_AI} is really good, so you don't need to describe a specific art style in depth unless you've been asked to do so. Note, however, that they image generating AI can't make decisions, so you can't say "an image of X or Y" as it will be confused. You have to make the call.
+
+Furthermore, ${IMAGE_GENERATING_AI} does not understand what the previous image it created was. If you ask it to create a picture of Victoria, a red dragon, and then later just ask it to make another scene with Victoria, then you need to describe Victoria the exact same way again.
+
+The prompts must be in this specific formula, delimited below in quadrupled quotation marks, with no additional text, questions, or suggestions. Do not include the quotation marks in your output, only the list. The output will be parsed by code. Note that sometimes, you only need to generate a single image, but it should still be a numbered list.
+
+""""
+1. golden retriever, sleeping on a couch
+2. golden retriever, playing with a ball
+3. golden retriever, running in a field of flowers
+4. golden retriever, walking outdoors
+5. golden retriever, eating food
+""""
+
+# Example input 1
+
+Create prompts for three photo-realistic artificial scenarios featuring Beethoven. a. Beethoven giving a concert in a modern cityscape. b. Beethoven wearing headphones and listening to electronic music. c. Beethoven interacting with other famous composers at a modern music festival.
+
+# Example output 1
+
+1. beethoven concert modern city
+2. beethoven headphones listen electronic music
+3. beethoven interacting with other famous composers at a modern music festival
+
+# Example input 2
+
+Design a logo concept using indigo as the primary color, incorporating elements that reflect IT, consultancy, and a touch of Stockholm's cultural or architectural identity.
+
+# Example output 2
+
+1. sharp, modern, high-resolution logo, indigo backdrop, minimalist computer mouse and the outline of Stockholm's Djurgården bridge
+
+# Example input 3
+
+Create prompts for three images: a. A cat lounging in a comfortable spot. b. A cat playing with a toy. c. A cat on an adventure, such as climbing a tree or exploring a garden.
+
+# Example output 3
+
+1. cat lounging
+2. cat playing with a toy
+3. cat on an adventure
+
+# Example input 4
+
+Create prompts for three images: a. A group of different cat breeds. b. A cat doing a typical cat activity, like playing with a toy or lounging. c. A kitten and an adult cat to show the growth and development of cats.
+
+# Example output 4
+
+1. group of different cat breeds
+2. cat lounging
+3. kitten and adult cat
+
+# Example input 5
+
+Create prompts for two images of cars. a. A red sports car. b. A blue sedan or an orange sedan.
+
+# Example output 5
+
+1. red sports car
+2. blue sedan
+
+# Example input 6
+
+Create prompts for majestic mountains.
+
+# Example output 6
+
+1. majestic mountains
+2. majestic mountains at sunset
+3. majestic mountains in the snow
+
+# Example input 7
+
+Create five prompts for Norwegian landscapes: a. A snowy mountain. b. A waterfall. c. A forest. d. A lake or an ocean. e. A fjord.
+
+# Example output 7
+
+1. snow-covered Norwegian mountain
+2. Norwegian waterfall
+3. Norwegian forest
+4. Norwegian lake
+5. Norwegian fjord
 `;
 
 export const AGENT_PROMPT_GENERATE_VIDEO_PROMPTS = `

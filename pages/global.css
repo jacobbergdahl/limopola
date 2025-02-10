@@ -109,6 +109,25 @@
   --background-color: #131313;
 }
 
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+  visibility: hidden;
+}
+
+:hover::-webkit-scrollbar-thumb {
+  visibility: visible;
+}
+
 body {
   background: var(--background);
   background-size: var(--background-size);
@@ -120,7 +139,7 @@ body {
 
 /**
   Below styles need to be in the global CSS due to being used in the parsed API responses.
-  This is the only place in the codebase where we may use the !important flag for CSS.
+  This is one of the few places in the codebase where we may use the !important flag for CSS.
 */
 
 main .inline-code {

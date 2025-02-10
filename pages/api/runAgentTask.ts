@@ -1,9 +1,12 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import {
   ALL_ANTHROPIC_MODELS,
+  ALL_FLUX_MODELS,
   DEFAULT_TECHNICAL_VOICE_SIMILARITY_BOOST,
   DEFAULT_TECHNICAL_VOICE_STABILITY,
+  FLUX_MODE,
   getModelType,
+  IMAGE_ASPECT_RATIO,
   IMAGE_SIZE_DALL_E_2,
   IMAGE_SIZE_DALL_E_3,
   MODEL,
@@ -18,9 +21,10 @@ import { animateDiff } from "./aiModels/animateDiff";
 import { elevenLabs } from "./aiModels/elevenLabs";
 import { stableDiffusionSdXl } from "./aiModels/stableDiffusionSdXl";
 import { ProcessedBody } from "../../general/apiHelper";
+import { flux } from "./aiModels/flux";
 import { claude } from "./aiModels/claude";
 
-const RATE_LIMIT_MS = 3000;
+const RATE_LIMIT_MS = 500;
 let lastAccessTime = 0;
 let lastDescription = "";
 
@@ -61,6 +65,11 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     isGivingAiSearchAccess: false,
     message: "",
     model: model,
+    shouldAskBeforeSearching: false,
+    returnEmptyStringIfNoSearch: false,
+    returnOnlineSearchResultsWithoutAskingLLM: false,
+    aspectRatio: IMAGE_ASPECT_RATIO.Landscape,
+    fluxMode: FLUX_MODE.Raw,
   };
 
   const modelType = getModelType(model);
@@ -79,6 +88,8 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     return gpt(res, prompt, model, body);
   } else if (model === MODEL.StableDiffusionSdXl) {
     return stableDiffusionSdXl(res, description, 1);
+  } else if (ALL_FLUX_MODELS.includes(model)) {
+    return flux(res, description, model, body);
   } else if (model === MODEL.Dalle2) {
     return dalle(res, description, 1, IMAGE_SIZE_DALL_E_2.Large, model);
   } else if (model === MODEL.Dalle3) {

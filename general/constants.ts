@@ -25,9 +25,15 @@ export enum MODEL {
   ClaudeCitations = "claude-citations",
   Dalle2 = "dall-e",
   Dalle3 = "dall-e-3",
+  Flux11ProUltra = "flux-1.1-pro-ultra",
+  Flux11Pro = "flux-1.1-pro",
+  FluxSchnell = "flux-schnell",
   StableDiffusionSdXl = "stable-diffusion-xl", // full name: stable-diffusion-xl-base-1.0
+  DeepSeek_67b = "deepseek-67b-base",
   Llama2_70b = "llama-2-70b",
   Llama2_13b = "llama-2-13b",
+  Llama3_8b_instruct = "llama-3-8b-instruct",
+  Llama3_70b_instruct = "llama-3-70b-instruct",
   Llama2_70b_chat = "llama-2-70b-chat",
   Llama2_13b_chat = "llama-2-13b-chat",
   CodeLlama_13b = "codellama-34b",
@@ -40,8 +46,9 @@ export enum MODEL {
   WebRetriever = "gpt-4-web-retriever",
   GptDataReader = "gpt-data-reader",
   ClaudeDataReader = "claude-data-reader",
-  LocalLlm = "local-llm-node-cpp",
-  LocalOllama = "local-llm-ollama",
+  Azure = "azure",
+  LocalLlm = "local-node-llama-cpp",
+  LocalOllama = "local-ollama",
   WebLlm = "web-llm",
   TransformersSentimentAnalysis = "t-sentiment-analysis",
   TransformersText2Text = "t-text2text",
@@ -63,6 +70,7 @@ export enum MODEL_API_KEY {
   HuggingFace = "HuggingFace",
   Google = "Google",
   Anthropic = "Anthropic",
+  Azure = "Azure",
   None = "None",
 }
 
@@ -146,6 +154,54 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
         status: MODEL_STATUS.Full,
         information: "A text-to-image model by Stability AI.",
         learnMoreUrl: "https://replicate.com/blog/run-sdxl-with-an-api",
+        apiKey: MODEL_API_KEY.Replicate,
+      };
+    case MODEL.DeepSeek_67b:
+      return {
+        status: MODEL_STATUS.Full,
+        information: "A 67 billion parameter language model from DeepSeek.",
+        learnMoreUrl: "https://replicate.com/deepseek-ai/deepseek-67b-base",
+        apiKey: MODEL_API_KEY.Replicate,
+      };
+    case MODEL.Flux11ProUltra:
+      return {
+        status: MODEL_STATUS.Full,
+        information:
+          "FLUX1.1 [pro] in ultra and raw modes. Images are up to 4 megapixels. Use raw mode for realism.",
+        learnMoreUrl:
+          "https://replicate.com/black-forest-labs/flux-1.1-pro-ultra/api",
+        apiKey: MODEL_API_KEY.Replicate,
+      };
+    case MODEL.Flux11Pro:
+      return {
+        status: MODEL_STATUS.Full,
+        information:
+          "Faster, better FLUX Pro. Text-to-image model with excellent image quality, prompt adherence, and output diversity. A little bit cheaper than Ultra.",
+        learnMoreUrl:
+          "https://replicate.com/black-forest-labs/flux-1.1-pro/api",
+        apiKey: MODEL_API_KEY.Replicate,
+      };
+    case MODEL.FluxSchnell:
+      return {
+        status: MODEL_STATUS.Full,
+        information:
+          "Significantly cheaper and faster than Flux Pro or Ultra Pro.",
+        learnMoreUrl:
+          "https://replicate.com/black-forest-labs/flux-1.1-pro/api",
+        apiKey: MODEL_API_KEY.Replicate,
+      };
+    case MODEL.Llama3_70b_instruct:
+      return {
+        status: MODEL_STATUS.Full,
+        information: "A 70 billion parameter language model from Meta.",
+        learnMoreUrl: "https://replicate.com/meta/meta-llama-3-70b-instruct",
+        apiKey: MODEL_API_KEY.Replicate,
+      };
+    case MODEL.Llama3_8b_instruct:
+      return {
+        status: MODEL_STATUS.Full,
+        information: "An 8 billion parameter language model from Meta.",
+        learnMoreUrl: "https://replicate.com/meta/meta-llama-3-8b-instruct/api",
         apiKey: MODEL_API_KEY.Replicate,
       };
     case MODEL.Llama2_70b_chat:
@@ -296,6 +352,16 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
         mdNote:
           "Google PaLM. No longer available in the `main` branch due to a rough dependency clash. To use Google's API's, run `git checkout google-generativelanguage && npm install`.",
       };
+    case MODEL.Azure:
+      return {
+        status: MODEL_STATUS.Full,
+        information: `The way LLM's are served through the Azure API is a bit different as you configure your own model id's, hence you configure which AI model you want to use through a .env variable.`,
+        learnMoreUrl:
+          "https://github.com/Azure/azure-sdk-for-js/tree/main/sdk/openai/openai",
+        mdNote:
+          "Supports any LLM served through Azure OpenAI. Due to how you configure your own model id's in Azure, you will need to enter the actual your LLM model into your `.env` file (using `.env.example` as a reference).",
+        apiKey: MODEL_API_KEY.Azure,
+      };
     case MODEL.Claude35Sonnet:
       return {
         status: MODEL_STATUS.Full,
@@ -341,11 +407,15 @@ export const ALL_TEXT_MODELS = [
   MODEL.Gpt4_o_mini,
   MODEL.Claude35Sonnet,
   MODEL.Claude35Haiku,
+  MODEL.Azure,
   MODEL.ClaudeCitations,
   MODEL.FactChecker,
   MODEL.WebRetriever,
   MODEL.GptDataReader,
   MODEL.ClaudeDataReader,
+  MODEL.DeepSeek_67b,
+  MODEL.Llama3_70b_instruct,
+  MODEL.Llama3_8b_instruct,
   MODEL.Llama2_70b,
   MODEL.Llama2_13b,
   MODEL.Llama2_70b_chat,
@@ -369,6 +439,9 @@ export const ALL_AUDIO_MODELS = [MODEL.ElevenLabs];
 export const ALL_IMAGE_MODELS = [
   MODEL.Dalle2,
   MODEL.Dalle3,
+  MODEL.Flux11ProUltra,
+  MODEL.Flux11Pro,
+  MODEL.FluxSchnell,
   MODEL.StableDiffusionSdXl,
   MODEL.TextToPokemon,
 ];
@@ -383,10 +456,19 @@ export const ALL_OPEN_AI_MODELS = [
   MODEL.Dalle3,
 ];
 
+export const ALL_FLUX_MODELS = [
+  MODEL.Flux11ProUltra,
+  MODEL.Flux11Pro,
+  MODEL.FluxSchnell,
+];
+
 // Intentionally not including ClaudeCitations here, as it's a special case (it uses one of these models under the hood)
 export const ALL_ANTHROPIC_MODELS = [MODEL.Claude35Sonnet, MODEL.Claude35Haiku];
 
-export const ALL_LLAMA_MODELS_REPLICATE = [
+export const ALL_MODELS_THROUGH_REPLICATE = [
+  MODEL.DeepSeek_67b,
+  MODEL.Llama3_70b_instruct,
+  MODEL.Llama3_8b_instruct,
   MODEL.Llama2_70b,
   MODEL.Llama2_13b,
   MODEL.Llama2_70b_chat,
@@ -469,6 +551,31 @@ export enum IMAGE_SIZE_DALL_E_3 {
   Three = "1024x1792",
 }
 
+export enum IMAGE_ASPECT_RATIO {
+  Landscape = "16:9",
+  Portrait = "9:16",
+  Square = "1:1",
+  SocialMedia = "4:5",
+  PhotoPrint = "2:3",
+  PhotoPrintAlt = "3:2",
+}
+
+export const ALL_IMAGE_ASPECT_RATIOS = [
+  IMAGE_ASPECT_RATIO.Landscape,
+  IMAGE_ASPECT_RATIO.Portrait,
+  IMAGE_ASPECT_RATIO.Square,
+  IMAGE_ASPECT_RATIO.SocialMedia,
+  IMAGE_ASPECT_RATIO.PhotoPrint,
+  IMAGE_ASPECT_RATIO.PhotoPrintAlt,
+];
+
+export enum FLUX_MODE {
+  Normal = "normal",
+  Raw = "raw",
+}
+
+export const ALL_FLUX_MODES = [FLUX_MODE.Normal, FLUX_MODE.Raw];
+
 export const getDefaultModel = (): MODEL => {
   if (!!process.env.NEXT_PUBLIC_DEFAULT_MODEL) {
     return process.env.NEXT_PUBLIC_DEFAULT_MODEL as MODEL;
@@ -484,6 +591,7 @@ export enum INPUT_MODE {
   Chat = "Chat",
   Editor = "Editor",
   Agent = "Agent",
+  Reasoning = "Reasoning",
 }
 
 export enum TEXTAREA_STYLE {
@@ -541,4 +649,49 @@ export enum THEME {
   Colorful = "Colorful",
   Gradient = "Gradient",
   Dark = "Dark",
+}
+
+export enum REASONING_ONLINE_SEARCH {
+  LetAiChoose = "AI decides",
+  Always = "Always",
+  Never = "Never",
+}
+
+// Much like GPT-4o is bad at understanding the context for agent mode, so too does it
+// struggle greatly with reasoning. GPT-4, on the other hand, does an okay job.
+// It's quite interesting how GPT-4, which OpenAI is labeling a legacy model, is generally
+// better than GPT-4o at anything vaguely complex. Regardless, Claude 3.5 Sonnet appears to
+// outperform all versions of GPT-4 and Llama 3 at reasoning.
+export const REASONING_FIRST_TAKE_MODELS = [
+  MODEL.Llama3_70b_instruct,
+  MODEL.Gpt4,
+  MODEL.Claude35Sonnet,
+  MODEL.LocalLlm,
+  MODEL.LocalOllama,
+  "None",
+];
+
+export const REASONING_ANSWER_MODELS = [
+  MODEL.Claude35Sonnet,
+  MODEL.Llama3_70b_instruct,
+  MODEL.Gpt4,
+  MODEL.LocalLlm,
+  MODEL.LocalOllama,
+];
+
+export enum REASONING_STEP {
+  None = "None",
+  ThinkingAboutSearching = "Contemplating searching the web",
+  ThoughtAboutSearching = "Contemplated searching the web",
+  SearchingTheWeb = "Searching the web",
+  SearchedTheWeb = "Searched the web",
+  ContemplatedAndSearchedTheWeb = "Searched the web after thinking about it",
+  DidNotSearchTheWeb = "Did not search the web",
+  ContemplatedAndDidNotSearchTheWeb = "Thought about searching the web but didn't",
+  Reasoning = "Reasoning",
+  FinishedReasoning = "Reasoned",
+  FirstTake = "Crafting a first take",
+  FinishedFirstTake = "Made a first take",
+  Answering = "Determining a final answer",
+  FinishedAnswering = "Wrote a final answer",
 }

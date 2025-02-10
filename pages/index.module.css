@@ -175,14 +175,17 @@
 .sidebar .spacing {
   height: 30px;
 }
+.conversationContainer pre,
 .conversationContainer code {
   color: var(--font-color);
   background-color: var(--background-inner-color);
-  padding: 10px;
   border-radius: 6px;
   width: calc(100% - 20px);
   display: block;
   font-family: var(--code-font);
+}
+.conversationContainer code {
+  padding: 10px;
 }
 .hidden {
   display: none;

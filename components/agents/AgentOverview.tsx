@@ -44,6 +44,7 @@ import {
 } from "./contextCreator";
 import { UiControlsChatOptions, UiControlsTheming } from "../UiControls";
 import { HideableUI } from "../HideableUi";
+import { BackgroundVideo } from "../BackgroundVideo";
 
 export const AgentOverview = () => {
   const [mission, setMission] = useAtom(agentMissionAtom);
@@ -156,8 +157,14 @@ export const AgentOverview = () => {
       console.log(prompt);
       const response = await runTask(task, context, undefined, prompt);
       const data = await response.json();
-      const result = data.result;
-      results.push(result[0]);
+      const result: string | string[] = data.result;
+      if (Array.isArray(result)) {
+        for (const image of result) {
+          results.push(image);
+        }
+      } else {
+        results.push(result);
+      }
     }
     SHOULD_SHOW_ALL_LOGS &&
       console.log("Created the following result(s)", results);
@@ -394,10 +401,10 @@ export const AgentOverview = () => {
         currentTasks = currentTasks.map((task) =>
           task.id === idOfCurrentTask ? currentTask : task
         );
-        setTasks(currentTasks);
       } else {
         setIsRunning(false);
       }
+      setTasks(currentTasks);
       if (isStoppingRef.current) {
         console.log("The agent has intentionally stopped per your request");
         isStoppingRef.current = false;
@@ -438,7 +445,7 @@ export const AgentOverview = () => {
         handleClearMissionDetails();
         setIsRunning(false);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
       let errorMessage: string =
         error?.message ||
@@ -463,7 +470,9 @@ export const AgentOverview = () => {
 
   return (
     <div>
-      <div className={styles.pageTopColor}></div>
+      {!process.env.NEXT_PUBLIC_AGENT_BACKGROUND_VIDEO_SRC && (
+        <div className={styles.pageTopColor}></div>
+      )}
       <HideableUI className={`${styles.sidebar} ${styles.leftSidebar}`}>
         <UiControlsChatOptions
           handleDownload={() => saveMessagesAsZip(messages, "agent")}
@@ -480,7 +489,7 @@ export const AgentOverview = () => {
             placeholder={
               isRunning
                 ? mission
-                : `Enter the agent's mission. Press ${getCtrlKey()} + Enter to dispatch the agent.`
+                : `Enter the agent's mission. Press ${getCtrlKey()} + Enter, or the button in the top right, to dispatch the agent.`
             }
             handleKeyDown={handleTextareaKeyPress}
           />
@@ -521,13 +530,13 @@ export const AgentOverview = () => {
                 theme={BUTTON_THEME.Default}
               />
             )}
-            {!isRunning && (
+            {!isRunning && tasks.length > 0 && (
               <Button
                 onClick={handleClearMissionDetails}
                 value="Clear mission details"
               />
             )}
-            {!isRunning && (
+            {!isRunning && messages.length > 0 && (
               <Button
                 onClick={handleClearChat}
                 value="Clear chat"
@@ -549,7 +558,10 @@ export const AgentOverview = () => {
           )}
         </div>
       </div>
-      <div className={styles.pageBottomColor}></div>
+      {!process.env.NEXT_PUBLIC_AGENT_BACKGROUND_VIDEO_SRC && (
+        <div className={styles.pageBottomColor}></div>
+      )}
+      <BackgroundVideo isRunning={isRunning} type="agent" />
     </div>
   );
 };

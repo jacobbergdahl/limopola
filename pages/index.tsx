@@ -3,7 +3,7 @@ import { useRef, useEffect, useState, useCallback } from "react";
 import {
   ALL_ANTHROPIC_MODELS,
   ALL_HACKATHON_MODELS,
-  ALL_LLAMA_MODELS_REPLICATE,
+  ALL_MODELS_THROUGH_REPLICATE,
   ALL_LOCAL_MODELS,
   ALL_OPEN_AI_MODELS,
   DEFAULT_CONTEXT,
@@ -16,6 +16,9 @@ import {
   SHOULD_SHOW_ALL_LOGS,
   STATUS_CODE,
   TEXTAREA_STYLE,
+  ALL_IMAGE_ASPECT_RATIOS,
+  ALL_FLUX_MODES,
+  ALL_FLUX_MODELS,
 } from "../general/constants";
 import {
   downloadConversation,
@@ -31,7 +34,9 @@ import {
   chatInputAtom,
   currentlySelectedContextAtom,
   editorTextAtom,
+  fluxModeAtom,
   frequencyPenaltyAtom,
+  imageAspectRatioAtom,
   imageSizeDallE2Atom,
   imageSizeDallE3Atom,
   inputModeAtom,
@@ -135,6 +140,8 @@ export default function Home() {
   );
   const [imageSizeDallE2, setImageSizeDallE2] = useAtom(imageSizeDallE2Atom);
   const [imageSizeDallE3, setImageSizeDallE3] = useAtom(imageSizeDallE3Atom);
+  const [imageAspectRatio, setImageAspectRatio] = useAtom(imageAspectRatioAtom);
+  const [fluxMode, setFluxMode] = useAtom(fluxModeAtom);
   const [requestedNumberOfTokens, setRequestedNumberOfTokens] = useAtom(
     requestedNumberOfTokensAtom
   );
@@ -189,32 +196,34 @@ export default function Home() {
   const shouldShowUrlsToScrape = isUsingWebRetriever;
   const shouldShowTemperature =
     selectedModelType === MODEL_TYPE.Text &&
-    (ALL_LLAMA_MODELS_REPLICATE.includes(model) ||
+    (ALL_MODELS_THROUGH_REPLICATE.includes(model) ||
       ALL_OPEN_AI_MODELS.includes(model) ||
       ALL_ANTHROPIC_MODELS.includes(model) ||
       model === MODEL.PalmChatBison001 ||
       model === MODEL.PalmTextBison001 ||
       model === MODEL.LocalLlm ||
-      model === MODEL.LocalOllama) &&
+      model === MODEL.LocalOllama ||
+      model === MODEL.Azure) &&
     !isUsingCustomTextGeneratingWrapper &&
     !isUsingHackathonWrapper;
   const shouldShowTopP =
     selectedModelType === MODEL_TYPE.Text &&
     model !== MODEL.LocalLlm &&
-    (ALL_LLAMA_MODELS_REPLICATE.includes(model) ||
+    (ALL_MODELS_THROUGH_REPLICATE.includes(model) ||
       ALL_OPEN_AI_MODELS.includes(model) ||
       ALL_ANTHROPIC_MODELS.includes(model) ||
-      model === MODEL.LocalOllama) &&
+      model === MODEL.LocalOllama ||
+      model === MODEL.Azure) &&
     !isUsingCustomTextGeneratingWrapper &&
     !isUsingHackathonWrapper;
   const shouldShowFrequencyPenalty =
     selectedModelType === MODEL_TYPE.Text &&
-    ALL_OPEN_AI_MODELS.includes(model) &&
+    (ALL_OPEN_AI_MODELS.includes(model) || model === MODEL.Azure) &&
     !isUsingCustomTextGeneratingWrapper &&
     !isUsingHackathonWrapper;
   const shouldShowPresencePenalty =
     selectedModelType === MODEL_TYPE.Text &&
-    ALL_OPEN_AI_MODELS.includes(model) &&
+    (ALL_OPEN_AI_MODELS.includes(model) || model === MODEL.Azure) &&
     !isUsingCustomTextGeneratingWrapper &&
     !isUsingHackathonWrapper;
   const shouldShowVoiceSettings = selectedModelType === MODEL_TYPE.Audio;
@@ -242,9 +251,12 @@ export default function Home() {
     selectedModelType !== MODEL_TYPE.Audio &&
     !isUsingHackathonWrapper;
   const shouldShowNumberOfImages =
-    selectedModelType === MODEL_TYPE.Image && model !== MODEL.Dalle3;
+    selectedModelType === MODEL_TYPE.Image &&
+    (model === MODEL.Dalle2 || model === MODEL.FluxSchnell);
   const shouldShowImageSizeDallE2 = model === MODEL.Dalle2;
   const shouldShowImageSizeDallE3 = model === MODEL.Dalle3;
+  const shouldShowImageAspectRatio = ALL_FLUX_MODELS.includes(model);
+  const shouldShowFluxMode = model === MODEL.Flux11ProUltra;
   const shouldShowSimilaritySearch = model === MODEL.WebRetriever;
   const shouldShowAiSearchAccess =
     selectedModelType === MODEL_TYPE.Text &&
@@ -259,7 +271,9 @@ export default function Home() {
         document.activeElement !== textareaRef?.current;
 
       const shouldHandleKeyDown =
-        !isContextModalOpen && inputMode !== INPUT_MODE.Agent;
+        !isContextModalOpen &&
+        inputMode !== INPUT_MODE.Agent &&
+        inputMode !== INPUT_MODE.Reasoning;
 
       if (!shouldHandleKeyDown) {
         return;
@@ -396,6 +410,8 @@ export default function Home() {
       numberOfImages: numberOfImagesToGenerate,
       imageSize: model === MODEL.Dalle2 ? imageSizeDallE2 : imageSizeDallE3,
       model: model,
+      aspectRatio: imageAspectRatio,
+      fluxMode: fluxMode,
     });
   };
 
@@ -524,7 +540,13 @@ export default function Home() {
           newMemoryHistory
         );
       } else if (selectedModelType === MODEL_TYPE.Image) {
-        const imageUrls = data.result;
+        const result: string | string[] = data.result;
+        let imageUrls: string[] = [];
+        if (Array.isArray(result)) {
+          imageUrls = result;
+        } else {
+          imageUrls = [result];
+        }
         const apiMessage: Message = {
           imageUrls: imageUrls,
           sender: model + ` (${timeToGenerate})`,
@@ -798,7 +820,6 @@ export default function Home() {
         <title>Limopola</title>
         <link rel="icon" href="/favicon.png" />
       </Head>
-
       {inputMode === INPUT_MODE.Chat && (
         <div className={styles.pageTopColor}></div>
       )}
@@ -830,89 +851,101 @@ export default function Home() {
               setInputMode(INPUT_MODE.Agent);
             }}
           />
+          <Button
+            value="Reasoning"
+            isSelected={inputMode === INPUT_MODE.Reasoning}
+            onClick={() => {
+              setInputMode(INPUT_MODE.Reasoning);
+            }}
+          />
         </div>
       </div>
-
-      {inputMode === INPUT_MODE.Agent ? (
+      {inputMode === INPUT_MODE.Agent && (
         <main className={`${styles.conversationContainer}`}>
           <AgentOverview />
         </main>
-      ) : (
-        <main
-          className={`${styles.conversationContainer} ${
-            inputMode === INPUT_MODE.Chat
-              ? styles.chatContainer
-              : styles.editorContainer
-          }`}
-        >
-          {inputMode === INPUT_MODE.Chat && (
-            <ChatHistory
-              messages={chatHistory}
-              isLoading={isLoading}
-              chatRef={chatRef}
-              scrollAnchorRef={scrollAnchorRef}
-              handleAutoMessage={handleAutoMessage}
-              model={model}
-              timer={timer}
-            />
-          )}
-          <div
-            className={`${styles.textAreaContainer}${
-              textAreaStyle === TEXTAREA_STYLE.Code &&
-              inputMode === INPUT_MODE.Editor
-                ? " " + styles.textAreaCode
-                : ""
-            }${isContextModalOpen ? " " + styles.hidden : ""}`}
-          >
-            {/* Should probably just render two different textareas for each mode now */}
-            <TextArea
-              rows={4}
-              name="message"
-              placeholder={
-                inputMode === INPUT_MODE.Chat
-                  ? "Press T or enter to focus. Hold shift and press enter to add a new line. Press enter to send."
-                  : `Press T or enter to focus. Hold ${getCtrlKey()} and press enter to ask the AI to continue from the bottom of your text.`
-              }
-              value={
-                inputMode === INPUT_MODE.Chat ? currentInput : currentEditorText
-              }
-              handleChange={(e) =>
-                inputMode === INPUT_MODE.Chat
-                  ? setCurrentInput(e.target.value)
-                  : setCurrentEditorText(e.target.value)
-              }
-              handleKeyDown={handleTextareaKeyPress}
-              ref={textareaRef}
-              disabled={
-                (inputMode === INPUT_MODE.Editor && isLoading) ||
-                isContextModalOpen
-              }
-              shouldSpellCheck={
-                textAreaStyle !== TEXTAREA_STYLE.Code &&
-                inputMode === INPUT_MODE.Editor
-              }
-            />
-            {inputMode === INPUT_MODE.Editor && (
-              <TextAreaStyleSelector
-                textAreaStyle={textAreaStyle}
-                setTextAreaStyle={setTextAreaStyle}
-              />
-            )}
-            <Spinner
-              show={inputMode === INPUT_MODE.Editor && isLoading}
-              model={model}
-              classNames={styles.editorSpinner}
-              timer={timer}
-            />
-          </div>
-          {!isContextModalOpen && inputMode !== INPUT_MODE.Editor && (
-            <div className={styles.pageBottomColor}></div>
-          )}
+      )}
+      {inputMode === INPUT_MODE.Reasoning && (
+        <main className={`${styles.conversationContainer}`}>
+          <ReasoningOverview />
         </main>
       )}
-
-      {inputMode !== INPUT_MODE.Agent && (
+      {(inputMode === INPUT_MODE.Chat || inputMode === INPUT_MODE.Editor) && (
         <>
+          <main
+            className={`${styles.conversationContainer} ${
+              inputMode === INPUT_MODE.Chat
+                ? styles.chatContainer
+                : styles.editorContainer
+            }`}
+          >
+            {inputMode === INPUT_MODE.Chat && (
+              <ChatHistory
+                messages={chatHistory}
+                isLoading={isLoading}
+                chatRef={chatRef}
+                scrollAnchorRef={scrollAnchorRef}
+                handleAutoMessage={handleAutoMessage}
+                model={model}
+                timer={timer}
+              />
+            )}
+            <div
+              className={`${styles.textAreaContainer}${
+                textAreaStyle === TEXTAREA_STYLE.Code &&
+                inputMode === INPUT_MODE.Editor
+                  ? " " + styles.textAreaCode
+                  : ""
+              }${isContextModalOpen ? " " + styles.hidden : ""}`}
+            >
+              {/* Should probably just render two different textareas for each mode now */}
+              <TextArea
+                rows={4}
+                name="message"
+                placeholder={
+                  inputMode === INPUT_MODE.Chat
+                    ? "Press T or enter to focus. Hold shift and press enter to add a new line. Press enter to send."
+                    : `Press T or enter to focus. Hold ${getCtrlKey()} and press enter to ask the AI to continue from the bottom of your text.`
+                }
+                value={
+                  inputMode === INPUT_MODE.Chat
+                    ? currentInput
+                    : currentEditorText
+                }
+                handleChange={(e) =>
+                  inputMode === INPUT_MODE.Chat
+                    ? setCurrentInput(e.target.value)
+                    : setCurrentEditorText(e.target.value)
+                }
+                handleKeyDown={handleTextareaKeyPress}
+                ref={textareaRef}
+                disabled={
+                  (inputMode === INPUT_MODE.Editor && isLoading) ||
+                  isContextModalOpen
+                }
+                shouldSpellCheck={
+                  textAreaStyle !== TEXTAREA_STYLE.Code &&
+                  inputMode === INPUT_MODE.Editor
+                }
+              />
+              {inputMode === INPUT_MODE.Editor && (
+                <TextAreaStyleSelector
+                  textAreaStyle={textAreaStyle}
+                  setTextAreaStyle={setTextAreaStyle}
+                />
+              )}
+              <Spinner
+                show={inputMode === INPUT_MODE.Editor && isLoading}
+                model={model}
+                classNames={styles.editorSpinner}
+                timer={timer}
+              />
+            </div>
+            {!isContextModalOpen && inputMode !== INPUT_MODE.Editor && (
+              <div className={styles.pageBottomColor}></div>
+            )}
+          </main>
+
           <HideableUI className={`${styles.sidebar} ${styles.leftSidebar}`}>
             <UiControlsChatOptions
               handleDownload={() =>
@@ -1123,6 +1156,26 @@ export default function Home() {
                   <ImageSizeDallE3
                     imageSize={imageSizeDallE3}
                     setImageSize={setImageSizeDallE3}
+                  />
+                </div>
+              )}
+              {shouldShowFluxMode && (
+                <div className={styles.section}>
+                  <GenericSectionChoiceContainer
+                    title="Mode"
+                    selectedButton={fluxMode}
+                    buttonTexts={ALL_FLUX_MODES}
+                    handleButtonClick={setFluxMode}
+                  />
+                </div>
+              )}
+              {shouldShowImageAspectRatio && (
+                <div className={styles.section}>
+                  <GenericSectionChoiceContainer
+                    title="Image aspect ratio"
+                    selectedButton={imageAspectRatio}
+                    buttonTexts={ALL_IMAGE_ASPECT_RATIOS}
+                    handleButtonClick={setImageAspectRatio}
                   />
                 </div>
               )}

@@ -164,19 +164,49 @@ const getTextToDownload = (
   }
 };
 
-export const downloadText = (textToDownload: string) => {
+// This function is for when we know the file format of the codeblock, and
+// when the codeblock does not start with the name of the file format.
+// If codeblock does start with the file format, then this function will include it
+// in the final file, which is not what we would want in that case (e.g., csv\n1,2).
+// This function is for when you prompt the LLM to output a codeblock and not specify
+// the file format.
+export const downloadCodeBlockWithKnownFileFormat = (
+  codeBlock: string,
+  fileFormat: string
+) => {
+  downloadText(codeBlock, fileFormat);
+};
+
+// This is a simpler way compared to how we're doing it in saveMessagesAsZip.
+// We shouldn't have multiple ways of downloading codeblocks, but the other function
+// may be over-engineered.
+export const downloadCodeBlock = (codeBlock: string) => {
+  const firstLine = codeBlock
+    .split(/[\n\s]/)[0]
+    .trim()
+    .toLowerCase();
+
+  const code = codeBlock.slice(firstLine.length).trim();
+
+  downloadText(code, firstLine);
+};
+
+export const downloadText = (
+  textToDownload: string,
+  fileFormat: string = "txt"
+) => {
   if (textToDownload.length === 0) {
     return;
   }
 
   // Create a blob object representing the data as a text file
-  const blob = new Blob([textToDownload], { type: "text/plain" });
+  const blob = new Blob([textToDownload], { type: `text/${fileFormat}` });
 
   // Create a temporary anchor element to enable the download
   const url = window.URL.createObjectURL(blob);
   const temporaryElement = document.createElement("a");
   temporaryElement.href = url;
-  temporaryElement.download = "text.txt";
+  temporaryElement.download = `text.${fileFormat}`;
   document.body.appendChild(temporaryElement);
 
   // Trigger the download

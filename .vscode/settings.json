@@ -2,16 +2,24 @@
   "cSpell.words": [
     "BEGINCODE",
     "BEGINCONTEXT",
+    "BEGINFIRSTTAKE",
     "BEGININSTRUCTION",
+    "BEGINONLINESEARCHRESULTS",
+    "BEGINREASONING",
     "BEGINRESULT",
     "BEGINRESULTS",
     "checkpointer",
+    "codellama",
     "DALL",
     "Dalle",
     "Dalle3",
+    "deepseek",
     "ENDCODE",
     "ENDCONTEXT",
+    "ENDFIRSTTAKE",
     "ENDINSTRUCTION",
+    "ENDONLINESEARCHRESULTS",
+    "ENDREASONING",
     "ENDRESULT",
     "ENDRESULTS",
     "Hackathon",
@@ -23,6 +31,8 @@
     "ollama",
     "openai",
     "quickstart",
+    "Schnell",
+    "searchapi",
     "Tavily"
   ]
 }

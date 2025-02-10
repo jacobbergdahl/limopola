@@ -1,0 +1,239 @@
+.chatHistory {
+  margin-top: 80px;
+  margin-bottom: 10px;
+}
+.chatHistory .emptyChat {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  display: block;
+  color: var(--font-color-faded);
+}
+.chatHistory {
+  width: 240px;
+}
+.chatHistory .message {
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  white-space: pre-wrap;
+}
+.chatHistory .message li {
+  margin-bottom: 10px;
+}
+.chatHistory .message .imageWrapper {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+.chatHistory .message .imageWrapper a {
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+.chatHistory .message .imageWrapper img {
+  max-width: 300px;
+}
+.chatHistory .message .imageWrapper a:last-of-type {
+  margin-right: 0;
+  margin-bottom: 0;
+}
+.chatHistory .messageSender {
+  color: var(--font-color-faded);
+}
+.chatHistory .userMessage {
+  background: var(--accent-color);
+}
+.chatHistory .chatGptMessage {
+  background: var(--accent-color-secondary);
+}
+.chatHistory .errorMessage {
+  background: var(--error-color);
+  word-break: break-all;
+}
+.chatHistory .loadingMessage {
+  background: var(--accent-color-secondary);
+}
+.chatHistory .loadingMessage img {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  width: 50px;
+}
+.chatHistory .scrollAnchor {
+  height: 1px;
+  margin-bottom: 330px;
+}
+.chatHistory video,
+.chatHistory audio {
+  width: 100%;
+}
+.selectableMessage .textMessage:hover {
+  cursor: pointer;
+  user-select: none;
+  background: var(--accent-color-tertiary);
+}
+.chatHistory pre {
+  margin: 0;
+}
+@media screen and (min-width: 1000px) {
+  .chatHistory {
+    width: 500px;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .chatHistory {
+    width: 650px;
+  }
+  .chatHistory .message .imageWrapper img {
+    max-width: 500px;
+  }
+}
+@media screen and (min-width: 1400px) {
+  .chatHistory {
+    width: 800px;
+  }
+}
+
+.header {
+  margin-bottom: 10px;
+  margin-top: 5px;
+  font-weight: bold;
+}
+
+.reasoningStepsHistory {
+  max-height: 60%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(166, 123, 91, 0.8);
+  border-radius: 26px;
+  padding: 20px 20px;
+  width: 250px;
+}
+
+@media screen and (min-width: 1000px) {
+  .reasoningStepsHistory {
+    width: 540px;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .reasoningStepsHistory {
+    width: 700px;
+  }
+}
+@media screen and (min-width: 1400px) {
+  .reasoningStepsHistory {
+    width: 860px;
+  }
+}
+
+.reasoningStepsHistoryInner {
+  padding: 20px 0px;
+}
+
+.reasoningStepListItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+.reasoningStepListItem img {
+  display: block;
+  padding: 0;
+  color: var(--font-color);
+  margin-right: 5px;
+  width: 24px;
+  height: 24px;
+}
+
+.reasoningStepTotal {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 1.4em;
+  display: block;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stepsHistory {
+  opacity: 0;
+}
+
+.fadeIn {
+  opacity: 1;
+  transition: opacity 0.3s ease-in;
+}
+
+.fadeOut {
+  opacity: 0;
+  transition: none;
+}
+
+.collapsedInformationItem {
+  display: grid;
+  grid-template-rows: auto 0fr;
+  transition: grid-template-rows 0.3s ease-out;
+}
+
+.collapsedInformationItem.expanded {
+  grid-template-rows: auto 1fr;
+}
+
+.collapsibleContent {
+  overflow: hidden;
+}
+
+.collapsibleContent > * {
+  min-height: 0;
+}
+
+.collapsibleContentInner {
+  margin-left: 0px;
+  border: 1px solid var(--font-color);
+  display: block;
+  padding: 10px;
+}
+
+.collapsibleHeader {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.reasoningFinalAnswer {
+  margin-top: 10px;
+}
+
+.arrow {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  transition: transform 0.2s ease;
+}
+
+.arrow.expanded {
+  transform: rotate(90deg);
+}
+
+.formattedText {
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  white-space: pre-wrap;
+}

@@ -1,49 +1,15 @@
 import { NextApiResponse } from "next";
 import fetch from "node-fetch";
-import { gpt } from "../aiModels/gpt";
 import {
-  ALL_ANTHROPIC_MODELS,
-  ALL_LLAMA_MODELS_REPLICATE,
-  ALL_OPEN_AI_MODELS,
   MODEL,
   SHOULD_SHOW_ALL_LOGS,
   STATUS_CODE,
 } from "../../../general/constants";
-import { llama2 } from "../aiModels/llama";
-import { llamaLocal } from "../aiModels/llamaLocal";
 import { ProcessedBody } from "../../../general/apiHelper";
 import { getSearchQueryPrompt } from "../../../general/webConnectorPrompts";
 import { createRagPrompt } from "../retrievalAugmentedGeneration";
-import { ollama } from "../aiModels/ollama";
-import { claude } from "../aiModels/claude";
 import { extractErrorMessage } from "@/general/helpers";
-
-const callLlm = async (
-  res: NextApiResponse | undefined,
-  message: string,
-  model: MODEL,
-  processedBody: ProcessedBody
-) => {
-  if (ALL_LLAMA_MODELS_REPLICATE.includes(model)) {
-    return llama2(res, message, model, processedBody);
-  }
-  if (model === MODEL.LocalLlm) {
-    return llamaLocal(res, message, processedBody);
-  }
-  if (model === MODEL.LocalOllama) {
-    return ollama(res, message, processedBody);
-  }
-  if (ALL_OPEN_AI_MODELS.includes(model)) {
-    return gpt(res, message, model, processedBody);
-  }
-  if (ALL_ANTHROPIC_MODELS.includes(model)) {
-    return claude(res, message, model, processedBody);
-  }
-
-  throw new Error(
-    "The selected AI model cannot be used for performing web searches."
-  );
-};
+import { callLlm } from "../generate";
 
 const processSearchQueryResults = (response: string | void): string => {
   // If the AI does not need to do a web search to find the answer, it should only return with "-"
@@ -70,6 +36,7 @@ const performWebSearch = async (searchQuery: string) => {
 
   let contextString = "Google Search Results\n";
   if (!!data?.answer_box) {
+    contextString += "# Answer Box\n";
     if (data.answer_box.title) {
       contextString += "\n" + data.answer_box.title;
     }
@@ -88,8 +55,10 @@ const performWebSearch = async (searchQuery: string) => {
     if (data.answer_box.organic_result?.source) {
       contextString += "\n" + data.answer_box.organic_result.source;
     }
+    contextString += "\n\n";
   }
   if (!!data?.knowledge_graph) {
+    contextString += "# Knowledge Graph\n";
     if (data.knowledge_graph.title) {
       contextString += "\n" + data.knowledge_graph.title;
     }
@@ -105,11 +74,12 @@ const performWebSearch = async (searchQuery: string) => {
     if (data.knowledge_graph.born) {
       contextString += "\n" + data.knowledge_graph.born;
     }
+    contextString += "\n\n";
   }
   if (!!data.organic_results) {
     const organicResults: any[] = data.organic_results;
     organicResults.forEach((result, i) => {
-      contextString += `\nSearch result ${i + 1}`;
+      contextString += `# Organic search result ${i + 1} of ${organicResults.length}\n`;
       if (result.title) {
         contextString += "\n" + result.title;
       }
@@ -119,6 +89,7 @@ const performWebSearch = async (searchQuery: string) => {
       if (result.snippet) {
         contextString += "\n" + result.snippet;
       }
+      contextString += "\n\n";
     });
   }
 
@@ -135,17 +106,27 @@ const performWebSearch = async (searchQuery: string) => {
  * If so, makes a Google web search.
  */
 export const webConnector = async (
-  res: NextApiResponse,
+  res: NextApiResponse | undefined,
   message: string,
   model: MODEL,
   processedBody: ProcessedBody
 ) => {
   try {
+    const {
+      shouldAskBeforeSearching,
+      returnEmptyStringIfNoSearch,
+      returnOnlineSearchResultsWithoutAskingLLM,
+    } = processedBody;
+
     console.log(
-      `The back-end is asking AI model ${model} if it needs to access the internet.`
+      `The back-end is asking AI model ${model} if it needs to access the internet. Should ask before searching: ${shouldAskBeforeSearching || false}.`
     );
 
-    const searchPrompt = getSearchQueryPrompt(message);
+    const searchPrompt = getSearchQueryPrompt(
+      message,
+      shouldAskBeforeSearching
+    );
+
     const searchBody = processedBody;
     searchBody.message = searchPrompt;
     searchBody.isGivingAiSearchAccess = false;
@@ -170,7 +151,14 @@ export const webConnector = async (
       );
     } else if (didAiReturnASearchQuery) {
       const webSearchContext = await performWebSearch(processedSearchQuery);
+      if (returnOnlineSearchResultsWithoutAskingLLM) {
+        res.status(STATUS_CODE.Ok).json({ result: webSearchContext });
+        return;
+      }
       finalPrompt = createRagPrompt(message, webSearchContext);
+    } else if (returnEmptyStringIfNoSearch) {
+      res.status(STATUS_CODE.Ok).json({ result: "" });
+      return;
     }
 
     return callLlm(res, finalPrompt, model, processedBody);
