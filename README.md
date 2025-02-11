@@ -233,3 +233,14 @@ The logo for Limopola by Midjourney v5:
 Alternate logo of Limopola in text by DALL-E 3:
 
 <img src="./public/limopola.png" width="400" height="400">
+
+## Author
+
+<img src="https://github.com/user-attachments/assets/2742c58c-2da5-48f6-8cbd-c4a11f1180e7" width="100" height="auto">
+
+**Jacob Bergdahl**
+
+- Website: [https://jacobbergdahl.com/](https://jacobbergdahl.com/)
+- LinkedIn: [https://www.linkedin.com/in/jacobbergdahl/](https://www.linkedin.com/in/jacobbergdahl/)
+
+*Are you a fan of JavaScript? Check out [https://jsisweird.com/](https://jsisweird.com/).*
