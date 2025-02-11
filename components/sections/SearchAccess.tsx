@@ -1,4 +1,4 @@
-import { CheckBoxWrapper } from "../CheckboxWrapper";
+import { CheckboxWrapper } from "../CheckboxWrapper";
 
 export type SearchAccessProps = {
   isGivingAiSearchAccess: boolean;
@@ -10,7 +10,7 @@ export const SearchAccess = ({
   setIsGivingAiSearchAccess,
 }: SearchAccessProps) => {
   return (
-    <CheckBoxWrapper
+    <CheckboxWrapper
       isChecked={isGivingAiSearchAccess}
       onChange={setIsGivingAiSearchAccess}
       label="Give AI search access"
