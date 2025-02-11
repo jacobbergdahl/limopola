@@ -105,6 +105,8 @@ import {
 } from "@/components/UiControls";
 import { HideableUI } from "@/components/HideableUi";
 import { AllHackathonProjects } from "@/components/sections/AllHackathonProjects";
+import ReasoningOverview from "@/components/reasoning/ReasoningOverview";
+import { GenericSectionChoiceContainer } from "@/components/sections/GenericSectionChoiceContainer";
 
 // I know, I know, this file is too long. It should, and will, be refactored 🙏
 // ... (maybe)

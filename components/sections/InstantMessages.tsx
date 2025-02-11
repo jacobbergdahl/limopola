@@ -32,7 +32,7 @@ export const InstantMessages = ({
           />
         </>
       )}
-      {isUsingHackathonWrapper && model === MODEL.HackathonCustomerSupport && (
+      {model === MODEL.HackathonCustomerSupport && (
         <>
           <h3>Try your customer support assistant</h3>
           <Button
@@ -77,6 +77,54 @@ export const InstantMessages = ({
               )
             }
           />
+        </>
+      )}
+      {model === MODEL.HackathonTalkToYourDocs && (
+        <>
+          <h3>Instant messages</h3>
+          <Button
+            value="Example"
+            onClick={() => handleCustomInstantMessage("Hello, how are you?")}
+          />
+          <Button
+            value="One word response"
+            onClick={() =>
+              handleCustomInstantMessage("Please respond in just one word.")
+            }
+          />
+          <Button
+            value="Repeat your last message"
+            onClick={handleRepeatLastMessage}
+          />
+          <p>
+            <i>You can configure these in InstantMessages.tsx.</i>
+          </p>
+        </>
+      )}
+      {model === MODEL.HackathonTestDataGenerator && (
+        <>
+          <h3>Instant messages</h3>
+          <Button
+            value="Example message"
+            onClick={() =>
+              handleCustomInstantMessage(
+                "Please generate 20 fictional phone numbers with a Swedish country code in a CSV format. Only return CSV with no other comments. Your output will be parsed automatically, which is why it is critical that return only CSV."
+              )
+            }
+          />
+          <Button
+            value="One word response"
+            onClick={() =>
+              handleCustomInstantMessage("Please respond in just one word.")
+            }
+          />
+          <Button
+            value="Repeat your last message"
+            onClick={handleRepeatLastMessage}
+          />
+          <p>
+            <i>You can configure these in InstantMessages.tsx.</i>
+          </p>
         </>
       )}
     </>

@@ -53,6 +53,8 @@ export enum MODEL {
   TransformersSentimentAnalysis = "t-sentiment-analysis",
   TransformersText2Text = "t-text2text",
   HackathonCustomerSupport = "customer-support",
+  HackathonTalkToYourDocs = "talk-to-your-docs",
+  HackathonTestDataGenerator = "test-data-generator",
   Debug = "debug",
 }
 
@@ -391,6 +393,18 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
         information: `An assistant for customer support representatives -- only it's working great yet. Check out hackathon.md and implement it. Uses OpenAI's API, unless you want to use something else. Note that every message is treated as a new conversation.`,
         apiKey: MODEL_API_KEY.OpenAi,
       };
+    case MODEL.HackathonTalkToYourDocs:
+      return {
+        status: MODEL_STATUS.Unknown,
+        information: `An assistant for talking to your data -- only it's working great yet. Check out hackathon.md and implement it. Uses OpenAI's API, unless you want to use something else. Note that every message is treated as a new conversation.`,
+        apiKey: MODEL_API_KEY.OpenAi,
+      };
+    case MODEL.HackathonTestDataGenerator:
+      return {
+        status: MODEL_STATUS.Unknown,
+        information: `An assistant for generating test data -- only it's working great yet. Check out hackathon.md and implement it. Uses OpenAI's API, unless you want to use something else. Note that every message is treated as a new conversation.`,
+        apiKey: MODEL_API_KEY.OpenAi,
+      };
   }
 
   return {
@@ -430,7 +444,11 @@ export const ALL_TEXT_MODELS = [
   MODEL.Debug,
 ];
 
-export const ALL_HACKATHON_MODELS = [MODEL.HackathonCustomerSupport];
+export const ALL_HACKATHON_MODELS = [
+  MODEL.HackathonCustomerSupport,
+  MODEL.HackathonTalkToYourDocs,
+  MODEL.HackathonTestDataGenerator,
+];
 
 export const ALL_VIDEO_MODELS = [MODEL.AnimateDiff];
 

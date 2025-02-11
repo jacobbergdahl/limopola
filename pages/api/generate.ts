@@ -32,6 +32,8 @@ import { claudeWithCitations } from "./claudeCitations";
 import { hackathonCustomerSupport } from "./aiWrappers/hackathonCustomerSupport";
 import { azure } from "./aiModels/azure";
 import { flux } from "./aiModels/flux";
+import { hackathonTalkToYourDocs } from "./aiWrappers/hackathonTalkToYourDocs";
+import { hackathonTestDataGenerator } from "./aiWrappers/hackathonTestDataGenerator";
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
   const processedBody = getProcessedBodyForAiApiCalls(req);
@@ -63,6 +65,12 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   try {
     if (model === MODEL.HackathonCustomerSupport) {
       return hackathonCustomerSupport(res, message);
+    }
+    if (model === MODEL.HackathonTalkToYourDocs) {
+      return hackathonTalkToYourDocs(res, message);
+    }
+    if (model === MODEL.HackathonTestDataGenerator) {
+      return hackathonTestDataGenerator(res, message);
     }
     if (isGivingAiSearchAccess) {
       return webConnector(res, message, model, processedBody);
