@@ -49,6 +49,7 @@ export enum MODEL {
   Azure = "azure",
   LocalLlm = "local-node-llama-cpp",
   LocalOllama = "local-ollama",
+  OpenAi = "openai-api"
   WebLlm = "web-llm",
   TransformersSentimentAnalysis = "t-sentiment-analysis",
   TransformersText2Text = "t-text2text",
@@ -272,6 +273,13 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
         learnMoreUrl: "https://ollama.com/",
         apiKey: MODEL_API_KEY.None,
       };
+    case MODEL.OpenAi:
+      return {
+        status: MODEL_STATUS.Full,
+        information: `This model runs at the url specified in the .env file.`,
+        learnMoreUrl: "",
+        apiKey: MODEL_API_KEY.None,
+      };
     case MODEL.TransformersSentimentAnalysis:
       return {
         status: MODEL_STATUS.Full,
@@ -416,6 +424,7 @@ export const ALL_TEXT_MODELS = [
   MODEL.CodeLlama_13b,
   MODEL.LocalLlm,
   MODEL.LocalOllama,
+  MODEL.OpenAi,
   MODEL.TransformersSentimentAnalysis,
   MODEL.TransformersText2Text,
   MODEL.PalmTextBison001,
@@ -475,7 +484,7 @@ export const ALL_SLOW_MODELS = [
   MODEL.TransformersText2Text,
 ];
 
-export const ALL_LOCAL_MODELS = [MODEL.LocalLlm, MODEL.LocalOllama];
+export const ALL_LOCAL_MODELS = [MODEL.LocalLlm, MODEL.LocalOllama, MODEL.OpenAi];
 
 export const ALL_CUSTOM_WRAPPERS = [
   MODEL.FactChecker,
@@ -659,6 +668,7 @@ export const REASONING_FIRST_TAKE_MODELS = [
   MODEL.Claude35Sonnet,
   MODEL.LocalLlm,
   MODEL.LocalOllama,
+  MODEL.OpenAi,
   "None",
 ];
 
@@ -668,6 +678,7 @@ export const REASONING_ANSWER_MODELS = [
   MODEL.Gpt4,
   MODEL.LocalLlm,
   MODEL.LocalOllama,
+  MODEL.OpenAi,
 ];
 
 export enum REASONING_STEP {
