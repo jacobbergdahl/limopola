@@ -31,6 +31,7 @@ import { claude } from "./aiModels/claude";
 import { claudeWithCitations } from "./claudeCitations";
 import { azure } from "./aiModels/azure";
 import { flux } from "./aiModels/flux";
+import { localOpenai } from "./aiModels/localOpenai";
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
   const processedBody = getProcessedBodyForAiApiCalls(req);
@@ -74,6 +75,9 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     }
     if (model === MODEL.StableDiffusionSdXl) {
       return stableDiffusionSdXl(res, message, numberOfImages);
+    }
+    if (model === MODEL.OpenAi) {
+      return localOpenai(res, message, processedBody);
     }
     if (ALL_MODELS_THROUGH_REPLICATE.includes(model)) {
       return replicateService(res, message, model, processedBody);
@@ -178,6 +182,9 @@ export const callLlm = async (
   }
   if (model === MODEL.LocalOllama) {
     return ollama(res, message, processedBody);
+  }
+  if (model === MODEL.OpenAi) {
+    return localOpenai(res, message, processedBody);
   }
   if (ALL_OPEN_AI_MODELS.includes(model)) {
     return gpt(res, message, model, processedBody);
