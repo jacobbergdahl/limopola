@@ -21,6 +21,7 @@
 database.db
 /data/
 /public/videos/*
+/public/ai-images/*
 
 # debug
 npm-debug.log*

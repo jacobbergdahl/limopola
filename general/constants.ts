@@ -166,7 +166,7 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
       return {
         status: MODEL_STATUS.Full,
         information:
-          "FLUX1.1 [pro] in ultra and raw modes. Images are up to 4 megapixels. Use raw mode for realism.",
+          "Creates excellent images. Use raw mode for realism. The images are automatically saved in a gitignored folder in ~/public/ai-images.",
         learnMoreUrl:
           "https://replicate.com/black-forest-labs/flux-1.1-pro-ultra/api",
         apiKey: MODEL_API_KEY.Replicate,
@@ -175,7 +175,7 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
       return {
         status: MODEL_STATUS.Full,
         information:
-          "Faster, better FLUX Pro. Text-to-image model with excellent image quality, prompt adherence, and output diversity. A little bit cheaper than Ultra.",
+          "Great image quality. A little bit cheaper than Pro Ultra. The images are automatically saved in a gitignored folder in ~/public/ai-images.",
         learnMoreUrl:
           "https://replicate.com/black-forest-labs/flux-1.1-pro/api",
         apiKey: MODEL_API_KEY.Replicate,
@@ -184,7 +184,7 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
       return {
         status: MODEL_STATUS.Full,
         information:
-          "Significantly cheaper and faster than Flux Pro or Ultra Pro.",
+          "Significantly cheaper and faster than Flux Pro and Ultra Pro. The images are automatically saved in a gitignored folder in ~/public/ai-images.",
         learnMoreUrl:
           "https://replicate.com/black-forest-labs/flux-1.1-pro/api",
         apiKey: MODEL_API_KEY.Replicate,

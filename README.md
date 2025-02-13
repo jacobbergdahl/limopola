@@ -243,4 +243,4 @@ Alternate logo of Limopola in text by DALL-E 3:
 - Website: [https://jacobbergdahl.com/](https://jacobbergdahl.com/)
 - LinkedIn: [https://www.linkedin.com/in/jacobbergdahl/](https://www.linkedin.com/in/jacobbergdahl/)
 
-*Are you a fan of JavaScript? Check out [https://jsisweird.com/](https://jsisweird.com/).*
+_Are you a fan of JavaScript? Check out [https://jsisweird.com/](https://jsisweird.com/)._

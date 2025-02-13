@@ -473,7 +473,7 @@ export const clearLocalStorage = () => {
   localStorage.clear();
 };
 
-export const extractErrorMessage = (error: any) => {
+export const extractErrorMessage = (error: any): string => {
   if (typeof error === "string") {
     return error;
   }
@@ -505,4 +505,11 @@ export const getEditorPrompt = (prompt: string) => {
     prompt +
     "\n\nContinue the text above without asking any questions or any input from the user."
   );
+};
+
+export const getRandomString = (length: number = 10): string => {
+  return Math.random()
+    .toString(36)
+    .concat(Date.now().toString(36))
+    .slice(-length);
 };
