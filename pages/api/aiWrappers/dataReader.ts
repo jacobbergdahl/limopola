@@ -1,5 +1,5 @@
 import { NextApiResponse } from "next";
-import { gpt } from "../aiModels/gpt";
+import { openAi } from "../aiModels/openAi";
 import {
   MODEL,
   SHOULD_SHOW_ALL_LOGS,
@@ -47,7 +47,7 @@ export const dataReader = async (
       return claude(res, prompt, model, processedBody);
     }
 
-    return gpt(res, prompt, model, processedBody);
+    return openAi(res, prompt, model, processedBody);
   } catch (error: any) {
     const errorMessage = extractErrorMessage(error);
     console.error(error);

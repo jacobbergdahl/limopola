@@ -49,7 +49,7 @@ export enum MODEL {
   Azure = "azure",
   LocalLlm = "local-node-llama-cpp",
   LocalOllama = "local-ollama",
-  OpenAi = "openai-api"
+  OpenAiCompatibleApi = "openai-compatible-api",
   WebLlm = "web-llm",
   TransformersSentimentAnalysis = "t-sentiment-analysis",
   TransformersText2Text = "t-text2text",
@@ -71,6 +71,7 @@ export enum MODEL_API_KEY {
   Google = "Google",
   Anthropic = "Anthropic",
   Azure = "Azure",
+  Any = "Any",
   None = "None",
 }
 
@@ -273,12 +274,11 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
         learnMoreUrl: "https://ollama.com/",
         apiKey: MODEL_API_KEY.None,
       };
-    case MODEL.OpenAi:
+    case MODEL.OpenAiCompatibleApi:
       return {
         status: MODEL_STATUS.Full,
-        information: `This model runs at the url specified in the .env file.`,
-        learnMoreUrl: "",
-        apiKey: MODEL_API_KEY.None,
+        information: `Run any OpenAI-compatible API (e.g., DeepSeek) by specifying the URL, API key, and model name in your .env file. This backend may need to be lightly customized for certain API calls.`,
+        apiKey: MODEL_API_KEY.Any,
       };
     case MODEL.TransformersSentimentAnalysis:
       return {
@@ -365,8 +365,6 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
         information: `The way LLM's are served through the Azure API is a bit different as you configure your own model id's, hence you configure which AI model you want to use through a .env variable.`,
         learnMoreUrl:
           "https://github.com/Azure/azure-sdk-for-js/tree/main/sdk/openai/openai",
-        mdNote:
-          "Supports any LLM served through Azure OpenAI. Due to how you configure your own model id's in Azure, you will need to enter the actual your LLM model into your `.env` file (using `.env.example` as a reference).",
         apiKey: MODEL_API_KEY.Azure,
       };
     case MODEL.Claude35Sonnet:
@@ -424,7 +422,7 @@ export const ALL_TEXT_MODELS = [
   MODEL.CodeLlama_13b,
   MODEL.LocalLlm,
   MODEL.LocalOllama,
-  MODEL.OpenAi,
+  MODEL.OpenAiCompatibleApi,
   MODEL.TransformersSentimentAnalysis,
   MODEL.TransformersText2Text,
   MODEL.PalmTextBison001,
@@ -484,7 +482,11 @@ export const ALL_SLOW_MODELS = [
   MODEL.TransformersText2Text,
 ];
 
-export const ALL_LOCAL_MODELS = [MODEL.LocalLlm, MODEL.LocalOllama, MODEL.OpenAi];
+export const ALL_LOCAL_MODELS = [
+  MODEL.LocalLlm,
+  MODEL.LocalOllama,
+  MODEL.OpenAiCompatibleApi,
+];
 
 export const ALL_CUSTOM_WRAPPERS = [
   MODEL.FactChecker,
@@ -663,12 +665,13 @@ export enum REASONING_ONLINE_SEARCH {
 // better than GPT-4o at anything vaguely complex. Regardless, Claude 3.5 Sonnet appears to
 // outperform all versions of GPT-4 and Llama 3 at reasoning.
 export const REASONING_FIRST_TAKE_MODELS = [
+  MODEL.Claude35Sonnet,
   MODEL.Llama3_70b_instruct,
   MODEL.Gpt4,
-  MODEL.Claude35Sonnet,
+  MODEL.OpenAiCompatibleApi,
+  MODEL.Azure,
   MODEL.LocalLlm,
   MODEL.LocalOllama,
-  MODEL.OpenAi,
   "None",
 ];
 
@@ -676,9 +679,10 @@ export const REASONING_ANSWER_MODELS = [
   MODEL.Claude35Sonnet,
   MODEL.Llama3_70b_instruct,
   MODEL.Gpt4,
+  MODEL.OpenAiCompatibleApi,
+  MODEL.Azure,
   MODEL.LocalLlm,
   MODEL.LocalOllama,
-  MODEL.OpenAi,
 ];
 
 export enum REASONING_STEP {

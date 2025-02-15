@@ -81,7 +81,9 @@ npm run dev
 
 ## Models
 
-This is a list of models currently included in this AI interface. More models will be added in the future. Note that `local-node-llama-cpp` and `local-ollama` allow you to run essentially any open-source LLM. The former allows you to run AI model by just pointing at its filepath, while the latter lets you run whatever LLM you are serving through Ollama.
+This is a list of models currently included in this AI interface. More models will be added in the future.
+
+Note that the actual number of supported models is probably over a million. `local-node-llama-cpp` and `local-ollama` allow you to run essentially any open-source LLM, `azure` lets you run any LLM provided by Azure OpenAI, and `openai-compatible-api` lets you point to any OpenAI-compatible endpoint. See `env.example` for reference on configuring `azure` and `openai-compatible-api`.
 
 | Model                    | Type  | API Source |
 | ------------------------ | ----- | ---------- |
@@ -99,10 +101,10 @@ This is a list of models currently included in this AI interface. More models wi
 | flux-schnell             | Image | Replicate  |
 | stable-diffusion-xl      | Image | Replicate  |
 | deepseek-67b-base        | Text  | Replicate  |
-| llama-2-70b              | Text  | Replicate  |
-| llama-2-13b              | Text  | Replicate  |
 | llama-3-70b-instruct     | Text  | Replicate  |
 | llama-3-8b-instruct      | Text  | Replicate  |
+| llama-2-70b              | Text  | Replicate  |
+| llama-2-13b              | Text  | Replicate  |
 | llama-2-70b-chat         | Text  | Replicate  |
 | llama-2-13b-chat         | Text  | Replicate  |
 | codellama-34b            | Text  | Replicate  |
@@ -111,7 +113,8 @@ This is a list of models currently included in this AI interface. More models wi
 | eleven-labs              | Audio | ElevenLabs |
 | text-bison-001\*         | Text  | Google     |
 | chat-bison-001\*         | Text  | Google     |
-| azure\*\*                | Text  | Azure      |
+| azure                    | Text  | Azure      |
+| openai-compatible-api    | Text  | Any        |
 | local-node-llama-cpp     | Text  | None       |
 | local-ollama             | Text  | None       |
 | web-llm                  | Text  | None       |
@@ -119,8 +122,6 @@ This is a list of models currently included in this AI interface. More models wi
 | t-text2text              | Text  | None       |
 
 \* Google PaLM. No longer available in the `main` branch due to a rough dependency clash. To use Google's API's, run `git checkout google-generativelanguage && npm install`.
-
-\*\* Supports any LLM served through Azure OpenAI. Due to how you configure your own model id's in Azure, you will need to enter the actual your LLM model into your `.env` file (using `.env.example` as a reference).
 
 ### Custom wrappers of AI models
 

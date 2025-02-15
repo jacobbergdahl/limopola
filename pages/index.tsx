@@ -203,7 +203,7 @@ export default function Home() {
       model === MODEL.LocalLlm ||
       model === MODEL.LocalOllama ||
       model === MODEL.Azure ||
-      model === MODEL.LocalOpenai) &&
+      model === MODEL.OpenAiCompatibleApi) &&
     !isUsingCustomTextGeneratingWrapper;
   const shouldShowTopP =
     selectedModelType === MODEL_TYPE.Text &&
@@ -213,15 +213,19 @@ export default function Home() {
       ALL_ANTHROPIC_MODELS.includes(model) ||
       model === MODEL.LocalOllama ||
       model === MODEL.Azure ||
-      model === MODEL.LocalOpenai) &&
+      model === MODEL.OpenAiCompatibleApi) &&
     !isUsingCustomTextGeneratingWrapper;
   const shouldShowFrequencyPenalty =
     selectedModelType === MODEL_TYPE.Text &&
-    (ALL_OPEN_AI_MODELS.includes(model) || model === MODEL.Azure || model === MODEL.LocalOpenai) &&
+    (ALL_OPEN_AI_MODELS.includes(model) ||
+      model === MODEL.Azure ||
+      model === MODEL.OpenAiCompatibleApi) &&
     !isUsingCustomTextGeneratingWrapper;
   const shouldShowPresencePenalty =
     selectedModelType === MODEL_TYPE.Text &&
-    (ALL_OPEN_AI_MODELS.includes(model) || model === MODEL.Azure || model === MODEL.LocalOpenai) &&
+    (ALL_OPEN_AI_MODELS.includes(model) ||
+      model === MODEL.Azure ||
+      model === MODEL.OpenAiCompatibleApi) &&
     !isUsingCustomTextGeneratingWrapper;
   const shouldShowVoiceSettings = selectedModelType === MODEL_TYPE.Audio;
   const shouldShowRequestedNumberOfTokens = false;
@@ -231,7 +235,7 @@ export default function Home() {
     ALL_ANTHROPIC_MODELS.includes(model) ||
     model === MODEL.TransformersText2Text ||
     model === MODEL.LocalLlm ||
-    model === MODEL.LocalOpenai;
+    model === MODEL.OpenAiCompatibleApi;
   const shouldShowMemory =
     selectedModelType === MODEL_TYPE.Text &&
     inputMode === INPUT_MODE.Chat &&

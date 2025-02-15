@@ -1,6 +1,11 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { MODEL, STATUS_CODE } from "../../general/constants";
-import { gpt } from "./aiModels/gpt";
+import {
+  FLUX_MODE,
+  IMAGE_ASPECT_RATIO,
+  MODEL,
+  STATUS_CODE,
+} from "../../general/constants";
+import { openAi } from "./aiModels/openAi";
 import { AGENT_PROMPT_TASK_LIST } from "../../components/agents/agentPrompts";
 import { ProcessedBody } from "../../general/apiHelper";
 
@@ -25,6 +30,11 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     isGivingAiSearchAccess: false,
     message: prompt,
     model: MODEL.Gpt4,
+    shouldAskBeforeSearching: false,
+    returnEmptyStringIfNoSearch: false,
+    returnOnlineSearchResultsWithoutAskingLLM: false,
+    aspectRatio: IMAGE_ASPECT_RATIO.Landscape,
+    fluxMode: FLUX_MODE.Normal,
   };
 
   if (prompt.trim().length === 0) {
@@ -36,5 +46,5 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     return;
   }
 
-  return gpt(res, prompt, MODEL.Gpt4, body);
+  return openAi(res, prompt, MODEL.Gpt4, body);
 }
