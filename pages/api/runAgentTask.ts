@@ -14,7 +14,7 @@ import {
   SHOULD_SHOW_ALL_LOGS,
   STATUS_CODE,
 } from "../../general/constants";
-import { gpt } from "./aiModels/gpt";
+import { openAi } from "./aiModels/openAi";
 import { appendContextToTextPrompt } from "../../components/agents/agentFunctions";
 import { dalle } from "./aiModels/dalle";
 import { animateDiff } from "./aiModels/animateDiff";
@@ -85,7 +85,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
       return claude(res, prompt, model, body);
     }
 
-    return gpt(res, prompt, model, body);
+    return openAi(res, prompt, model, body);
   } else if (model === MODEL.StableDiffusionSdXl) {
     return stableDiffusionSdXl(res, description, 1);
   } else if (ALL_FLUX_MODELS.includes(model)) {

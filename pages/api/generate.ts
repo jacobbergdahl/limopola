@@ -8,7 +8,7 @@ import {
 } from "../../general/constants";
 import { dalle } from "./aiModels/dalle";
 import { debug } from "./aiModels/debug";
-import { gpt } from "./aiModels/gpt";
+import { openAi } from "./aiModels/openAi";
 import { stableDiffusionSdXl } from "./aiModels/stableDiffusionSdXl";
 import { replicateService } from "./aiModels/replicate";
 import { textToPokemon } from "./aiModels/textToPokemon";
@@ -31,6 +31,7 @@ import { claude } from "./aiModels/claude";
 import { claudeWithCitations } from "./claudeCitations";
 import { azure } from "./aiModels/azure";
 import { flux } from "./aiModels/flux";
+import { openAiCompatibleApi } from "./aiModels/openAiCompatibleApi";
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
   const processedBody = getProcessedBodyForAiApiCalls(req);
@@ -74,6 +75,9 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     }
     if (model === MODEL.StableDiffusionSdXl) {
       return stableDiffusionSdXl(res, message, numberOfImages);
+    }
+    if (model === MODEL.OpenAiCompatibleApi) {
+      return openAiCompatibleApi(res, message, processedBody);
     }
     if (ALL_MODELS_THROUGH_REPLICATE.includes(model)) {
       return replicateService(res, message, model, processedBody);
@@ -125,7 +129,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
       return azure(res, message, processedBody);
     }
     if (ALL_OPEN_AI_MODELS.includes(model)) {
-      return gpt(res, message, model, processedBody);
+      return openAi(res, message, model, processedBody);
     }
     if (ALL_ANTHROPIC_MODELS.includes(model)) {
       return claude(res, message, model, processedBody);
@@ -179,8 +183,14 @@ export const callLlm = async (
   if (model === MODEL.LocalOllama) {
     return ollama(res, message, processedBody);
   }
+  if (model === MODEL.OpenAiCompatibleApi) {
+    return openAiCompatibleApi(res, message, processedBody);
+  }
+  if (model === MODEL.Azure) {
+    return azure(res, message, processedBody);
+  }
   if (ALL_OPEN_AI_MODELS.includes(model)) {
-    return gpt(res, message, model, processedBody);
+    return openAi(res, message, model, processedBody);
   }
   if (ALL_ANTHROPIC_MODELS.includes(model)) {
     return claude(res, message, model, processedBody);
