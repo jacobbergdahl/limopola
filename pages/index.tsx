@@ -237,15 +237,14 @@ export default function Home() {
     inputMode === INPUT_MODE.Chat &&
     !isUsingCustomTextGeneratingWrapper;
   const shouldShowInstantMessages =
-    selectedModelType === MODEL_TYPE.Text &&
-    inputMode === INPUT_MODE.Chat &&
-    !isFactChecking;
+    inputMode === INPUT_MODE.Chat && !isFactChecking;
   const shouldShowContexts =
     inputMode === INPUT_MODE.Chat &&
     !isFactChecking &&
     model !== MODEL.TransformersSentimentAnalysis &&
     model !== MODEL.TransformersText2Text &&
-    selectedModelType !== MODEL_TYPE.Audio;
+    selectedModelType !== MODEL_TYPE.Audio &&
+    selectedModelType !== MODEL_TYPE.Image;
   const shouldShowNumberOfImages =
     selectedModelType === MODEL_TYPE.Image &&
     (model === MODEL.Dalle2 || model === MODEL.FluxSchnell);
