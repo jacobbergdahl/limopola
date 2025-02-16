@@ -707,8 +707,8 @@ export default function Home() {
   const handleTopPChange = (event) => {
     event.preventDefault();
     setTopP(event.target.value);
-    // The minimum value is 0, and the maximum is 2
-    setTechnicalTopP(event.target.value / 50);
+    // The minimum value is 0, and the maximum is 1
+    setTechnicalTopP(event.target.value / 100);
   };
 
   const handleFrequencyPenaltyChange = (event) => {
