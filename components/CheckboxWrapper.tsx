@@ -1,18 +1,18 @@
 import { Checkbox, CheckboxProps } from "./Checkbox";
-import styles from "./CheckBoxWrapper.module.css";
+import styles from "./CheckboxWrapper.module.css";
 
-export type CheckBoxWrapperProps = CheckboxProps & {
+export type CheckboxWrapperProps = CheckboxProps & {
   title: string;
   description: string;
 };
 
-export const CheckBoxWrapper = ({
+export const CheckboxWrapper = ({
   isChecked,
   onChange,
   label,
   title,
   description,
-}: CheckBoxWrapperProps) => {
+}: CheckboxWrapperProps) => {
   return (
     <>
       <h3>{title}</h3>

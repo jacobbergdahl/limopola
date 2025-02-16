@@ -17,7 +17,7 @@ import {
   reasoningFinalAnswerResultAtom,
   reasoningFirstTakeModelAtom,
   reasoningFirstTakeResultAtom,
-  reasoningMessagesAtom,
+  reasoningErrorAtom,
   reasoningOngoingStepAtom,
   reasoningOnlineSearchAtom,
   reasoningOnlineSearchResultAtom,
@@ -47,7 +47,7 @@ export const ReasoningOverview = () => {
   const [userInstruction, setUserInstruction] = useAtom(reasoningTextAtom);
   const [isRunning, setIsRunning] = useAtom(isReasoningRunningAtom);
   const [wasStopped, setWasStopped] = useAtom(wasReasoningStoppedAtom);
-  const [messages, setMessages] = useAtom(reasoningMessagesAtom);
+  const [errorMessage, setErrorMessage] = useAtom(reasoningErrorAtom);
 
   const [reasoningAnswerModel, setReasoningAnswerModel] = useAtom(
     reasoningAnswerModelAtom
@@ -147,7 +147,7 @@ export const ReasoningOverview = () => {
 
   const handleClearCurrentTask = () => {
     isStoppingRef.current = false;
-    setMessages(RESET);
+    setErrorMessage(RESET);
     setWasStopped(RESET);
     setIsRunning(RESET);
     setReasoningStepsCompleted(RESET);
@@ -171,63 +171,51 @@ export const ReasoningOverview = () => {
     prompt: string,
     model: MODEL
   ): Promise<string> => {
-    try {
-      const response = await fetch("/api/generate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          message: prompt,
-          model: IS_DEBUGGING ? MODEL.Debug : model,
-          temperature: 0,
-          isGivingAiSearchAccess: true,
-          shouldAskBeforeSearching:
-            reasoningOnlineSearch === REASONING_ONLINE_SEARCH.LetAiChoose,
-          returnEmptyStringIfNoSearch: true,
-          returnOnlineSearchResultsWithoutAskingLLM: true,
-        }),
-      });
+    const response = await fetch("/api/generate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        message: prompt,
+        model: IS_DEBUGGING ? MODEL.Debug : model,
+        temperature: 0,
+        isGivingAiSearchAccess: true,
+        shouldAskBeforeSearching:
+          reasoningOnlineSearch === REASONING_ONLINE_SEARCH.LetAiChoose,
+        returnEmptyStringIfNoSearch: true,
+        returnOnlineSearchResultsWithoutAskingLLM: true,
+      }),
+    });
 
-      SHOULD_SHOW_ALL_LOGS &&
-        console.log("Response from back-end request\n", response);
+    SHOULD_SHOW_ALL_LOGS &&
+      console.log("Response from back-end request\n", response);
 
-      const data = await response.json();
-      const result = data.result as string;
+    const data = await response.json();
+    const result = data.result as string;
 
-      return result;
-    } catch (error: any) {
-      const errorMessage = extractErrorMessage(error);
-      console.error(errorMessage);
-      return errorMessage as string;
-    }
+    return result;
   };
 
   const apiGeneric = async (prompt: string, model: MODEL): Promise<string> => {
-    try {
-      const response = await fetch("/api/generate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          message: prompt,
-          model: IS_DEBUGGING ? MODEL.Debug : model,
-        }),
-      });
+    const response = await fetch("/api/generate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        message: prompt,
+        model: IS_DEBUGGING ? MODEL.Debug : model,
+      }),
+    });
 
-      SHOULD_SHOW_ALL_LOGS &&
-        console.log("Response from back-end request\n", response);
+    SHOULD_SHOW_ALL_LOGS &&
+      console.log("Response from back-end request\n", response);
 
-      const data = await response.json();
-      const result = data.result as string;
+    const data = await response.json();
+    const result = data.result as string;
 
-      return result;
-    } catch (error: any) {
-      const errorMessage = extractErrorMessage(error);
-      console.error(errorMessage);
-      return errorMessage as string;
-    }
+    return result;
   };
 
   // 👋 If you're just visiting to see how I built model-agnostic reasoning,
@@ -382,16 +370,13 @@ export const ReasoningOverview = () => {
     } catch (error: any) {
       const errorMessage = extractErrorMessage(error);
       console.error(errorMessage);
-      const errorChatMessage: Message = {
-        content: errorMessage,
-        sender: `Error (in ${totalTimerValue.toFixed(2)}s)`,
-        id: messages.length,
-        shouldAvoidDownloading: true,
-      };
-      setMessages([...messages, errorChatMessage]);
+      handleClearCurrentTask();
+      setErrorMessage(errorMessage);
       setIsRunning(false);
+      setWasStopped(true);
     } finally {
       clearInterval(totalInterval);
+      clearInterval(thisStepInterval);
     }
   };
 
@@ -417,10 +402,13 @@ export const ReasoningOverview = () => {
             />
           </div>
         </div>
-        {(reasoningStepsCompleted.length > 0 || !!reasoningOngoingStep) && (
+        {(reasoningStepsCompleted.length > 0 ||
+          !!reasoningOngoingStep ||
+          !!errorMessage) && (
           <ReasoningStepsHistory
             totalTimerValue={totalTimer}
             currentStepTimerValue={thisStepTimer}
+            errorMessage={errorMessage}
           />
         )}
         <div className={`${styles.sidebar} ${styles.rightSidebar}`}>
@@ -434,12 +422,13 @@ export const ReasoningOverview = () => {
                   theme={BUTTON_THEME.Positive}
                 />
               )}
-              {!isRunning && reasoningStepsCompleted.length > 0 && (
-                <Button
-                  onClick={handleClearCurrentTask}
-                  value={wasStopped ? "Start over" : "Start new chat"}
-                />
-              )}
+              {!isRunning &&
+                (reasoningStepsCompleted.length > 0 || !!errorMessage) && (
+                  <Button
+                    onClick={handleClearCurrentTask}
+                    value={wasStopped ? "Start over" : "Start new chat"}
+                  />
+                )}
               {isRunning && !isStoppingRef.current && canReasoningBeStopped && (
                 <Button
                   onClick={handleMissionStop}

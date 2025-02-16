@@ -247,7 +247,4 @@ export const wasReasoningFinishedAtom = atomWithStorage(
   "WAS_REASONING_FINISHED",
   false
 );
-export const reasoningMessagesAtom = atomWithStorage(
-  "REASONING_MESSAGES",
-  [] as Message[]
-);
+export const reasoningErrorAtom = atomWithStorage("REASONING_ERROR", "");

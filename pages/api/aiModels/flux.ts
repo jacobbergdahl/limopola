@@ -7,7 +7,13 @@ import {
 } from "../../../general/constants";
 import { NextApiResponse } from "next";
 import { ProcessedBody } from "@/general/apiHelper";
-import { extractErrorMessage } from "@/general/helpers";
+import { extractErrorMessage, getRandomString } from "@/general/helpers";
+import { writeFile, mkdir } from "node:fs/promises";
+
+// This is a NextJS convention. These two paths point to the same place in the end.
+// Since these static files are served on the frontend, they need to be in the public directory.
+const IMAGES_SAVED_IN_DIRECTORY = "public/ai-images";
+const IMAGES_ACCESSED_THROUGH_DIRECTORY = "ai-images";
 
 const replicate = new Replicate({
   auth: process.env.REPLICATE_API_KEY,
@@ -73,15 +79,45 @@ export const flux = async (
   console.log(`The backend is calling ${model} through Replicate.`);
 
   try {
-    const completion = await replicate.run(getFluxEndpoint(model), {
+    const output = await replicate.run(getFluxEndpoint(model), {
       input: getFluxInput(model, message, processedBody),
     });
 
     if (SHOULD_SHOW_ALL_LOGS) {
-      console.log("Response from Replicate:", completion);
+      console.log("Response from Replicate:", output);
     }
 
-    res.status(STATUS_CODE.Ok).json({ result: completion });
+    const fileName = message
+      .toLowerCase()
+      // Replaces any character that's not a character or number with a dash
+      .replace(/[^a-z0-9]/g, "-")
+      .substring(0, 20)
+      // Removes dashes at the very start and end
+      .replace(/^-+|-+$/g, "");
+
+    // Creates the images directory if it doesn't already exist
+    await mkdir(IMAGES_SAVED_IN_DIRECTORY, { recursive: true });
+
+    const outputs = Array.isArray(output) ? output : [output];
+    const filePaths = await Promise.all(
+      outputs.map(async (image) => {
+        // The filename needs a random suffix to avoid overwriting past images.
+        // This could also be solved by checking it a file with this fileName already exists,
+        // but this is more efficient. Using the index wouldn't work in case the image(s)
+        // were created in a different API call as users re-use prompts.
+        const finalFilenameWithFileExtension = `${fileName}-${getRandomString()}.jpg`;
+
+        await writeFile(
+          `${IMAGES_SAVED_IN_DIRECTORY}/${finalFilenameWithFileExtension}`,
+          image
+        );
+        return `${IMAGES_ACCESSED_THROUGH_DIRECTORY}/${finalFilenameWithFileExtension}`;
+      })
+    );
+
+    res
+      .status(STATUS_CODE.Ok)
+      .json({ result: filePaths.length > 1 ? filePaths : filePaths[0] });
   } catch (error: any) {
     const errorMessage = extractErrorMessage(error);
     console.error(error);

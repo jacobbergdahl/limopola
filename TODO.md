@@ -51,7 +51,6 @@ Agents are still in a very early version, and unexpected bugs still occur. Many 
 
 The model-agnostic reasoning mode is in an extremely early stage. A lot of basic features are yet to be implemented, and bugs may occur.
 
-- Implement proper error handling when API's fail.
 - Make it possible to continue the conversation with the reasoning AI. (The most obvious major missing feature.)
 - Make it possible to choose what LLM to use for online search.
 - Make it possible to search through other API's than searchapi.io.
@@ -67,3 +66,4 @@ The model-agnostic reasoning mode is in an extremely early stage. A lot of basic
 - Make all menus collapsible.
 - Add setting to choose not to save anything to local storage (likely through a .env variable, otherwise this setting itself would be required to be saved somewhere).
 - Images, video, and audio don't get saved when refreshing. A first step could be to show a different element when the element is undefined, a latter step to save the objects.
+- Add method for requesting model lists from a service (request from https://github.com/jacobbergdahl/limopola/issues/4#issuecomment-2656498289).

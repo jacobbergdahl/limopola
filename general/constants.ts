@@ -49,6 +49,7 @@ export enum MODEL {
   Azure = "azure",
   LocalLlm = "local-node-llama-cpp",
   LocalOllama = "local-ollama",
+  OpenAiCompatibleApi = "openai-compatible-api",
   WebLlm = "web-llm",
   TransformersSentimentAnalysis = "t-sentiment-analysis",
   TransformersText2Text = "t-text2text",
@@ -73,6 +74,7 @@ export enum MODEL_API_KEY {
   Google = "Google",
   Anthropic = "Anthropic",
   Azure = "Azure",
+  Any = "Any",
   None = "None",
 }
 
@@ -169,7 +171,7 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
       return {
         status: MODEL_STATUS.Full,
         information:
-          "FLUX1.1 [pro] in ultra and raw modes. Images are up to 4 megapixels. Use raw mode for realism.",
+          "Creates excellent images. Use raw mode for realism. The images are automatically saved in a gitignored folder in ~/public/ai-images.",
         learnMoreUrl:
           "https://replicate.com/black-forest-labs/flux-1.1-pro-ultra/api",
         apiKey: MODEL_API_KEY.Replicate,
@@ -178,7 +180,7 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
       return {
         status: MODEL_STATUS.Full,
         information:
-          "Faster, better FLUX Pro. Text-to-image model with excellent image quality, prompt adherence, and output diversity. A little bit cheaper than Ultra.",
+          "Great image quality. A little bit cheaper than Pro Ultra. The images are automatically saved in a gitignored folder in ~/public/ai-images.",
         learnMoreUrl:
           "https://replicate.com/black-forest-labs/flux-1.1-pro/api",
         apiKey: MODEL_API_KEY.Replicate,
@@ -187,7 +189,7 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
       return {
         status: MODEL_STATUS.Full,
         information:
-          "Significantly cheaper and faster than Flux Pro or Ultra Pro.",
+          "Significantly cheaper and faster than Flux Pro and Ultra Pro. The images are automatically saved in a gitignored folder in ~/public/ai-images.",
         learnMoreUrl:
           "https://replicate.com/black-forest-labs/flux-1.1-pro/api",
         apiKey: MODEL_API_KEY.Replicate,
@@ -275,6 +277,12 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
         learnMoreUrl: "https://ollama.com/",
         apiKey: MODEL_API_KEY.None,
       };
+    case MODEL.OpenAiCompatibleApi:
+      return {
+        status: MODEL_STATUS.Full,
+        information: `Run any OpenAI-compatible API (e.g., DeepSeek) by specifying the URL, API key, and model name in your .env file. This backend may need to be lightly customized for certain API calls.`,
+        apiKey: MODEL_API_KEY.Any,
+      };
     case MODEL.TransformersSentimentAnalysis:
       return {
         status: MODEL_STATUS.Full,
@@ -360,8 +368,6 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
         information: `The way LLM's are served through the Azure API is a bit different as you configure your own model id's, hence you configure which AI model you want to use through a .env variable.`,
         learnMoreUrl:
           "https://github.com/Azure/azure-sdk-for-js/tree/main/sdk/openai/openai",
-        mdNote:
-          "Supports any LLM served through Azure OpenAI. Due to how you configure your own model id's in Azure, you will need to enter the actual your LLM model into your `.env` file (using `.env.example` as a reference).",
         apiKey: MODEL_API_KEY.Azure,
       };
     case MODEL.Claude35Sonnet:
@@ -437,6 +443,7 @@ export const ALL_TEXT_MODELS = [
   MODEL.CodeLlama_13b,
   MODEL.LocalLlm,
   MODEL.LocalOllama,
+  MODEL.OpenAiCompatibleApi,
   MODEL.TransformersSentimentAnalysis,
   MODEL.TransformersText2Text,
   MODEL.PalmTextBison001,
@@ -502,7 +509,11 @@ export const ALL_SLOW_MODELS = [
   MODEL.TransformersText2Text,
 ];
 
-export const ALL_LOCAL_MODELS = [MODEL.LocalLlm, MODEL.LocalOllama];
+export const ALL_LOCAL_MODELS = [
+  MODEL.LocalLlm,
+  MODEL.LocalOllama,
+  MODEL.OpenAiCompatibleApi,
+];
 
 export const ALL_CUSTOM_WRAPPERS = [
   MODEL.FactChecker,
@@ -681,9 +692,11 @@ export enum REASONING_ONLINE_SEARCH {
 // better than GPT-4o at anything vaguely complex. Regardless, Claude 3.5 Sonnet appears to
 // outperform all versions of GPT-4 and Llama 3 at reasoning.
 export const REASONING_FIRST_TAKE_MODELS = [
+  MODEL.Claude35Sonnet,
   MODEL.Llama3_70b_instruct,
   MODEL.Gpt4,
-  MODEL.Claude35Sonnet,
+  MODEL.OpenAiCompatibleApi,
+  MODEL.Azure,
   MODEL.LocalLlm,
   MODEL.LocalOllama,
   "None",
@@ -693,6 +706,8 @@ export const REASONING_ANSWER_MODELS = [
   MODEL.Claude35Sonnet,
   MODEL.Llama3_70b_instruct,
   MODEL.Gpt4,
+  MODEL.OpenAiCompatibleApi,
+  MODEL.Azure,
   MODEL.LocalLlm,
   MODEL.LocalOllama,
 ];

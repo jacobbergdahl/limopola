@@ -1,8 +1,9 @@
-import { INPUT_MODE, Message } from "./constants";
+import { INPUT_MODE, Message, MODEL } from "./constants";
 import { marked } from "marked";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import hljs, { Language } from "highlight.js";
+import { ProcessedBody } from "./apiHelper";
 
 const parseMarkdownToHtml = (markdown: string): string => {
   return marked(markdown) as string;
@@ -473,7 +474,7 @@ export const clearLocalStorage = () => {
   localStorage.clear();
 };
 
-export const extractErrorMessage = (error: any) => {
+export const extractErrorMessage = (error: any): string => {
   if (typeof error === "string") {
     return error;
   }
@@ -505,4 +506,49 @@ export const getEditorPrompt = (prompt: string) => {
     prompt +
     "\n\nContinue the text above without asking any questions or any input from the user."
   );
+};
+
+export const getRandomString = (length: number = 10): string => {
+  return Math.random()
+    .toString(36)
+    .concat(Date.now().toString(36))
+    .slice(-length);
+};
+
+// This is a bit silly, but we prompt engineer 4o-related input in OpenAI-related endpoints.
+// GPT-4o loves to return markdown, and it is very inconsistent and really messes with the UI.
+// We have a function for parsing markdown to HTML, but it still makes a mess.
+// Since the message could be very long, this instruction is not bullet-proof.
+// It could be added at the end, but adding it at the end could affect the user's prompt.
+// If the user explicitly mentions markdown, then we assume they want it and we don't add the instruction.
+export const addMarkdownInstructionTo4oModels = (
+  model: MODEL,
+  message: string
+) => {
+  if (model !== MODEL.Gpt4_o && model !== MODEL.Gpt4_o_mini) {
+    return message;
+  }
+
+  return message.toLowerCase().indexOf("markdown") > -1 ||
+    message.toLowerCase().indexOf("md") > -1
+    ? message
+    : "Please do not use markdown in your response.\n\n" + message;
+};
+
+export const openAiApiBaseConfig = (processedBody: ProcessedBody) => {
+  const {
+    temperature,
+    frequencyPenalty,
+    presencePenalty,
+    topP,
+    maxNumberOfTokens,
+  } = processedBody;
+
+  return {
+    temperature,
+    frequency_penalty: frequencyPenalty,
+    presence_penalty: presencePenalty,
+    top_p: topP,
+    max_tokens: maxNumberOfTokens,
+  };
 };

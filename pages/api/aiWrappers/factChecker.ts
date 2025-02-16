@@ -1,5 +1,9 @@
-import { gpt } from "../aiModels/gpt";
-import { MODEL } from "../../../general/constants";
+import { openAi } from "../aiModels/openAi";
+import {
+  FLUX_MODE,
+  IMAGE_ASPECT_RATIO,
+  MODEL,
+} from "../../../general/constants";
 import { ProcessedBody } from "../../../general/apiHelper";
 
 const FACT_CHECKER_BODY: ProcessedBody = {
@@ -19,6 +23,11 @@ const FACT_CHECKER_BODY: ProcessedBody = {
   isGivingAiSearchAccess: false,
   message: "",
   model: MODEL.Gpt4,
+  shouldAskBeforeSearching: false,
+  returnEmptyStringIfNoSearch: false,
+  returnOnlineSearchResultsWithoutAskingLLM: false,
+  aspectRatio: IMAGE_ASPECT_RATIO.Landscape,
+  fluxMode: FLUX_MODE.Normal,
 };
 
 export const factChecker = async (res, message) => {
@@ -34,5 +43,5 @@ export const factChecker = async (res, message) => {
 
   console.log(prompt);
 
-  return gpt(res, prompt, MODEL.Gpt4, FACT_CHECKER_BODY);
+  return openAi(res, prompt, MODEL.Gpt4, FACT_CHECKER_BODY);
 };

@@ -16,11 +16,13 @@ import { Spinner } from "../Spinner";
 type ReasoningStepsHistoryType = {
   totalTimerValue?: number;
   currentStepTimerValue?: number;
+  errorMessage?: string;
 };
 
 export const ReasoningStepsHistory = ({
   totalTimerValue,
   currentStepTimerValue,
+  errorMessage,
 }: ReasoningStepsHistoryType) => {
   const [reasoningStepsCompleted] = useAtom(reasoningStepsCompletedAtom);
   const [reasoningOngoingStep] = useAtom(reasoningOngoingStepAtom);
@@ -56,7 +58,7 @@ export const ReasoningStepsHistory = ({
 
   return (
     <div className={styles.reasoningStepsHistory}>
-      {!wasReasoningFinished && (
+      {!wasReasoningFinished && !errorMessage && (
         <div className={styles.reasoningStepsHistoryInner}>
           {reasoningStepsCompleted.map((reasoningStep: REASONING_STEP) => {
             return (
@@ -89,7 +91,7 @@ export const ReasoningStepsHistory = ({
           )}
         </div>
       )}
-      {wasReasoningFinished && (
+      {wasReasoningFinished && !errorMessage && (
         <div className={styles.finishedReasoning}>
           <div className="collapsedInformation">
             {!!reasoningOnlineSearchResult && (
@@ -193,6 +195,16 @@ export const ReasoningStepsHistory = ({
               __html: reasoningFinalAnswerResult,
             }}
           />
+        </div>
+      )}
+      {!!errorMessage && (
+        <div className={styles.errorContainer}>
+          <h1>An error occurred</h1>
+          <p>{errorMessage}</p>
+          <p>
+            There is likely more information in the console (both client and
+            server side).
+          </p>
         </div>
       )}
     </div>

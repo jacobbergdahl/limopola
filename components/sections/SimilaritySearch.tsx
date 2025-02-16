@@ -1,4 +1,4 @@
-import { CheckBoxWrapper } from "../CheckboxWrapper";
+import { CheckboxWrapper } from "../CheckboxWrapper";
 
 export type SimilaritySearchProps = {
   isUsingSimilaritySearch: boolean;
@@ -10,7 +10,7 @@ export const SimilaritySearch = ({
   setIsUsingSimilaritySearch,
 }: SimilaritySearchProps) => {
   return (
-    <CheckBoxWrapper
+    <CheckboxWrapper
       isChecked={isUsingSimilaritySearch}
       onChange={setIsUsingSimilaritySearch}
       label="Use similarity search"

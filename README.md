@@ -81,7 +81,9 @@ npm run dev
 
 ## Models
 
-This is a list of models currently included in this AI interface. More models will be added in the future. Note that `local-node-llama-cpp` and `local-ollama` allow you to run essentially any open-source LLM. The former allows you to run AI model by just pointing at its filepath, while the latter lets you run whatever LLM you are serving through Ollama.
+This is a list of models currently included in this AI interface. More models will be added in the future.
+
+Note that the actual number of supported models is probably over a million. `local-node-llama-cpp` and `local-ollama` allow you to run essentially any open-source LLM, `azure` lets you run any LLM provided by Azure OpenAI, and `openai-compatible-api` lets you point to any OpenAI-compatible endpoint. See `env.example` for reference on configuring `azure` and `openai-compatible-api`.
 
 | Model                    | Type  | API Source |
 | ------------------------ | ----- | ---------- |
@@ -99,10 +101,10 @@ This is a list of models currently included in this AI interface. More models wi
 | flux-schnell             | Image | Replicate  |
 | stable-diffusion-xl      | Image | Replicate  |
 | deepseek-67b-base        | Text  | Replicate  |
-| llama-2-70b              | Text  | Replicate  |
-| llama-2-13b              | Text  | Replicate  |
 | llama-3-70b-instruct     | Text  | Replicate  |
 | llama-3-8b-instruct      | Text  | Replicate  |
+| llama-2-70b              | Text  | Replicate  |
+| llama-2-13b              | Text  | Replicate  |
 | llama-2-70b-chat         | Text  | Replicate  |
 | llama-2-13b-chat         | Text  | Replicate  |
 | codellama-34b            | Text  | Replicate  |
@@ -111,7 +113,8 @@ This is a list of models currently included in this AI interface. More models wi
 | eleven-labs              | Audio | ElevenLabs |
 | text-bison-001\*         | Text  | Google     |
 | chat-bison-001\*         | Text  | Google     |
-| azure\*\*                | Text  | Azure      |
+| azure                    | Text  | Azure      |
+| openai-compatible-api    | Text  | Any        |
 | local-node-llama-cpp     | Text  | None       |
 | local-ollama             | Text  | None       |
 | web-llm                  | Text  | None       |
@@ -119,8 +122,6 @@ This is a list of models currently included in this AI interface. More models wi
 | t-text2text              | Text  | None       |
 
 \* Google PaLM. No longer available in the `main` branch due to a rough dependency clash. To use Google's API's, run `git checkout google-generativelanguage && npm install`.
-
-\*\* Supports any LLM served through Azure OpenAI. Due to how you configure your own model id's in Azure, you will need to enter the actual your LLM model into your `.env` file (using `.env.example` as a reference).
 
 ### Custom wrappers of AI models
 
@@ -196,9 +197,15 @@ Currently, this mode _requires_ you to have a number of API keys. It may crash i
 
 https://github.com/user-attachments/assets/039f39ad-3a6f-4b68-8995-6c83e010e8c3
 
-The reasoning mode (or Chain of Thought (CoT) mode) is the most recent addition to Limopola. This mode is heavily inspired by DeepSeek R1, as I pondered if it was possible to make any LLM reason the way R1 does. In theory, this mode does give any LLM the ability to reason like R1 does through few-shot prompting. In reality, many LLM's are incapable of reasoning like R1 does (because they're dumb enough or have been trained in a very specific way).
+The reasoning mode (or Chain of Thought (CoT) mode) is the most recent addition to Limopola. This is still very much a work in progress and may not function correctly, and is missing some [obvious features](https://github.com/jacobbergdahl/limopola/blob/main/TODO.md). This mode is an architecture for applying model-agnostic o1/R1-level of reasoning onto (in theory) any LLM. I just love the way R1 reasons, and wanted to try to apply that to other LLMs. This mode is hence heavily inspired by DeepSeek R1.
 
-Interestingly, much like GPT-4o is useless for the agent mode, so too does it appear incapable of reasoning, whereas GPT-4 (which is considered a legacy model by OpenAI, likely because it's far less energy-efficient than GPT-4o) is quite able. Claude 3.5 Sonnet does a great job at impersonating R1 at times, and is thus the default for this mode for now, and Llama 3 70b is not too far off.
+In the video above, you are seeing advanced reasoning applied to Claude 3.5 Sonnet. I have no doubt that we'll get actual reasoning models from Anthropic soon, but in the meantime, my code tricks Claude into mimicking R1 to the best of its ability. The platform also works well with other performant LLMs, such as Llama 3. You can use any LLM regardless of whether it is a local model (you can either just point to a model's file path or serve a model through Ollama) or accessed through an API.
+
+I should note that LLMs also gain the ability to search the internet, and users can also ask for a first take by a separate AI model.
+
+The code is quite simple – it’s mainly few-shot prompting. In theory, it can be applied to any LLM, but in practice, it will not work for all LLMs, especially less accurate models or models too heavily tuned for chat.
+
+Interestingly, much like GPT-4o is useless for the agent mode, so too does it appear incapable of being manipulated into reasoning, whereas GPT-4 (which is considered a legacy model by OpenAI, likely because it's far less energy-efficient than GPT-4o and not multimodal) is quite capable. Claude 3.5 Sonnet does a great job at mimicking R1 at times, and is thus the default for this mode for now, but Llama 3 70b is not too far off.
 
 Here's how it works:
 
@@ -211,6 +218,8 @@ Here's how it works:
 The reasoning mode is most definitely a work in progress. Some very obvious features are missing, probably most notably the ability to continue the conversation. More features are planned (see [TODO.md](https://github.com/jacobbergdahl/limopola/blob/main/TODO.md)).
 
 To use online search, you need the `SEARCH_API_KEY` key (in the future, we should support other search API's too). Other AI models need their respective API's unless you run local LLM's. Info on how to acquire API keys is found in the `.env.example` file, as well as at the top of this README.
+
+You may also notice that there is a background video in the demo I added above. This background video is not included in the project itself (just become of its size and that it would be a silly thing to add to a repository like this; but it's actually a royalty-free video), but you can download a video of your own and add it to the `env` file (follow `.env.example` as reference).
 
 ## Upcoming features
 
@@ -225,3 +234,14 @@ The logo for Limopola by Midjourney v5:
 Alternate logo of Limopola in text by DALL-E 3:
 
 <img src="./public/limopola.png" width="400" height="400">
+
+## Author
+
+<img src="https://github.com/user-attachments/assets/2742c58c-2da5-48f6-8cbd-c4a11f1180e7" width="100" height="auto">
+
+**Jacob Bergdahl**
+
+- Website: [https://jacobbergdahl.com/](https://jacobbergdahl.com/)
+- LinkedIn: [https://www.linkedin.com/in/jacobbergdahl/](https://www.linkedin.com/in/jacobbergdahl/)
+
+_Are you a fan of JavaScript? Check out [https://jsisweird.com/](https://jsisweird.com/)._

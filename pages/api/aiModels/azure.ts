@@ -2,12 +2,13 @@ import { NextApiResponse } from "next";
 import { SHOULD_SHOW_ALL_LOGS, STATUS_CODE } from "../../../general/constants";
 import {
   extractErrorMessage,
+  openAiApiBaseConfig,
   parseTextResponse,
 } from "../../../general/helpers";
 import { ProcessedBody } from "../../../general/apiHelper";
 import { AzureOpenAI } from "openai";
 
-// It would actually be possible to re-use the OpenAI API for this (i.e. gpt.ts) as the API implementation is very similar.
+// It would actually be possible to re-use the OpenAI API for this as the API implementation is very similar.
 // However, given the quirks that separate the two, I did find it cleaner to keep them separate.
 export const azure = async (
   res: NextApiResponse | undefined,
@@ -26,14 +27,6 @@ export const azure = async (
   console.log(
     `The backend is calling model ${model} through Azure endpoint ${endpoint}.`
   );
-
-  const {
-    temperature,
-    frequencyPenalty,
-    presencePenalty,
-    topP,
-    maxNumberOfTokens,
-  } = processedBody;
 
   try {
     const client = new AzureOpenAI({
@@ -57,11 +50,7 @@ export const azure = async (
           content: message,
         },
       ],
-      max_tokens: maxNumberOfTokens,
-      temperature: temperature,
-      frequency_penalty: frequencyPenalty,
-      presence_penalty: presencePenalty,
-      top_p: topP,
+      ...openAiApiBaseConfig(processedBody),
       model: model,
     });
 

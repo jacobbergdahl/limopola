@@ -105,7 +105,7 @@ export const InstantMessages = ({
         <>
           <h3>Instant messages</h3>
           <Button
-            value="Example message"
+            value="Example"
             onClick={() =>
               handleCustomInstantMessage(
                 "Please generate 20 fictional phone numbers with a Swedish country code in a CSV format. Only return CSV with no other comments. Your output will be parsed automatically, which is why it is critical that return only CSV."

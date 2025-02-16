@@ -5,7 +5,7 @@
 import { NextApiResponse } from "next";
 import fetch from "node-fetch";
 import { load } from "cheerio";
-import { gpt } from "../aiModels/gpt";
+import { openAi } from "../aiModels/openAi";
 import {
   MODEL,
   SHOULD_SHOW_ALL_LOGS,
@@ -95,7 +95,7 @@ export const webRetriever = async (
 
     throwIfPromptIsLong(prompt);
 
-    return gpt(res, prompt, model, processedBody);
+    return openAi(res, prompt, model, processedBody);
   } catch (error: any) {
     res
       .status(STATUS_CODE.InternalServerError)

@@ -205,7 +205,8 @@ export default function Home() {
       model === MODEL.PalmTextBison001 ||
       model === MODEL.LocalLlm ||
       model === MODEL.LocalOllama ||
-      model === MODEL.Azure) &&
+      model === MODEL.Azure ||
+      model === MODEL.OpenAiCompatibleApi) &&
     !isUsingCustomTextGeneratingWrapper &&
     !isUsingHackathonWrapper;
   const shouldShowTopP =
@@ -215,42 +216,48 @@ export default function Home() {
       ALL_OPEN_AI_MODELS.includes(model) ||
       ALL_ANTHROPIC_MODELS.includes(model) ||
       model === MODEL.LocalOllama ||
-      model === MODEL.Azure) &&
+      model === MODEL.Azure ||
+      model === MODEL.OpenAiCompatibleApi) &&
     !isUsingCustomTextGeneratingWrapper &&
     !isUsingHackathonWrapper;
   const shouldShowFrequencyPenalty =
     selectedModelType === MODEL_TYPE.Text &&
-    (ALL_OPEN_AI_MODELS.includes(model) || model === MODEL.Azure) &&
+    (ALL_OPEN_AI_MODELS.includes(model) ||
+      model === MODEL.Azure ||
+      model === MODEL.OpenAiCompatibleApi) &&
     !isUsingCustomTextGeneratingWrapper &&
     !isUsingHackathonWrapper;
   const shouldShowPresencePenalty =
     selectedModelType === MODEL_TYPE.Text &&
-    (ALL_OPEN_AI_MODELS.includes(model) || model === MODEL.Azure) &&
+    (ALL_OPEN_AI_MODELS.includes(model) ||
+      model === MODEL.Azure ||
+      model === MODEL.OpenAiCompatibleApi) &&
     !isUsingCustomTextGeneratingWrapper &&
     !isUsingHackathonWrapper;
   const shouldShowVoiceSettings = selectedModelType === MODEL_TYPE.Audio;
   const shouldShowRequestedNumberOfTokens = false;
   const shouldShowMaxNumberOfTokens =
     (ALL_OPEN_AI_MODELS.includes(model) &&
-      selectedModelType === MODEL_TYPE.Text) ||
+      selectedModelType === MODEL_TYPE.Text &&
+      !isUsingHackathonWrapper) ||
     ALL_ANTHROPIC_MODELS.includes(model) ||
     model === MODEL.TransformersText2Text ||
-    (model === MODEL.LocalLlm && !isUsingHackathonWrapper);
+    model === MODEL.LocalLlm ||
+    model === MODEL.OpenAiCompatibleApi;
   const shouldShowMemory =
     selectedModelType === MODEL_TYPE.Text &&
     inputMode === INPUT_MODE.Chat &&
     !isUsingCustomTextGeneratingWrapper &&
     !isUsingHackathonWrapper;
   const shouldShowInstantMessages =
-    selectedModelType === MODEL_TYPE.Text &&
-    inputMode === INPUT_MODE.Chat &&
-    !isFactChecking;
+    inputMode === INPUT_MODE.Chat && !isFactChecking;
   const shouldShowContexts =
     inputMode === INPUT_MODE.Chat &&
     !isFactChecking &&
     model !== MODEL.TransformersSentimentAnalysis &&
     model !== MODEL.TransformersText2Text &&
     selectedModelType !== MODEL_TYPE.Audio &&
+    selectedModelType !== MODEL_TYPE.Image &&
     !isUsingHackathonWrapper;
   const shouldShowNumberOfImages =
     selectedModelType === MODEL_TYPE.Image &&
@@ -715,8 +722,8 @@ export default function Home() {
   const handleTopPChange = (event) => {
     event.preventDefault();
     setTopP(event.target.value);
-    // The minimum value is 0, and the maximum is 2
-    setTechnicalTopP(event.target.value / 50);
+    // The minimum value is 0, and the maximum is 1
+    setTechnicalTopP(event.target.value / 100);
   };
 
   const handleFrequencyPenaltyChange = (event) => {
