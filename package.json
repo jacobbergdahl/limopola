@@ -16,12 +16,12 @@
     "quickstart": "npm install && npm run install-local-llm && npm run local"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.36.3",
+    "@anthropic-ai/sdk": "^0.39.0",
     "@azure/openai": "^2.0.0",
-    "@langchain/community": "^0.3.30",
-    "@langchain/core": "^0.3.40",
+    "@langchain/community": "^0.3.38",
+    "@langchain/core": "^0.3.43",
     "@langchain/ollama": "^0.2.0",
-    "@langchain/openai": "^0.4.4",
+    "@langchain/openai": "^0.5.2",
     "@llama-node/llama-cpp": "^0.1.6",
     "@mlc-ai/web-llm": "^0.2.78",
     "@types/sqlite3": "^3.1.11",
@@ -30,19 +30,19 @@
     "exceljs": "^4.4.0",
     "file-saver": "^2.0.5",
     "highlight.js": "^11.11.1",
-    "jotai": "^2.12.0",
+    "jotai": "^2.12.2",
     "jszip": "^3.10.1",
-    "langchain": "^0.3.15",
+    "langchain": "^0.3.19",
     "mammoth": "^1.9.0",
     "marked": "^15.0.7",
-    "next": "^15.1.7",
+    "next": "^15.2.4",
     "node-fetch": "^3.3.2",
-    "node-llama-cpp": "^3.5.0",
+    "node-llama-cpp": "^3.7.0",
     "officeparser": "^4.2.0",
-    "openai": "^4.84.1",
+    "openai": "^4.91.0",
     "pdf-parse": "^1.1.1",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "replicate": "^1.0.1",
     "sqlite3": "^5.1.7"
   },
@@ -50,11 +50,10 @@
     "node": ">=18"
   },
   "devDependencies": {
-    "@swc-jotai/react-refresh": "^0.3.0",
-    "@types/node": "22.13.2",
-    "@types/react": "19.0.8",
-    "prettier": "^3.5.1",
+    "@types/node": "22.13.15",
+    "@types/react": "19.0.12",
+    "prettier": "^3.5.3",
     "ts-node": "^10.9.2",
-    "typescript": "^5.7.3"
+    "typescript": "^5.8.2"
   }
 }
