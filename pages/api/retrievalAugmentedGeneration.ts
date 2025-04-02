@@ -263,6 +263,16 @@ export const fetchDataFiles = async () => {
   return cachedDocuments;
 };
 
+// This function will currently throw away anything that isn't just the pageContent.
+// However, if you wanted to, you could also return sources.
+// Below are some interesting properties of the documents that could be used to display the source(s):
+// document.metadata.source is the file path
+// document.metadata.pdf.info.Title is the file name (you can also find Author, Subject, etc. if it is present)
+// document.metadata.loc.pageNumber is the page number, while document.metadata.pdf.totalPages is the total number of pages in the document
+// document.metadata.loc.lines.from and document.metadata.loc.lines.to are the start and end of the lines of texts used on the page
+// There's also more info in document.metadata.pdf.info, document.metadata.pdf.metadata, and document.metadata.loc.lines that may be of interest
+// You may need to check if the values are undefined, but missing values will usually just be empty strings.
+// You can use the double bang operator (!!) to check if a value is undefined or empty (!!document.metadata.pdf?.info?.Title).
 export const getPageContentFromDocuments = (
   documents: LangchainDocument[]
 ): string[] => {
