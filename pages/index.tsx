@@ -18,6 +18,7 @@ import {
   ALL_IMAGE_ASPECT_RATIOS,
   ALL_FLUX_MODES,
   ALL_FLUX_MODELS,
+  ALL_MISTRAL_MODELS,
 } from "../general/constants";
 import {
   downloadConversation,
@@ -197,6 +198,7 @@ export default function Home() {
     selectedModelType === MODEL_TYPE.Text &&
     (ALL_MODELS_THROUGH_REPLICATE.includes(model) ||
       ALL_OPEN_AI_MODELS.includes(model) ||
+      ALL_MISTRAL_MODELS.includes(model) ||
       ALL_ANTHROPIC_MODELS.includes(model) ||
       model === MODEL.PalmChatBison001 ||
       model === MODEL.PalmTextBison001 ||
@@ -210,6 +212,7 @@ export default function Home() {
     model !== MODEL.LocalLlm &&
     (ALL_MODELS_THROUGH_REPLICATE.includes(model) ||
       ALL_OPEN_AI_MODELS.includes(model) ||
+      ALL_MISTRAL_MODELS.includes(model) ||
       ALL_ANTHROPIC_MODELS.includes(model) ||
       model === MODEL.LocalOllama ||
       model === MODEL.Azure ||
@@ -218,12 +221,14 @@ export default function Home() {
   const shouldShowFrequencyPenalty =
     selectedModelType === MODEL_TYPE.Text &&
     (ALL_OPEN_AI_MODELS.includes(model) ||
+      ALL_MISTRAL_MODELS.includes(model) ||
       model === MODEL.Azure ||
       model === MODEL.OpenAiCompatibleApi) &&
     !isUsingCustomTextGeneratingWrapper;
   const shouldShowPresencePenalty =
     selectedModelType === MODEL_TYPE.Text &&
     (ALL_OPEN_AI_MODELS.includes(model) ||
+      ALL_MISTRAL_MODELS.includes(model) ||
       model === MODEL.Azure ||
       model === MODEL.OpenAiCompatibleApi) &&
     !isUsingCustomTextGeneratingWrapper;
@@ -233,6 +238,7 @@ export default function Home() {
     (ALL_OPEN_AI_MODELS.includes(model) &&
       selectedModelType === MODEL_TYPE.Text) ||
     ALL_ANTHROPIC_MODELS.includes(model) ||
+    ALL_MISTRAL_MODELS.includes(model) ||
     model === MODEL.TransformersText2Text ||
     model === MODEL.LocalLlm ||
     model === MODEL.OpenAiCompatibleApi;

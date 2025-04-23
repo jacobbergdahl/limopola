@@ -37,6 +37,15 @@ export enum MODEL {
   Llama2_70b_chat = "llama-2-70b-chat",
   Llama2_13b_chat = "llama-2-13b-chat",
   CodeLlama_13b = "codellama-34b",
+  MistralLarge = "mistral-large-latest",
+  MistralSmall = "mistral-small-latest",
+  MistralSaba = "mistral-saba-latest",
+  Ministral3B = "ministral-3b-latest",
+  Ministral8B = "ministral-8b-latest",
+  MistralModeration = "mistral-moderation-latest",
+  Codestral = "codestral-latest",
+  OpenMistralNemo = "open-mistral-nemo",
+  OpenCodestralMamba = "open-codestral-mamba",
   TextToPokemon = "text-to-pokemon",
   AnimateDiff = "animate-diff",
   ElevenLabs = "eleven-labs",
@@ -71,6 +80,7 @@ export enum MODEL_API_KEY {
   Google = "Google",
   Anthropic = "Anthropic",
   Azure = "Azure",
+  Mistral = "Mistral",
   Any = "Any",
   None = "None",
 }
@@ -390,6 +400,83 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
         learnMoreUrl: "https://www.anthropic.com/claude/haiku",
         apiKey: MODEL_API_KEY.Anthropic,
       };
+    case MODEL.MistralLarge:
+      return {
+        status: MODEL_STATUS.Full,
+        information:
+          "Mistral's most capable reasoning model for high-complexity tasks.",
+        learnMoreUrl:
+          "https://docs.mistral.ai/getting-started/models/models_overview/",
+        apiKey: MODEL_API_KEY.Mistral,
+      };
+    case MODEL.MistralSmall:
+      return {
+        status: MODEL_STATUS.Full,
+        information:
+          "A small model that would normally have image understanding capabilities, though that hasn't been implemented in this repository.",
+        learnMoreUrl:
+          "https://docs.mistral.ai/getting-started/models/models_overview/",
+        apiKey: MODEL_API_KEY.Mistral,
+      };
+    case MODEL.MistralSaba:
+      return {
+        status: MODEL_STATUS.Full,
+        information:
+          "A specialized model for languages from the Middle East and South Asia.",
+        learnMoreUrl:
+          "https://docs.mistral.ai/getting-started/models/models_overview/",
+        apiKey: MODEL_API_KEY.Mistral,
+      };
+    case MODEL.Ministral3B:
+      return {
+        status: MODEL_STATUS.Full,
+        information: "A compact edge model.",
+        learnMoreUrl:
+          "https://docs.mistral.ai/getting-started/models/models_overview/",
+        apiKey: MODEL_API_KEY.Mistral,
+      };
+    case MODEL.Ministral8B:
+      return {
+        status: MODEL_STATUS.Full,
+        information: "An 8B parameter model with good performance/price ratio.",
+        learnMoreUrl:
+          "https://docs.mistral.ai/getting-started/models/models_overview/",
+        apiKey: MODEL_API_KEY.Mistral,
+      };
+    case MODEL.MistralModeration:
+      return {
+        status: MODEL_STATUS.Full,
+        information:
+          "Mistral's moderation service for detecting harmful text content.",
+        learnMoreUrl:
+          "https://docs.mistral.ai/getting-started/models/models_overview/",
+        apiKey: MODEL_API_KEY.Mistral,
+      };
+    case MODEL.Codestral:
+      return {
+        status: MODEL_STATUS.Full,
+        information:
+          "Mistral's main model for coding tasks, specializing in fill-in-the-middle (FIM), code correction and test generation.",
+        learnMoreUrl:
+          "https://docs.mistral.ai/getting-started/models/models_overview/",
+        apiKey: MODEL_API_KEY.Mistral,
+      };
+    case MODEL.OpenMistralNemo:
+      return {
+        status: MODEL_STATUS.Full,
+        information: "Multilingual open source model.",
+        learnMoreUrl:
+          "https://docs.mistral.ai/getting-started/models/models_overview/",
+        apiKey: MODEL_API_KEY.Mistral,
+      };
+    case MODEL.OpenCodestralMamba:
+      return {
+        status: MODEL_STATUS.Full,
+        information: "An open-source model.",
+        learnMoreUrl:
+          "https://docs.mistral.ai/getting-started/models/models_overview/",
+        apiKey: MODEL_API_KEY.Mistral,
+      };
   }
 
   return {
@@ -420,6 +507,14 @@ export const ALL_TEXT_MODELS = [
   MODEL.Llama2_70b_chat,
   MODEL.Llama2_13b_chat,
   MODEL.CodeLlama_13b,
+  MODEL.MistralLarge,
+  MODEL.MistralSmall,
+  MODEL.MistralSaba,
+  MODEL.Ministral3B,
+  MODEL.Ministral8B,
+  MODEL.Codestral,
+  MODEL.OpenMistralNemo,
+  MODEL.OpenCodestralMamba,
   MODEL.LocalLlm,
   MODEL.LocalOllama,
   MODEL.OpenAiCompatibleApi,
@@ -494,6 +589,18 @@ export const ALL_CUSTOM_WRAPPERS = [
   MODEL.GptDataReader,
   MODEL.ClaudeDataReader,
   MODEL.ClaudeCitations,
+];
+
+export const ALL_MISTRAL_MODELS = [
+  MODEL.MistralLarge,
+  MODEL.MistralSmall,
+  MODEL.MistralSaba,
+  MODEL.Ministral3B,
+  MODEL.Ministral8B,
+  MODEL.MistralModeration,
+  MODEL.Codestral,
+  MODEL.OpenMistralNemo,
+  MODEL.OpenCodestralMamba,
 ];
 
 export enum MEMORY {
@@ -668,6 +775,7 @@ export const REASONING_FIRST_TAKE_MODELS = [
   MODEL.Claude35Sonnet,
   MODEL.Llama3_70b_instruct,
   MODEL.Gpt4,
+  MODEL.MistralLarge,
   MODEL.OpenAiCompatibleApi,
   MODEL.Azure,
   MODEL.LocalLlm,
@@ -679,6 +787,7 @@ export const REASONING_ANSWER_MODELS = [
   MODEL.Claude35Sonnet,
   MODEL.Llama3_70b_instruct,
   MODEL.Gpt4,
+  MODEL.MistralLarge,
   MODEL.OpenAiCompatibleApi,
   MODEL.Azure,
   MODEL.LocalLlm,

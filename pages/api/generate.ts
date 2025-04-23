@@ -1,6 +1,7 @@
 import {
   ALL_ANTHROPIC_MODELS,
   ALL_FLUX_MODELS,
+  ALL_MISTRAL_MODELS,
   ALL_MODELS_THROUGH_REPLICATE,
   ALL_OPEN_AI_MODELS,
   MODEL,
@@ -32,6 +33,7 @@ import { claudeWithCitations } from "./claudeCitations";
 import { azure } from "./aiModels/azure";
 import { flux } from "./aiModels/flux";
 import { openAiCompatibleApi } from "./aiModels/openAiCompatibleApi";
+import { mistral } from "./aiModels/mistral";
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
   const processedBody = getProcessedBodyForAiApiCalls(req);
@@ -134,6 +136,9 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     if (ALL_ANTHROPIC_MODELS.includes(model)) {
       return claude(res, message, model, processedBody);
     }
+    if (ALL_MISTRAL_MODELS.includes(model)) {
+      return mistral(res, message, model, processedBody);
+    }
 
     res.status(STATUS_CODE.NotImplemented).json({
       error: {
@@ -194,6 +199,9 @@ export const callLlm = async (
   }
   if (ALL_ANTHROPIC_MODELS.includes(model)) {
     return claude(res, message, model, processedBody);
+  }
+  if (ALL_MISTRAL_MODELS.includes(model)) {
+    return mistral(res, message, model, processedBody);
   }
 
   throw new Error("The selected AI model cannot be used for this operation.");

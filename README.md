@@ -70,6 +70,7 @@ Create a `.env` file from the `.env.example` file, and add API keys. There are i
 - `SEARCH_API_KEY`: Used by one of the RAG functions. Could likely be replaced with Tavily now. Either way, it's also free to use for a while. Generate the API key at [https://www.searchapi.io/](https://www.searchapi.io/).
 - `GOOGLE_API_KEY`: _Not currently in use on the main branch_. Used for Google's text-to-speech LLMs (PaLM). This API is also free to use for a while, but may be region-locked. Generate the API key at [https://makersuite.google.com/app/apikey](https://makersuite.google.com/app/apikey).
 - `AZURE_API_KEY`: Used for Azure OpenAI. You can run any LLM supported by Azure OpenAI by configuring `AZURE_MODEL_ID`, `AZURE_ENDPOINT`, and `AZURE_API_VERSION` in your `.env` file.
+- `MISTRAL_API_KEY`: Used for Mistral's API. Generate the API key at [https://console.mistral.ai/api-keys](https://console.mistral.ai/api-keys).
 
 In the future, this project will likely also give you the option of adding an API key to HuggingFace.
 
@@ -85,41 +86,50 @@ This is a list of models currently included in this AI interface. More models wi
 
 Note that the actual number of supported models is probably over a million. `local-node-llama-cpp` and `local-ollama` allow you to run essentially any open-source LLM, `azure` lets you run any LLM provided by Azure OpenAI, and `openai-compatible-api` lets you point to any OpenAI-compatible endpoint. See `env.example` for reference on configuring `azure` and `openai-compatible-api`.
 
-| Model                    | Type  | API Source |
-| ------------------------ | ----- | ---------- |
-| gpt-4                    | Text  | OpenAI     |
-| gpt-4o                   | Text  | OpenAI     |
-| gpt-4-32k                | Text  | OpenAI     |
-| gpt-4-turbo              | Text  | OpenAI     |
-| gpt-4o-mini              | Text  | OpenAI     |
-| claude-3-5-sonnet-latest | Text  | Anthropic  |
-| claude-3-5-haiku-latest  | Text  | Anthropic  |
-| dall-e                   | Image | OpenAI     |
-| dall-e-3                 | Image | OpenAI     |
-| flux-1.1-pro-ultra       | Image | Replicate  |
-| flux-1.1-pro             | Image | Replicate  |
-| flux-schnell             | Image | Replicate  |
-| stable-diffusion-xl      | Image | Replicate  |
-| deepseek-67b-base        | Text  | Replicate  |
-| llama-3-70b-instruct     | Text  | Replicate  |
-| llama-3-8b-instruct      | Text  | Replicate  |
-| llama-2-70b              | Text  | Replicate  |
-| llama-2-13b              | Text  | Replicate  |
-| llama-2-70b-chat         | Text  | Replicate  |
-| llama-2-13b-chat         | Text  | Replicate  |
-| codellama-34b            | Text  | Replicate  |
-| text-to-pokemon          | Image | Replicate  |
-| animate-diff             | Video | Replicate  |
-| eleven-labs              | Audio | ElevenLabs |
-| text-bison-001\*         | Text  | Google     |
-| chat-bison-001\*         | Text  | Google     |
-| azure                    | Text  | Azure      |
-| openai-compatible-api    | Text  | Any        |
-| local-node-llama-cpp     | Text  | None       |
-| local-ollama             | Text  | None       |
-| web-llm                  | Text  | None       |
-| t-sentiment-analysis     | Text  | None       |
-| t-text2text              | Text  | None       |
+| Model                     | Type  | API Source |
+| ------------------------- | ----- | ---------- |
+| gpt-4                     | Text  | OpenAI     |
+| gpt-4o                    | Text  | OpenAI     |
+| gpt-4-32k                 | Text  | OpenAI     |
+| gpt-4-turbo               | Text  | OpenAI     |
+| gpt-4o-mini               | Text  | OpenAI     |
+| claude-3-5-sonnet-latest  | Text  | Anthropic  |
+| claude-3-5-haiku-latest   | Text  | Anthropic  |
+| dall-e                    | Image | OpenAI     |
+| dall-e-3                  | Image | OpenAI     |
+| flux-1.1-pro-ultra        | Image | Replicate  |
+| flux-1.1-pro              | Image | Replicate  |
+| flux-schnell              | Image | Replicate  |
+| stable-diffusion-xl       | Image | Replicate  |
+| deepseek-67b-base         | Text  | Replicate  |
+| llama-3-70b-instruct      | Text  | Replicate  |
+| llama-3-8b-instruct       | Text  | Replicate  |
+| llama-2-70b               | Text  | Replicate  |
+| llama-2-13b               | Text  | Replicate  |
+| llama-2-70b-chat          | Text  | Replicate  |
+| llama-2-13b-chat          | Text  | Replicate  |
+| codellama-34b             | Text  | Replicate  |
+| mistral-large-latest      | Text  | Mistral    |
+| mistral-small-latest      | Text  | Mistral    |
+| mistral-saba-latest       | Text  | Mistral    |
+| ministral-3b-latest       | Text  | Mistral    |
+| ministral-8b-latest       | Text  | Mistral    |
+| mistral-moderation-latest | Text  | Mistral    |
+| codestral-latest          | Text  | Mistral    |
+| open-mistral-nemo         | Text  | Mistral    |
+| open-codestral-mamba      | Text  | Mistral    |
+| text-to-pokemon           | Image | Replicate  |
+| animate-diff              | Video | Replicate  |
+| eleven-labs               | Audio | ElevenLabs |
+| text-bison-001\*          | Text  | Google     |
+| chat-bison-001\*          | Text  | Google     |
+| azure                     | Text  | Azure      |
+| openai-compatible-api     | Text  | Any        |
+| local-node-llama-cpp      | Text  | None       |
+| local-ollama              | Text  | None       |
+| web-llm                   | Text  | None       |
+| t-sentiment-analysis      | Text  | None       |
+| t-text2text               | Text  | None       |
 
 \* Google PaLM. No longer available in the `main` branch due to a rough dependency clash. To use Google's API's, run `git checkout google-generativelanguage && npm install`.
 
@@ -217,7 +227,7 @@ Here's how it works:
 
 The reasoning mode is most definitely a work in progress. Some very obvious features are missing, probably most notably the ability to continue the conversation. More features are planned (see [TODO.md](https://github.com/jacobbergdahl/limopola/blob/main/TODO.md)).
 
-To use online search, you need the `SEARCH_API_KEY` key (in the future, we should support other search API's too). Other AI models need their respective API's unless you run local LLM's. Info on how to acquire API keys is found in the `.env.example` file, as well as at the top of this README.
+To use online search, you need the `SEARCH_API_KEY` key (in the future, we should support other search API's too). Other AI models need their respective API's unless you run local LLMs. Info on how to acquire API keys is found in the `.env.example` file, as well as at the top of this README.
 
 You may also notice that there is a background video in the demo I added above. This background video is not included in the project itself (just become of its size and that it would be a silly thing to add to a repository like this; but it's actually a royalty-free video), but you can download a video of your own and add it to the `env` file (follow `.env.example` as reference).
 
