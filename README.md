@@ -88,11 +88,22 @@ Note that the actual number of supported models is probably over a million. `loc
 
 | Model                     | Type  | API Source |
 | ------------------------- | ----- | ---------- |
+| gpt-4.1                   | Text  | OpenAI     |
+| gpt-4.1-mini              | Text  | OpenAI     |
+| gpt-4.1-nano              | Text  | OpenAI     |
 | gpt-4                     | Text  | OpenAI     |
 | gpt-4o                    | Text  | OpenAI     |
+| chatgpt-4o-latest         | Text  | OpenAI     |
 | gpt-4-32k                 | Text  | OpenAI     |
 | gpt-4-turbo               | Text  | OpenAI     |
 | gpt-4o-mini               | Text  | OpenAI     |
+| o4-mini                   | Text  | OpenAI     |
+| o3                        | Text  | OpenAI     |
+| o3-mini                   | Text  | OpenAI     |
+| o1                        | Text  | OpenAI     |
+| claude-opus-4-20250514    | Text  | Anthropic  |
+| claude-sonnet-4-20250514  | Text  | Anthropic  |
+| claude-3-7-sonnet-latest  | Text  | Anthropic  |
 | claude-3-5-sonnet-latest  | Text  | Anthropic  |
 | claude-3-5-haiku-latest   | Text  | Anthropic  |
 | dall-e                    | Image | OpenAI     |
@@ -116,6 +127,7 @@ Note that the actual number of supported models is probably over a million. `loc
 | ministral-8b-latest       | Text  | Mistral    |
 | mistral-moderation-latest | Text  | Mistral    |
 | codestral-latest          | Text  | Mistral    |
+| devstral-small-latest     | Text  | Mistral    |
 | open-mistral-nemo         | Text  | Mistral    |
 | open-codestral-mamba      | Text  | Mistral    |
 | text-to-pokemon           | Image | Replicate  |

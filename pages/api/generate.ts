@@ -4,6 +4,7 @@ import {
   ALL_MISTRAL_MODELS,
   ALL_MODELS_THROUGH_REPLICATE,
   ALL_OPEN_AI_MODELS,
+  ALL_OPEN_AI_REASONING_MODELS,
   MODEL,
   STATUS_CODE,
 } from "../../general/constants";
@@ -34,11 +35,11 @@ import { azure } from "./aiModels/azure";
 import { flux } from "./aiModels/flux";
 import { openAiCompatibleApi } from "./aiModels/openAiCompatibleApi";
 import { mistral } from "./aiModels/mistral";
+import { openAiReasoning } from "./aiModels/openAiReasoning";
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
   const processedBody = getProcessedBodyForAiApiCalls(req);
   const model = processedBody.model;
-  console.log(model);
   const message = processedBody.message;
   const numberOfImages = processedBody.numberOfImages;
   const imageSize = processedBody.imageSize;
@@ -129,6 +130,9 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     }
     if (model === MODEL.Azure) {
       return azure(res, message, processedBody);
+    }
+    if (ALL_OPEN_AI_REASONING_MODELS.includes(model)) {
+      return openAiReasoning(res, message, model, processedBody);
     }
     if (ALL_OPEN_AI_MODELS.includes(model)) {
       return openAi(res, message, model, processedBody);

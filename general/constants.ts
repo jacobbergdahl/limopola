@@ -15,11 +15,22 @@ export const DEFAULT_VOICE_SIMILARITY_BOOST = 50;
 export const DEFAULT_TECHNICAL_VOICE_SIMILARITY_BOOST = 0.5;
 
 export enum MODEL {
+  Gpt41 = "gpt-4.1",
+  Gpt41_mini = "gpt-4.1-mini",
+  Gpt41_nano = "gpt-4.1-nano",
   Gpt4 = "gpt-4",
   Gpt4_o = "gpt-4o",
+  ChatGpt4_o = "chatgpt-4o-latest",
   Gpt4_32k = "gpt-4-32k",
   Gpt4_Turbo = "gpt-4-turbo",
   Gpt4_o_mini = "gpt-4o-mini",
+  O4_mini = "o4-mini",
+  O3 = "o3",
+  O3_mini = "o3-mini",
+  O1 = "o1",
+  Claude4Opus = "claude-opus-4-20250514",
+  Claude4Sonnet = "claude-sonnet-4-20250514",
+  Claude37Sonnet = "claude-3-7-sonnet-latest",
   Claude35Sonnet = "claude-3-5-sonnet-latest",
   Claude35Haiku = "claude-3-5-haiku-latest",
   ClaudeCitations = "claude-citations",
@@ -44,6 +55,7 @@ export enum MODEL {
   Ministral8B = "ministral-8b-latest",
   MistralModeration = "mistral-moderation-latest",
   Codestral = "codestral-latest",
+  DevstralSmall = "devstral-small-latest",
   OpenMistralNemo = "open-mistral-nemo",
   OpenCodestralMamba = "open-codestral-mamba",
   TextToPokemon = "text-to-pokemon",
@@ -99,9 +111,8 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
       return {
         status: MODEL_STATUS.Full,
         information:
-          "Requires special permission from OpenAI to use. The requirements change constantly, so check the URL to learn more.",
-        learnMoreUrl:
-          "https://help.openai.com/en/articles/7102672-how-can-i-access-gpt-4",
+          "A model that OpenAI considers obsolete, but is in many regards still one of its best models at following prompts.",
+        learnMoreUrl: "https://platform.openai.com/docs/models/gpt-4",
         apiKey: MODEL_API_KEY.OpenAi,
       };
     case MODEL.Gpt4_32k:
@@ -126,7 +137,7 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
       return {
         status: MODEL_STATUS.Full,
         information:
-          "GPT-4o is an AI model from OpenAI. It is faster and cheaper than GPT-4, and the OpenAI default, though GPT-4 tends to perform a little bit better.",
+          "GPT-4o is a multimodal LLM from OpenAI. It is faster and cheaper than GPT-4, and the ChatGPT default, though GPT-4 tends to perform better.",
         learnMoreUrl: "https://platform.openai.com/docs/models/gpt-4o",
         apiKey: MODEL_API_KEY.OpenAi,
       };
@@ -380,7 +391,7 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
     case MODEL.Claude35Sonnet:
       return {
         status: MODEL_STATUS.Full,
-        information: `Anthropic's Claude 3.5 Sonnet is a powerful and versatile LLM. It is more intelligent than Haiku, but also more expensive and slower.`,
+        information: `An LLM by Anthropic. Opus is smarter than Sonnet which is smarter than Haiku.`,
         learnMoreUrl: "https://www.anthropic.com/claude/sonnet",
         apiKey: MODEL_API_KEY.Anthropic,
       };
@@ -396,7 +407,7 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
     case MODEL.Claude35Haiku:
       return {
         status: MODEL_STATUS.Full,
-        information: `Anthropic's Claude 3.5 Haiku is faster and cheaper than Sonnet, but not as intelligent.`,
+        information: `An LLM by Anthropic. Opus is smarter than Sonnet which is smarter than Haiku.`,
         learnMoreUrl: "https://www.anthropic.com/claude/haiku",
         apiKey: MODEL_API_KEY.Anthropic,
       };
@@ -477,6 +488,99 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
           "https://docs.mistral.ai/getting-started/models/models_overview/",
         apiKey: MODEL_API_KEY.Mistral,
       };
+    case MODEL.DevstralSmall:
+      return {
+        status: MODEL_STATUS.Full,
+        information:
+          "A 24B text model, open source model that excels at using tools to explore codebases, editing multiple files and power software engineering agents.",
+        learnMoreUrl: "https://mistral.ai/news/devstral",
+        apiKey: MODEL_API_KEY.Mistral,
+      };
+    case MODEL.Gpt41:
+      return {
+        status: MODEL_STATUS.Full,
+        information: "An OpenAI model. Arguably the OpenAI API default.",
+        learnMoreUrl: "https://platform.openai.com/docs/models/gpt-4.1",
+        apiKey: MODEL_API_KEY.OpenAi,
+      };
+    case MODEL.Gpt41_mini:
+      return {
+        status: MODEL_STATUS.Full,
+        information: "An OpenAI model.",
+        learnMoreUrl: "https://platform.openai.com/docs/models/gpt-4.1-mini",
+        apiKey: MODEL_API_KEY.OpenAi,
+      };
+    case MODEL.Gpt41_nano:
+      return {
+        status: MODEL_STATUS.Full,
+        information: "An OpenAI model.",
+        learnMoreUrl: "https://platform.openai.com/docs/models/gpt-4.1-nano",
+        apiKey: MODEL_API_KEY.OpenAi,
+      };
+    case MODEL.ChatGpt4_o:
+      return {
+        status: MODEL_STATUS.Full,
+        information:
+          "ChatGPT-4o points to the GPT-4o snapshot currently used in ChatGPT.",
+        learnMoreUrl:
+          "https://platform.openai.com/docs/models/chatgpt-4o-latest",
+        apiKey: MODEL_API_KEY.OpenAi,
+      };
+    case MODEL.Claude37Sonnet:
+      return {
+        status: MODEL_STATUS.Full,
+        information:
+          "An LLM by Anthropic. Opus is smarter than Sonnet which is smarter than Haiku.",
+        learnMoreUrl:
+          "https://docs.anthropic.com/en/docs/about-claude/models/overview",
+        apiKey: MODEL_API_KEY.Anthropic,
+      };
+    case MODEL.Claude4Opus:
+      return {
+        status: MODEL_STATUS.Full,
+        information:
+          "An LLM by Anthropic. Opus is smarter than Sonnet which is smarter than Haiku.",
+        learnMoreUrl:
+          "https://docs.anthropic.com/en/docs/about-claude/models/overview",
+        apiKey: MODEL_API_KEY.Anthropic,
+      };
+    case MODEL.Claude4Sonnet:
+      return {
+        status: MODEL_STATUS.Full,
+        information:
+          "An LLM by Anthropic. Opus is smarter than Sonnet which is smarter than Haiku.",
+        learnMoreUrl:
+          "https://docs.anthropic.com/en/docs/about-claude/models/overview",
+        apiKey: MODEL_API_KEY.Anthropic,
+      };
+    case MODEL.O4_mini:
+      return {
+        status: MODEL_STATUS.Full,
+        information: "An OpenAI reasoning model.",
+        learnMoreUrl: "https://platform.openai.com/docs/models/o4-mini",
+        apiKey: MODEL_API_KEY.OpenAi,
+      };
+    case MODEL.O3:
+      return {
+        status: MODEL_STATUS.Full,
+        information: "An OpenAI reasoning model.",
+        learnMoreUrl: "https://platform.openai.com/docs/models/o3",
+        apiKey: MODEL_API_KEY.OpenAi,
+      };
+    case MODEL.O3_mini:
+      return {
+        status: MODEL_STATUS.Full,
+        information: "An OpenAI reasoning model.",
+        learnMoreUrl: "https://platform.openai.com/docs/models/o3-mini",
+        apiKey: MODEL_API_KEY.OpenAi,
+      };
+    case MODEL.O1:
+      return {
+        status: MODEL_STATUS.Full,
+        information: "An OpenAI reasoning model.",
+        learnMoreUrl: "https://platform.openai.com/docs/models/o1",
+        apiKey: MODEL_API_KEY.OpenAi,
+      };
   }
 
   return {
@@ -488,13 +592,24 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
 export const ALL_TEXT_MODELS = [
   MODEL.Gpt4,
   MODEL.Gpt4_o,
+  MODEL.ChatGpt4_o,
   MODEL.Gpt4_32k,
   MODEL.Gpt4_Turbo,
   MODEL.Gpt4_o_mini,
+  MODEL.Gpt41,
+  MODEL.Gpt41_mini,
+  MODEL.Gpt41_nano,
+  MODEL.O4_mini,
+  MODEL.O3,
+  MODEL.O3_mini,
+  MODEL.O1,
+  MODEL.Claude4Opus,
+  MODEL.Claude4Sonnet,
+  MODEL.Claude37Sonnet,
   MODEL.Claude35Sonnet,
   MODEL.Claude35Haiku,
-  MODEL.Azure,
   MODEL.ClaudeCitations,
+  MODEL.Azure,
   MODEL.FactChecker,
   MODEL.WebRetriever,
   MODEL.GptDataReader,
@@ -513,6 +628,7 @@ export const ALL_TEXT_MODELS = [
   MODEL.Ministral3B,
   MODEL.Ministral8B,
   MODEL.Codestral,
+  MODEL.DevstralSmall,
   MODEL.OpenMistralNemo,
   MODEL.OpenCodestralMamba,
   MODEL.LocalLlm,
@@ -539,14 +655,26 @@ export const ALL_IMAGE_MODELS = [
   MODEL.TextToPokemon,
 ];
 
+export const ALL_OPEN_AI_REASONING_MODELS = [
+  MODEL.O4_mini,
+  MODEL.O3,
+  MODEL.O3_mini,
+  MODEL.O1,
+];
+
 export const ALL_OPEN_AI_MODELS = [
   MODEL.Gpt4,
   MODEL.Gpt4_32k,
   MODEL.Gpt4_Turbo,
   MODEL.Gpt4_o,
   MODEL.Gpt4_o_mini,
+  MODEL.Gpt41,
+  MODEL.Gpt41_mini,
+  MODEL.Gpt41_nano,
+  MODEL.ChatGpt4_o,
   MODEL.Dalle2,
   MODEL.Dalle3,
+  ...ALL_OPEN_AI_REASONING_MODELS,
 ];
 
 export const ALL_FLUX_MODELS = [
@@ -556,7 +684,13 @@ export const ALL_FLUX_MODELS = [
 ];
 
 // Intentionally not including ClaudeCitations here, as it's a special case (it uses one of these models under the hood)
-export const ALL_ANTHROPIC_MODELS = [MODEL.Claude35Sonnet, MODEL.Claude35Haiku];
+export const ALL_ANTHROPIC_MODELS = [
+  MODEL.Claude35Sonnet,
+  MODEL.Claude35Haiku,
+  MODEL.Claude37Sonnet,
+  MODEL.Claude4Opus,
+  MODEL.Claude4Sonnet,
+];
 
 export const ALL_MODELS_THROUGH_REPLICATE = [
   MODEL.DeepSeek_67b,
@@ -599,6 +733,7 @@ export const ALL_MISTRAL_MODELS = [
   MODEL.Ministral8B,
   MODEL.MistralModeration,
   MODEL.Codestral,
+  MODEL.DevstralSmall,
   MODEL.OpenMistralNemo,
   MODEL.OpenCodestralMamba,
 ];

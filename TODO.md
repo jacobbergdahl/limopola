@@ -16,12 +16,14 @@ This is a list of features, updates, and bug fixes that may be implemented into 
 
 ## API's
 
+- Adapt UI for reasoning models.
+- Make it possible to toggle reasoning on and off for certain models.
+- Make it possible to set reasoning options such as effort and summary.
 - Add more voices to ElevenLabs.
 - Add more options to API's.
 - Make it possible to use ElevenLabs in Editor mode.
 - Add a streaming option.
 - Add API to describe images. From that, can also make it possible to make another image from the description of the first.
-- Add more models provided by Replicate and/or HuggingFace.
 - Add option to always provide LLM's with the current date and time.
 - Add structured outputs API.
 - Add abort/cancel button to API's (the choice of abort or cancel would depend on whether the AI has abort signals).
@@ -29,7 +31,6 @@ This is a list of features, updates, and bug fixes that may be implemented into 
 
 ## Core
 
-- Add a reasoning mode.
 - Add LangGraph.
 - Add Tavily.
 - Add LangSmith.
