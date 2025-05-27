@@ -241,7 +241,7 @@ The reasoning mode is most definitely a work in progress. Some very obvious feat
 
 To use online search, you need the `SEARCH_API_KEY` key (in the future, we should support other search API's too). Other AI models need their respective API's unless you run local LLMs. Info on how to acquire API keys is found in the `.env.example` file, as well as at the top of this README.
 
-You may also notice that there is a background video in the demo I added above. This background video is not included in the project itself (just become of its size and that it would be a silly thing to add to a repository like this; but it's actually a royalty-free video), but you can download a video of your own and add it to the `env` file (follow `.env.example` as reference).
+You may also notice that there is a background video in the demo I added above. This background video is not included in the project itself (due to its size and that it would be a silly thing to add to a repository like this), but it's actually a royalty-free video. If you'd like, you can download a video of your own and add it to the `env` file (follow `.env.example` as reference).
 
 ## Upcoming features
 
