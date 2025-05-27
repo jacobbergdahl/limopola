@@ -77,7 +77,9 @@ export const getProcessedBodyForAiApiCalls = (
     voiceSimilarityBoost,
     voiceStability,
     temperature: isUsingDefaultTemperature ? undefined : temperature,
-    frequencyPenalty: isUsingDefaultTemperature ? undefined : temperature,
+    frequencyPenalty: isUsingDefaultFrequencyPenalty
+      ? undefined
+      : frequencyPenalty,
     frequency_penalty: isUsingDefaultFrequencyPenalty
       ? undefined
       : frequencyPenalty,
