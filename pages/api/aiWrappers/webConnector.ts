@@ -24,11 +24,11 @@ const processSearchQueryResults = (response: string | void): string => {
 
 const performWebSearch = async (searchQuery: string) => {
   console.log(`Starting web search for the query: ${searchQuery}`);
-  const url = "https://www.searchapi.io/api/v1/search";
+  const url = "https://serpapi.com/search";
   const params = new URLSearchParams({
     engine: "google",
     q: searchQuery,
-    api_key: process.env.SEARCH_API_KEY,
+    api_key: process.env.SERP_API_KEY,
   });
 
   const response = await fetch(`${url}?${params}`);
@@ -55,6 +55,48 @@ const performWebSearch = async (searchQuery: string) => {
     if (data.answer_box.organic_result?.source) {
       contextString += "\n" + data.answer_box.organic_result.source;
     }
+    if (data.answer_box.type === "weather_result") {
+      if (data.answer_box.location) {
+        contextString +=
+          "\nWeather for location '" +
+          data.answer_box.location +
+          "' provided by Google";
+      }
+      contextString += `\nTemperature: ${data.answer_box.temperature}°${data.answer_box.unit}`;
+      if (data.answer_box.precipitation) {
+        contextString += "\nPrecipitation: " + data.answer_box.precipitation;
+      }
+      if (data.answer_box.humidity) {
+        contextString += "\nHumidity: " + data.answer_box.humidity;
+      }
+      if (data.answer_box.wind) {
+        contextString += "\nWind: " + data.answer_box.wind;
+      }
+      if (data.answer_box.date) {
+        contextString += "\nDate: " + data.answer_box.date;
+      }
+      if (data.answer_box.weather) {
+        contextString += "\nWeather: " + data.answer_box.weather;
+      }
+      if (data.answer_box.forecast && Array.isArray(data.answer_box.forecast)) {
+        contextString += "\n\nForecast:";
+        data.answer_box.forecast.forEach((day: any) => {
+          contextString += `\n${day.day}: ${day.weather}`;
+          if (day.temperature) {
+            contextString += ` (High: ${day.temperature.high}°${data.answer_box.unit}, Low: ${day.temperature.low}°${data.answer_box.unit})`;
+          }
+          if (day.precipitation) {
+            contextString += `, Precipitation: ${day.precipitation}`;
+          }
+          if (day.humidity) {
+            contextString += `, Humidity: ${day.humidity}`;
+          }
+          if (day.wind) {
+            contextString += `, Wind: ${day.wind}`;
+          }
+        });
+      }
+    }
     contextString += "\n\n";
   }
   if (!!data?.knowledge_graph) {
@@ -74,6 +116,9 @@ const performWebSearch = async (searchQuery: string) => {
     if (data.knowledge_graph.born) {
       contextString += "\n" + data.knowledge_graph.born;
     }
+    if (data.knowledge_graph.organizations_founded) {
+      contextString += "\n" + data.knowledge_graph.organizations_founded;
+    }
     contextString += "\n\n";
   }
   if (!!data.organic_results) {
@@ -83,11 +128,11 @@ const performWebSearch = async (searchQuery: string) => {
       if (result.title) {
         contextString += "\n" + result.title;
       }
-      if (result.source) {
-        contextString += "\n" + result.source;
-      }
       if (result.snippet) {
         contextString += "\n" + result.snippet;
+      }
+      if (result.source) {
+        contextString += "\nSource: " + result.source;
       }
       contextString += "\n\n";
     });

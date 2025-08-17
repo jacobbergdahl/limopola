@@ -67,7 +67,7 @@ Create a `.env` file from the `.env.example` file, and add API keys. There are i
 - `ANTHROPIC_API_KEY`: Used for Claude. Using Claude costs money. Generate the API key at [https://console.anthropic.com/settings/keys](https://console.anthropic.com/settings/keys).
 - `REPLICATE_API_KEY`: Used for several API's. These API's are free to use for a while, but eventually you'll be asked to pay to continue using them. Generate the API key for free at [https://replicate.com/account](https://replicate.com/account).
 - `ELEVEN_LABS_API_KEY`: Used to generate text-to-speech. This API is also free to use for a while. Generate the API key at [https://docs.elevenlabs.io/api-reference/quick-start/authentication](https://docs.elevenlabs.io/api-reference/quick-start/authentication).
-- `SEARCH_API_KEY`: Used by one of the RAG functions. Could likely be replaced with Tavily now. Either way, it's also free to use for a while. Generate the API key at [https://www.searchapi.io/](https://www.searchapi.io/).
+- `SERP_API_KEY`: Used by LLMs to perform online searches. Has a free tier. Generate the API key at [https://serpapi.com/manage-api-key](https://serpapi.com/manage-api-key).
 - `GOOGLE_API_KEY`: _Not currently in use on the main branch_. Used for Google's text-to-speech LLMs (PaLM). This API is also free to use for a while, but may be region-locked. Generate the API key at [https://makersuite.google.com/app/apikey](https://makersuite.google.com/app/apikey).
 - `AZURE_API_KEY`: Used for Azure OpenAI. You can run any LLM supported by Azure OpenAI by configuring `AZURE_MODEL_ID`, `AZURE_ENDPOINT`, and `AZURE_API_VERSION` in your `.env` file.
 - `MISTRAL_API_KEY`: Used for Mistral's API. Generate the API key at [https://console.mistral.ai/api-keys](https://console.mistral.ai/api-keys).
@@ -179,7 +179,7 @@ Tips:
 - The "reset settings" option will reset everything except for your saved contexts and your chat history.
 - You can jump to the textarea by just pressing enter or T.
 - You can download and save the conversation as a `.txt` file by pressing CTRL + S / ⌘ + S.
-- Any text-generating AI can be given the ability to browse the world wide web by pressing the checkbox under "Online connection" in the right-hand sidebar. This requires a (free) API key to [SearchAPI](https://www.searchapi.io/).
+- Any text-generating AI can be given the ability to browse the world wide web by pressing the checkbox under "Online connection" in the right-hand sidebar. This requires a (free) API key to [SerpApi](https://serpapi.com/).
 
 ### Editor
 
@@ -239,7 +239,7 @@ Here's how it works:
 
 The reasoning mode is most definitely a work in progress. Some very obvious features are missing, probably most notably the ability to continue the conversation. More features are planned (see [TODO.md](https://github.com/jacobbergdahl/limopola/blob/main/TODO.md)).
 
-To use online search, you need the `SEARCH_API_KEY` key (in the future, we should support other search API's too). Other AI models need their respective API's unless you run local LLMs. Info on how to acquire API keys is found in the `.env.example` file, as well as at the top of this README.
+To use online search, you need the `SERP_API_KEY` key. Other AI models need their respective API's unless you run local LLMs. Info on how to acquire API keys is found in the `.env.example` file, as well as at the top of this README.
 
 You may also notice that there is a background video in the demo I added above. This background video is not included in the project itself (due to its size and that it would be a silly thing to add to a repository like this), but it's actually a royalty-free video. If you'd like, you can download a video of your own and add it to the `env` file (follow `.env.example` as reference).
 

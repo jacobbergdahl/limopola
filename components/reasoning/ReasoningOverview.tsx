@@ -467,7 +467,7 @@ export const ReasoningOverview = () => {
                 selectedButton={reasoningOnlineSearch}
                 handleButtonClick={setReasoningOnlineSearch}
                 disabled={isRunning}
-                additionalInformation="Online search currently always uses GPT-4o, but will support any LLM in the future. Also only uses searchapi.io, but will allow for other search engines in the future."
+                additionalInformation="Online search currently always uses GPT-4o and is done through SerpApi, but will support any LLM in the future."
               />
               <h3>Other options</h3>
               <Button

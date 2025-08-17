@@ -54,7 +54,6 @@ The model-agnostic reasoning mode is in an extremely early stage. A lot of basic
 
 - Make it possible to continue the conversation with the reasoning AI. (The most obvious major missing feature.)
 - Make it possible to choose what LLM to use for online search.
-- Make it possible to search through other API's than searchapi.io.
 - Add fact-checking (auto or manual (e.g., post result)).
 - Show how long it took for each step not just during the generation but after the final result has returned.
 - Test local AI more with reasoning.
