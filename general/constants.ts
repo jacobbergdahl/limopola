@@ -24,6 +24,9 @@ export enum MODEL {
   Gpt4_32k = "gpt-4-32k",
   Gpt4_Turbo = "gpt-4-turbo",
   Gpt4_o_mini = "gpt-4o-mini",
+  Gpt5 = "gpt-5",
+  Gpt5_mini = "gpt-5-mini",
+  Gpt5_nano = "gpt-5-nano",
   O4_mini = "o4-mini",
   O3 = "o3",
   O3_mini = "o3-mini",
@@ -39,6 +42,11 @@ export enum MODEL {
   Flux11ProUltra = "flux-1.1-pro-ultra",
   Flux11Pro = "flux-1.1-pro",
   FluxSchnell = "flux-schnell",
+  Imagen4 = "imagen-4",
+  Imagen4Ultra = "imagen-4-ultra",
+  Imagen4Fast = "imagen-4-fast",
+  Seedream3 = "seedream-3",
+  RecraftV3Svg = "recraft-v3-svg",
   StableDiffusionSdXl = "stable-diffusion-xl", // full name: stable-diffusion-xl-base-1.0
   DeepSeek_67b = "deepseek-67b-base",
   Llama2_70b = "llama-2-70b",
@@ -141,6 +149,30 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
         learnMoreUrl: "https://platform.openai.com/docs/models/gpt-4o",
         apiKey: MODEL_API_KEY.OpenAi,
       };
+    case MODEL.Gpt5:
+      return {
+        status: MODEL_STATUS.Full,
+        information:
+          "GPT-5 is an LLM from OpenAI. Used for complex reasoning, broad world knowledge, and code-heavy or multi-step agentic tasks.",
+        learnMoreUrl: "https://platform.openai.com/docs/models/gpt-5",
+        apiKey: MODEL_API_KEY.OpenAi,
+      };
+    case MODEL.Gpt5_mini:
+      return {
+        status: MODEL_STATUS.Full,
+        information:
+          "GPT-5 mini is an LLM from OpenAI. Cost-optimized reasoning and chat; balances speed, cost, and capability.",
+        learnMoreUrl: "https://platform.openai.com/docs/models/gpt-5-mini",
+        apiKey: MODEL_API_KEY.OpenAi,
+      };
+    case MODEL.Gpt5_nano:
+      return {
+        status: MODEL_STATUS.Full,
+        information:
+          "GPT-5 nano is an LLM from OpenAI. High-throughput tasks, especially simple instruction-following or classification.",
+        learnMoreUrl: "https://platform.openai.com/docs/models/gpt-5-nano",
+        apiKey: MODEL_API_KEY.OpenAi,
+      };
     case MODEL.Debug:
       return {
         status: MODEL_STATUS.Full,
@@ -183,6 +215,44 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
         status: MODEL_STATUS.Full,
         information: "A 67 billion parameter language model from DeepSeek.",
         learnMoreUrl: "https://replicate.com/deepseek-ai/deepseek-67b-base",
+        apiKey: MODEL_API_KEY.Replicate,
+      };
+    case MODEL.Imagen4:
+      return {
+        status: MODEL_STATUS.Full,
+        information: "Google's flagship image generation model.",
+        learnMoreUrl: "https://replicate.com/google/imagen-4/",
+        apiKey: MODEL_API_KEY.Replicate,
+      };
+    case MODEL.Imagen4Fast:
+      return {
+        status: MODEL_STATUS.Full,
+        information:
+          "Google's flagship image generation model. Half the price of Imagen 4.",
+        learnMoreUrl: "https://replicate.com/google/imagen-4-fast/",
+        apiKey: MODEL_API_KEY.Replicate,
+      };
+    case MODEL.Imagen4Ultra:
+      return {
+        status: MODEL_STATUS.Full,
+        information:
+          "Google's flagship image generation model. 50% more expensive than Imagen 4.",
+        learnMoreUrl: "https://replicate.com/google/imagen-4-ultra/",
+        apiKey: MODEL_API_KEY.Replicate,
+      };
+    case MODEL.Seedream3:
+      return {
+        status: MODEL_STATUS.Full,
+        information: "An image generation model by ByteDance.",
+        learnMoreUrl: "https://replicate.com/bytedance/seedream-3/",
+        apiKey: MODEL_API_KEY.Replicate,
+      };
+    case MODEL.RecraftV3Svg:
+      return {
+        status: MODEL_STATUS.Full,
+        information:
+          "Recraft V3 SVG (code-named red_panda) is a text-to-image model with the ability to generate high quality SVG images including logotypes, and icons.",
+        learnMoreUrl: "https://replicate.com/recraft-ai/recraft-v3-svg",
         apiKey: MODEL_API_KEY.Replicate,
       };
     case MODEL.Flux11ProUltra:
@@ -590,6 +660,9 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
 };
 
 export const ALL_TEXT_MODELS = [
+  MODEL.Gpt5,
+  MODEL.Gpt5_mini,
+  MODEL.Gpt5_nano,
   MODEL.Gpt4,
   MODEL.Gpt4_o,
   MODEL.ChatGpt4_o,
@@ -645,17 +718,33 @@ export const ALL_VIDEO_MODELS = [MODEL.AnimateDiff];
 
 export const ALL_AUDIO_MODELS = [MODEL.ElevenLabs];
 
-export const ALL_IMAGE_MODELS = [
-  MODEL.Dalle2,
-  MODEL.Dalle3,
+export const ALL_FLUX_MODELS = [
   MODEL.Flux11ProUltra,
   MODEL.Flux11Pro,
   MODEL.FluxSchnell,
+];
+
+export const ALL_IMAGEN_MODELS = [
+  MODEL.Imagen4,
+  MODEL.Imagen4Ultra,
+  MODEL.Imagen4Fast,
+];
+
+export const ALL_IMAGE_MODELS = [
+  MODEL.Dalle2,
+  MODEL.Dalle3,
   MODEL.StableDiffusionSdXl,
   MODEL.TextToPokemon,
+  ...ALL_FLUX_MODELS,
+  ...ALL_IMAGEN_MODELS,
+  MODEL.Seedream3,
+  MODEL.RecraftV3Svg,
 ];
 
 export const ALL_OPEN_AI_REASONING_MODELS = [
+  MODEL.Gpt5,
+  MODEL.Gpt5_mini,
+  MODEL.Gpt5_nano,
   MODEL.O4_mini,
   MODEL.O3,
   MODEL.O3_mini,
@@ -663,6 +752,7 @@ export const ALL_OPEN_AI_REASONING_MODELS = [
 ];
 
 export const ALL_OPEN_AI_MODELS = [
+  ...ALL_OPEN_AI_REASONING_MODELS,
   MODEL.Gpt4,
   MODEL.Gpt4_32k,
   MODEL.Gpt4_Turbo,
@@ -674,13 +764,6 @@ export const ALL_OPEN_AI_MODELS = [
   MODEL.ChatGpt4_o,
   MODEL.Dalle2,
   MODEL.Dalle3,
-  ...ALL_OPEN_AI_REASONING_MODELS,
-];
-
-export const ALL_FLUX_MODELS = [
-  MODEL.Flux11ProUltra,
-  MODEL.Flux11Pro,
-  MODEL.FluxSchnell,
 ];
 
 // Intentionally not including ClaudeCitations here, as it's a special case (it uses one of these models under the hood)
@@ -944,4 +1027,17 @@ export enum REASONING_STEP {
   FinishedFirstTake = "Made a first take",
   Answering = "Determining a final answer",
   FinishedAnswering = "Wrote a final answer",
+}
+
+export enum REASONING_EFFORT {
+  Minimal = "minimal",
+  Low = "low",
+  Medium = "medium",
+  High = "high",
+}
+
+export enum VERBOSITY {
+  Low = "low",
+  Medium = "medium",
+  High = "high",
 }

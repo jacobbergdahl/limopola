@@ -11,8 +11,10 @@ import {
   IMAGE_SIZE_DALL_E_3,
   MODEL,
   MODEL_TYPE,
+  REASONING_EFFORT,
   SHOULD_SHOW_ALL_LOGS,
   STATUS_CODE,
+  VERBOSITY,
 } from "../../general/constants";
 import { openAi } from "./aiModels/openAi";
 import { appendContextToTextPrompt } from "../../components/agents/agentFunctions";
@@ -70,6 +72,8 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     returnOnlineSearchResultsWithoutAskingLLM: false,
     aspectRatio: IMAGE_ASPECT_RATIO.Landscape,
     fluxMode: FLUX_MODE.Raw,
+    reasoningEffort: REASONING_EFFORT.Medium,
+    reasoningVerbosity: VERBOSITY.Medium,
   };
 
   const modelType = getModelType(model);

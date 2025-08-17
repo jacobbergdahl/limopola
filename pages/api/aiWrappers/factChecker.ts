@@ -3,6 +3,8 @@ import {
   FLUX_MODE,
   IMAGE_ASPECT_RATIO,
   MODEL,
+  REASONING_EFFORT,
+  VERBOSITY,
 } from "../../../general/constants";
 import { ProcessedBody } from "../../../general/apiHelper";
 
@@ -28,6 +30,8 @@ const FACT_CHECKER_BODY: ProcessedBody = {
   returnOnlineSearchResultsWithoutAskingLLM: false,
   aspectRatio: IMAGE_ASPECT_RATIO.Landscape,
   fluxMode: FLUX_MODE.Normal,
+  reasoningEffort: REASONING_EFFORT.Medium,
+  reasoningVerbosity: VERBOSITY.Medium,
 };
 
 export const factChecker = async (res, message) => {

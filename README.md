@@ -16,7 +16,7 @@ Originally (regrettably) based on a [simple starter repository by OpenAI](https:
 
 ## Quickstart
 
-This will download the repository, install dependencies, install [this AI model](https://huggingface.co/TheBloke/dolphin-2.6-mistral-7B-dpo-laser-GGUF/blob/main/dolphin-2.6-mistral-7b-dpo-laser.Q4_K_M.gguf), and run the project.
+This will clone the repository, install dependencies, install [OpenAI's gpt-oss-20b model which is designed for local computer use](https://huggingface.co/openai/gpt-oss-20b), and run the project.
 
 ```bash
 git clone git@github.com:jacobbergdahl/limopola.git && cd limopola/ && npm run quickstart
@@ -39,13 +39,12 @@ npm i
 
 ### Set up a local LLM
 
-You can easily use [llama](https://ai.meta.com/resources/models-and-libraries/llama/) locally on your machine in this project. Depending on your OS and your prior set-ups, you may need to set-up environments using [this guide](https://github.com/cocktailpeanut/dalai#quickstart).
+You can easily run any open-source LLM locally on your machine in this project. Depending on your OS and your prior set-ups, you may need to set-up environments using [this guide](https://github.com/cocktailpeanut/dalai#quickstart).
 
-To set up a local LLM for this project, follow these steps:
+To set up a local LLM for this project without using Ollama (for Ollama, see further down), follow these steps:
 
-1. Download an LLM from HuggingFace. You can download a recommended model by simply running `npm run install-local-llm`. If you want to download an LLM manually, then I recommend downloading [this model](https://huggingface.co/TheBloke/dolphin-2.6-mistral-7B-dpo-laser-GGUF/blob/main/dolphin-2.6-mistral-7b-dpo-laser.Q4_K_M.gguf). If you want to download a different model, I recommend downloading a 7B version with the `gguf` extension from [TheBloke](https://huggingface.co/TheBloke?search_models=GGUF). Place the model in the `models/` folder (this is done automatically by the `install-local-llm` script).
-2. Validate the model by running `npm run validate-local-llm`. Try saying "Hello" just to check that you get a reasonable output.
-3. Run `npm i` and `npm run local`. If it's not already selected by default, then `local-llm` in the left sidebar, and start interacting with the model.
+1. Download an LLM from HuggingFace. You can download OpenAI's model `gpt-oss-20b` by simply running `npm run install-local-llm`. If you want to download a different model, you'll need to download an AI model with the `gguf` extension. Place the model in the `models/` folder (this is done automatically by the `install-local-llm` script).
+2. Run `npm i` and `npm run local` (or `npm run dev` and then just select `local-llm` in the left sidebar when the project starts; all `npm run local` does is simply default to that option).
 
 #### Troubleshooting the local LLM
 
@@ -72,7 +71,7 @@ Create a `.env` file from the `.env.example` file, and add API keys. There are i
 - `AZURE_API_KEY`: Used for Azure OpenAI. You can run any LLM supported by Azure OpenAI by configuring `AZURE_MODEL_ID`, `AZURE_ENDPOINT`, and `AZURE_API_VERSION` in your `.env` file.
 - `MISTRAL_API_KEY`: Used for Mistral's API. Generate the API key at [https://console.mistral.ai/api-keys](https://console.mistral.ai/api-keys).
 
-In the future, this project will likely also give you the option of adding an API key to HuggingFace.
+In the future, this project will likely also give you the option of adding an API key to HuggingFace, among other sources.
 
 ### Run project
 
@@ -97,6 +96,9 @@ Note that the actual number of supported models is probably over a million. `loc
 | gpt-4-32k                 | Text  | OpenAI     |
 | gpt-4-turbo               | Text  | OpenAI     |
 | gpt-4o-mini               | Text  | OpenAI     |
+| gpt-5                     | Text  | OpenAI     |
+| gpt-5-mini                | Text  | OpenAI     |
+| gpt-5-nano                | Text  | OpenAI     |
 | o4-mini                   | Text  | OpenAI     |
 | o3                        | Text  | OpenAI     |
 | o3-mini                   | Text  | OpenAI     |
@@ -111,6 +113,11 @@ Note that the actual number of supported models is probably over a million. `loc
 | flux-1.1-pro-ultra        | Image | Replicate  |
 | flux-1.1-pro              | Image | Replicate  |
 | flux-schnell              | Image | Replicate  |
+| imagen-4                  | Image | Replicate  |
+| imagen-4-ultra            | Image | Replicate  |
+| imagen-4-fast             | Image | Replicate  |
+| seedream-3                | Image | Replicate  |
+| recraft-v3-svg            | Image | Replicate  |
 | stable-diffusion-xl       | Image | Replicate  |
 | deepseek-67b-base         | Text  | Replicate  |
 | llama-3-70b-instruct      | Text  | Replicate  |

@@ -508,13 +508,6 @@ export const getEditorPrompt = (prompt: string) => {
   );
 };
 
-export const getRandomString = (length: number = 10): string => {
-  return Math.random()
-    .toString(36)
-    .concat(Date.now().toString(36))
-    .slice(-length);
-};
-
 // This is a bit silly, but we prompt engineer 4o-related input in OpenAI-related endpoints.
 // GPT-4o loves to return markdown, and it is very inconsistent and really messes with the UI.
 // We have a function for parsing markdown to HTML, but it still makes a mess.

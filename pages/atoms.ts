@@ -24,9 +24,11 @@ import {
   MEMORY,
   MODEL,
   Message,
+  REASONING_EFFORT,
   REASONING_ONLINE_SEARCH,
   TEXTAREA_STYLE,
   THEME,
+  VERBOSITY,
   getDefaultModel,
 } from "../general/constants";
 import { createPlaceHolderChatHistory } from "../general/helpers";
@@ -151,6 +153,14 @@ export const isGivingAiSearchAccessAtom = atomWithStorage(
 );
 export const isHidingUiAtom = atomWithStorage("IS_HIDING_UI_ATOM", false);
 export const themeAtom = atomWithStorage("THEME", THEME.Default);
+export const reasoningEffortAtom = atomWithStorage(
+  "REASONING_EFFORT",
+  REASONING_EFFORT.Medium
+);
+export const reasoningVerbosityAtom = atomWithStorage(
+  "REASONING_VERBOSITY",
+  VERBOSITY.Medium
+);
 
 /******************************************
  *

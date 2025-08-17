@@ -9,8 +9,7 @@ import { LlamaChatSession, getLlama } from "node-llama-cpp";
 import { ProcessedBody } from "../../../general/apiHelper";
 
 const modelName =
-  process.env.LOCAL_MODEL_NAME ||
-  "dolphin-2.6-mistral-7b-dpo-laser.Q4_K_M.gguf";
+  process.env.LOCAL_MODEL_NAME || "openai_gpt-oss-20b-Q6_K.gguf";
 
 const modelPath = path.resolve(
   process.cwd(),
@@ -38,14 +37,18 @@ export const llamaLocal = async (
   }
 
   try {
+    console.log("Loading model...");
     const llama = await getLlama();
     const model = await llama.loadModel({
       modelPath: modelPath,
     });
+    console.log("Model loaded. Creating context...");
     const context = await model.createContext();
+    console.log("Context created. Creating session...");
     const session = new LlamaChatSession({
       contextSequence: context.getSequence(),
     });
+    console.log("Session created. Generating output...");
     const output = await session.prompt(message, {
       temperature: processedBody.temperature,
       maxTokens: processedBody.maxNumberOfTokens,

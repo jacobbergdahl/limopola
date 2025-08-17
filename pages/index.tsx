@@ -19,6 +19,10 @@ import {
   ALL_FLUX_MODES,
   ALL_FLUX_MODELS,
   ALL_MISTRAL_MODELS,
+  ALL_IMAGEN_MODELS,
+  ALL_OPEN_AI_REASONING_MODELS,
+  REASONING_EFFORT,
+  VERBOSITY,
 } from "../general/constants";
 import {
   downloadConversation,
@@ -54,6 +58,8 @@ import {
   modelAtom,
   numberOfImagesToGenerateAtom,
   presencePenaltyAtom,
+  reasoningEffortAtom,
+  reasoningVerbosityAtom,
   requestedNumberOfTokensAtom,
   technicalFrequencyPenaltyAtom,
   technicalPresencePenaltyAtom,
@@ -179,6 +185,10 @@ export default function Home() {
   const [isGivingAiSearchAccess, setIsGivingAiSearchAccess] = useAtom(
     isGivingAiSearchAccessAtom
   );
+  const [reasoningEffort, setReasoningEffort] = useAtom(reasoningEffortAtom);
+  const [reasoningVerbosity, setReasoningVerbosity] = useAtom(
+    reasoningVerbosityAtom
+  );
   const [timer, setTimer] = useState<number>(-1);
   const scrollAnchorRef = useRef(null);
   const chatRef = useRef(null);
@@ -260,7 +270,11 @@ export default function Home() {
     (model === MODEL.Dalle2 || model === MODEL.FluxSchnell);
   const shouldShowImageSizeDallE2 = model === MODEL.Dalle2;
   const shouldShowImageSizeDallE3 = model === MODEL.Dalle3;
-  const shouldShowImageAspectRatio = ALL_FLUX_MODELS.includes(model);
+  const shouldShowImageAspectRatio =
+    ALL_FLUX_MODELS.includes(model) ||
+    ALL_IMAGEN_MODELS.includes(model) ||
+    model === MODEL.Seedream3 ||
+    model === MODEL.RecraftV3Svg;
   const shouldShowFluxMode = model === MODEL.Flux11ProUltra;
   const shouldShowSimilaritySearch = model === MODEL.WebRetriever;
   const shouldShowAiSearchAccess =
@@ -268,6 +282,12 @@ export default function Home() {
     inputMode === INPUT_MODE.Chat &&
     model !== MODEL.TransformersSentimentAnalysis &&
     !isUsingCustomTextGeneratingWrapper;
+  const shouldShowReasoningEffort =
+    ALL_OPEN_AI_REASONING_MODELS.includes(model);
+  const shouldShowVerbosity =
+    model === MODEL.Gpt5 ||
+    model === MODEL.Gpt5_mini ||
+    model === MODEL.Gpt5_nano;
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -1059,6 +1079,32 @@ export default function Home() {
                     isUsingDefault={isTemperatureDefault}
                     handleCheckboxChange={() =>
                       setIsTemperatureDefault(!isTemperatureDefault)
+                    }
+                  />
+                </div>
+              )}
+              {shouldShowReasoningEffort && (
+                <div className={styles.section}>
+                  <GenericSectionChoiceContainer
+                    title="Reasoning effort"
+                    selectedButton={reasoningEffort}
+                    buttonTexts={Object.values(REASONING_EFFORT)}
+                    handleButtonClick={setReasoningEffort}
+                    additionalInformation={
+                      "The effort parameter controls how many reasoning tokens the model generates before producing a response. Medium is the default. Minimal works well with coding and instruction-following tasks, but may require more prompting."
+                    }
+                  />
+                </div>
+              )}
+              {shouldShowVerbosity && (
+                <div className={styles.section}>
+                  <GenericSectionChoiceContainer
+                    title="Verbosity"
+                    selectedButton={reasoningVerbosity}
+                    buttonTexts={Object.values(VERBOSITY)}
+                    handleButtonClick={setReasoningVerbosity}
+                    additionalInformation={
+                      "Verbosity determines how many output tokens are generated. Lowering the number of tokens reduces overall latency."
                     }
                   />
                 </div>

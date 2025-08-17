@@ -7,6 +7,8 @@ import {
   IMAGE_SIZE_DALL_E_2,
   IMAGE_SIZE_DALL_E_3,
   MODEL,
+  REASONING_EFFORT,
+  VERBOSITY,
 } from "./constants";
 
 export type ProcessedBody = {
@@ -31,6 +33,8 @@ export type ProcessedBody = {
   returnOnlineSearchResultsWithoutAskingLLM: boolean | undefined;
   aspectRatio: IMAGE_ASPECT_RATIO | undefined;
   fluxMode: FLUX_MODE | undefined;
+  reasoningEffort: REASONING_EFFORT | undefined;
+  reasoningVerbosity: VERBOSITY | undefined;
 };
 
 export const getProcessedBodyForAiApiCalls = (
@@ -67,6 +71,8 @@ export const getProcessedBodyForAiApiCalls = (
     !!req.body.returnOnlineSearchResultsWithoutAskingLLM;
   const aspectRatio = req.body.aspectRatio;
   const fluxMode = req.body.fluxMode;
+  const reasoningEffort = req.body.reasoningEffort;
+  const reasoningVerbosity = req.body.reasoningVerbosity;
 
   return {
     message,
@@ -96,5 +102,7 @@ export const getProcessedBodyForAiApiCalls = (
     returnOnlineSearchResultsWithoutAskingLLM,
     aspectRatio,
     fluxMode,
+    reasoningEffort,
+    reasoningVerbosity,
   } as ProcessedBody;
 };

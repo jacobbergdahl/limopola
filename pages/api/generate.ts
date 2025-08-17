@@ -1,6 +1,7 @@
 import {
   ALL_ANTHROPIC_MODELS,
   ALL_FLUX_MODELS,
+  ALL_IMAGEN_MODELS,
   ALL_MISTRAL_MODELS,
   ALL_MODELS_THROUGH_REPLICATE,
   ALL_OPEN_AI_MODELS,
@@ -36,6 +37,9 @@ import { flux } from "./aiModels/flux";
 import { openAiCompatibleApi } from "./aiModels/openAiCompatibleApi";
 import { mistral } from "./aiModels/mistral";
 import { openAiReasoning } from "./aiModels/openAiReasoning";
+import { imagen } from "./aiModels/imagen";
+import { seedream } from "./aiModels/seedream";
+import { recraft } from "./aiModels/recraft";
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
   const processedBody = getProcessedBodyForAiApiCalls(req);
@@ -72,6 +76,15 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     }
     if (ALL_FLUX_MODELS.includes(model)) {
       return flux(res, message, model, processedBody);
+    }
+    if (ALL_IMAGEN_MODELS.includes(model)) {
+      return imagen(res, message, model, processedBody);
+    }
+    if (model === MODEL.Seedream3) {
+      return seedream(res, message, model, processedBody);
+    }
+    if (model === MODEL.RecraftV3Svg) {
+      return recraft(res, message, model, processedBody);
     }
     if (model === MODEL.TextToPokemon) {
       return textToPokemon(res, message, numberOfImages);
