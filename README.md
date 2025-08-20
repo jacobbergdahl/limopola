@@ -252,17 +252,33 @@ You may also notice that there is a background video in the demo I added above. 
 
 ## Upcoming features
 
-This is a work in progress. You can find a list of planned features and updates in the [TODO.md](https://github.com/jacobbergdahl/limopola/blob/main/TODO.md) file. Please let me know if there are other features you'd like to see added or if you run into any issues. Feel free to open a pull request through a fork with any changes you'd like to make.
+This project is a work in progress. You can find a list of planned features and updates in the [TODO.md](https://github.com/jacobbergdahl/limopola/blob/main/TODO.md) file. Please let me know if there are other features you'd like to see added or if you run into any issues. Feel free to open a pull request through a fork with any changes you'd like to make.
 
 ## Limopola logos
 
 The logo for Limopola by Midjourney v5:
 
-<img src="./public/logo.png" width="400" height="400">
+<img src="./public/logo.png" width="200">
 
 Alternate logo of Limopola in text by DALL-E 3:
 
-<img src="./public/limopola.png" width="400" height="400">
+<img src="./public/limopola.png" width="200">
+
+## Sponsors
+
+A big thanks to our sponsor:
+
+<a href="https://serpapi.com?utm_source=limopola" rel="sponsored">
+  <img width="120" alt="SerpApi logo" src="https://github.com/user-attachments/assets/e7745efc-1c5b-44b0-867c-d22c73c50333" />
+</a>
+
+[SerpApi - Search API](https://serpapi.com?utm_source=limopola)
+
+Enhance your LLM's knowledge with data from search engines like Google and Bing using our simple API.
+
+### Sponsor Limopola
+
+_Would you also like to sponsor Limopola? Send us an [e-mail](mailto:thisisrealai@gmail.com)._
 
 ## Author
 
