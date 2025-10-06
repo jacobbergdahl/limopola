@@ -3,7 +3,9 @@ import {
   FLUX_MODE,
   IMAGE_ASPECT_RATIO,
   MODEL,
+  REASONING_EFFORT,
   STATUS_CODE,
+  VERBOSITY,
 } from "../../general/constants";
 import { openAi } from "./aiModels/openAi";
 import { AGENT_PROMPT_TASK_LIST } from "../../components/agents/agentPrompts";
@@ -21,7 +23,6 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     voiceStability: 0,
     temperature: 0,
     frequencyPenalty: undefined,
-    frequency_penalty: undefined,
     presencePenalty: undefined,
     topP: undefined,
     maxNumberOfTokens: undefined,
@@ -35,6 +36,8 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     returnOnlineSearchResultsWithoutAskingLLM: false,
     aspectRatio: IMAGE_ASPECT_RATIO.Landscape,
     fluxMode: FLUX_MODE.Normal,
+    reasoningEffort: REASONING_EFFORT.Medium,
+    reasoningVerbosity: VERBOSITY.Medium,
   };
 
   if (prompt.trim().length === 0) {

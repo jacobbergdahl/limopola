@@ -258,3 +258,7 @@ export const wasReasoningFinishedAtom = atomWithStorage(
   false
 );
 export const reasoningErrorAtom = atomWithStorage("REASONING_ERROR", "");
+export const shouldModelReasonAtom = atomWithStorage(
+  "SHOULD_MODEL_REASON",
+  false
+);

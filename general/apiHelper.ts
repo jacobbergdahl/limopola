@@ -21,7 +21,6 @@ export type ProcessedBody = {
   voiceStability: number;
   temperature: number | undefined;
   frequencyPenalty: number | undefined;
-  frequency_penalty: number | undefined;
   presencePenalty: number | undefined;
   topP: number | undefined;
   maxNumberOfTokens: number | undefined;
@@ -84,9 +83,6 @@ export const getProcessedBodyForAiApiCalls = (
     voiceStability,
     temperature: isUsingDefaultTemperature ? undefined : temperature,
     frequencyPenalty: isUsingDefaultFrequencyPenalty
-      ? undefined
-      : frequencyPenalty,
-    frequency_penalty: isUsingDefaultFrequencyPenalty
       ? undefined
       : frequencyPenalty,
     presencePenalty: isUsingDefaultPresencePenalty

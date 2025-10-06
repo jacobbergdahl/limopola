@@ -58,7 +58,6 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     voiceStability: DEFAULT_TECHNICAL_VOICE_STABILITY,
     temperature: undefined,
     frequencyPenalty: undefined,
-    frequency_penalty: undefined,
     presencePenalty: undefined,
     topP: undefined,
     maxNumberOfTokens: undefined,

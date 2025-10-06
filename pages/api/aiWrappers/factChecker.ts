@@ -16,7 +16,6 @@ const FACT_CHECKER_BODY: ProcessedBody = {
   voiceStability: 0,
   temperature: 0,
   frequencyPenalty: undefined,
-  frequency_penalty: undefined,
   presencePenalty: undefined,
   topP: undefined,
   maxNumberOfTokens: 5,

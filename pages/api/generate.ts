@@ -164,7 +164,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     });
     return;
   } catch (error) {
-    if (error.response) {
+    if (error?.response) {
       console.error(
         `Error with API response: ${error.response.status}, ${JSON.stringify(
           error.response.data

@@ -66,7 +66,7 @@ Create a `.env` file from the `.env.example` file, and add API keys. There are i
 - `ANTHROPIC_API_KEY`: Used for Claude. Using Claude costs money. Generate the API key at [https://console.anthropic.com/settings/keys](https://console.anthropic.com/settings/keys).
 - `REPLICATE_API_KEY`: Used for several API's. These API's are free to use for a while, but eventually you'll be asked to pay to continue using them. Generate the API key for free at [https://replicate.com/account](https://replicate.com/account).
 - `ELEVEN_LABS_API_KEY`: Used to generate text-to-speech. This API is also free to use for a while. Generate the API key at [https://docs.elevenlabs.io/api-reference/quick-start/authentication](https://docs.elevenlabs.io/api-reference/quick-start/authentication).
-- `SERP_API_KEY`: Used by LLMs to perform online searches. Has a free tier. Generate the API key at [https://serpapi.com/manage-api-key](https://serpapi.com/manage-api-key).
+- `SERP_API_KEY`: Used by LLMs to perform online searches. Has a free tier. Generate the API key at [https://serpapi.com/manage-api-key](https://serpapi.com/manage-api-key?utm_source=limopola).
 - `GOOGLE_API_KEY`: _Not currently in use on the main branch_. Used for Google's text-to-speech LLMs (PaLM). This API is also free to use for a while, but may be region-locked. Generate the API key at [https://makersuite.google.com/app/apikey](https://makersuite.google.com/app/apikey).
 - `AZURE_API_KEY`: Used for Azure OpenAI. You can run any LLM supported by Azure OpenAI by configuring `AZURE_MODEL_ID`, `AZURE_ENDPOINT`, and `AZURE_API_VERSION` in your `.env` file.
 - `MISTRAL_API_KEY`: Used for Mistral's API. Generate the API key at [https://console.mistral.ai/api-keys](https://console.mistral.ai/api-keys).

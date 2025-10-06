@@ -488,7 +488,7 @@ export default function Home() {
         content:
           errorMessage + "\n\nThere is likely more information in the console.",
         sender: "Error",
-        id: newChatHistory.length,
+        id: newChatHistory?.length ?? chatHistory.length,
       };
 
       saveMessage(errorChatMessage, newChatHistory);
