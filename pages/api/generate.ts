@@ -211,6 +211,9 @@ export const callLlm = async (
   if (model === MODEL.Azure) {
     return azure(res, message, processedBody);
   }
+  if (ALL_OPEN_AI_REASONING_MODELS.includes(model)) {
+    return openAiReasoning(res, message, model, processedBody);
+  }
   if (ALL_OPEN_AI_MODELS.includes(model)) {
     return openAi(res, message, model, processedBody);
   }

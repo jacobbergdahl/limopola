@@ -9,7 +9,10 @@ const parseMarkdownToHtml = (markdown: string): string => {
   return marked(markdown) as string;
 };
 
-export const parseTextResponse = (text: string): string => {
+export const parseTextResponse = (
+  text: string,
+  shouldAlwaysParseMarkdown: boolean = false
+): string => {
   let processedText = text
     // It's rare that the LLM will output delimiters, but it could happen with some LLMs
     .replace(/BEGINCONTEXT/g, "")
@@ -24,9 +27,12 @@ export const parseTextResponse = (text: string): string => {
     .replace(/ENDINSTRUCTION/g, "")
     .replace(/""""/g, "")
     .replace(/"""/g, "")
-    // This is a common stop token for LLMs
+    // Stop tokens
     .replace("\n\n<end>", "")
     .replace("\n\n</end>", "")
+    .replace(/<start_of_turn>user/g, "")
+    .replace(/<start_of_turn>model/g, "")
+    .replace(/<end_of_turn>/g, "")
     .trim();
 
   const startsOrEndsWithHtmlTagRegexPattern = /^<[^>]+>[\s\S]*<\/[^>]+>$/;
@@ -36,7 +42,11 @@ export const parseTextResponse = (text: string): string => {
 
   const doesTextStartWithMarkdownHeader = processedText.startsWith("#");
   const doesTextContainMarkdownLinks = /\[.*?\]\(.*?\)/.test(processedText);
-  if (doesTextStartWithMarkdownHeader || doesTextContainMarkdownLinks) {
+  if (
+    shouldAlwaysParseMarkdown ||
+    doesTextStartWithMarkdownHeader ||
+    doesTextContainMarkdownLinks
+  ) {
     processedText = parseMarkdownToHtml(processedText);
   }
 

@@ -24,29 +24,19 @@ export const openAiReasoning = async (
   processedBody: ProcessedBody
 ) => {
   console.log(`The backend is calling the OpenAI model ${model}.`);
-  let reasoningEffort = processedBody.reasoningEffort;
-  // Minimal is a recently added reasoning effort that should be supported
-  // once we update npm packages.
-  if (reasoningEffort === REASONING_EFFORT.Minimal) {
-    reasoningEffort = REASONING_EFFORT.Low;
-  }
 
   try {
     const completion = await client.responses.create({
       model: model,
-      // We need to update the OpenAI packages to properly be able
-      // to use reasoning and verbosity. The problem is peer dependencies,
-      // but we should be able to update fairly soon.
       reasoning: {
-        effort: reasoningEffort,
+        effort: processedBody.reasoningEffort,
       },
-      //text: {
-      //  verbosity: processedBody.reasoningVerbosity as
-      //    | "low"
-      //    | "medium"
-      //    | "high",
-      //},
-      ...openAiApiBaseConfig(processedBody),
+      text: {
+        verbosity: processedBody.reasoningVerbosity,
+      },
+      ...(processedBody.maxNumberOfTokens && {
+        max_tokens: processedBody.maxNumberOfTokens,
+      }),
       input: [
         {
           role: "user",

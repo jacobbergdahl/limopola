@@ -1,17 +1,16 @@
 import { OpenAIEmbeddings } from "@langchain/openai";
 import { OllamaEmbeddings } from "@langchain/ollama";
-import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
-import { MemoryVectorStore } from "langchain/vectorstores/memory";
+import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
+import { MemoryVectorStore } from "@langchain/classic/vectorstores/memory";
 import { SHOULD_SHOW_ALL_LOGS } from "../../general/constants";
-import { DirectoryLoader } from "langchain/document_loaders/fs/directory";
-import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
-import { CSVLoader } from "@langchain/community/document_loaders/fs/csv";
-import { DocxLoader } from "@langchain/community/document_loaders/fs/docx";
-import { PPTXLoader } from "@langchain/community/document_loaders/fs/pptx";
-import { Document } from "langchain/document";
+import { Document } from "@langchain/core/documents";
 import path from "path";
 import ExcelJS from "exceljs";
-import { writeFileSync, statSync, readdirSync } from "fs";
+import { promises as fs } from "fs";
+import { PDFParse } from "pdf-parse";
+import mammoth from "mammoth";
+import Papa from "papaparse";
+import { extract as pptxToJson } from "pptx2json";
 
 type LangchainDocument = Document<Record<string, any>>;
 type LangchainEmbeddings = OpenAIEmbeddings | OllamaEmbeddings;
@@ -30,8 +29,8 @@ export const createEmbeddings = (): LangchainEmbeddings => {
 
 export const splitTextIntoChunks = async (text: string) => {
   const splitText = await new RecursiveCharacterTextSplitter({
-    chunkSize: 200,
-    chunkOverlap: 20,
+    chunkSize: 1500,
+    chunkOverlap: 150,
   }).splitText(text);
 
   console.log(`Split text into ${splitText.length} chunks.`);
@@ -43,7 +42,7 @@ export const splitDocumentsIntoChunks = async (
   documents: LangchainDocument[]
 ) => {
   const splitDocs = await new RecursiveCharacterTextSplitter({
-    chunkSize: 1000,
+    chunkSize: 1800,
     chunkOverlap: 200,
   }).splitDocuments(documents);
 
@@ -141,12 +140,112 @@ export const createRagPrompt = (userPrompt: string, context: string) => {
   `;
 };
 
+const loadPDF = async (filePath: string): Promise<LangchainDocument[]> => {
+  const dataBuffer = await fs.readFile(filePath);
+
+  const parser = new PDFParse({ data: dataBuffer });
+  const textResult = await parser.getText();
+  const infoResult = await parser.getInfo();
+  await parser.destroy();
+
+  return [
+    new Document({
+      pageContent: textResult.text,
+      metadata: {
+        source: filePath,
+        pdf: {
+          info: infoResult.info,
+          metadata: infoResult.metadata,
+          totalPages: infoResult.total,
+        },
+      },
+    }),
+  ];
+};
+
+const loadCSV = async (filePath: string): Promise<LangchainDocument[]> => {
+  const content = await fs.readFile(filePath, "utf-8");
+
+  const parsed = Papa.parse(content, {
+    header: true,
+    skipEmptyLines: true,
+    transformHeader: (header) => header.trim(),
+  });
+
+  if (parsed.errors && parsed.errors.length > 0) {
+    console.warn(`CSV parsing warnings for ${filePath}:`, parsed.errors);
+  }
+
+  return (parsed.data as Record<string, string>[]).map((row, idx) => {
+    const pageContent = Object.entries(row)
+      .map(([key, value]) => `${key}: ${value}`)
+      .join("\n");
+
+    return new Document({
+      pageContent,
+      metadata: {
+        source: filePath,
+        row: idx + 1,
+        columns: Object.keys(row),
+      },
+    });
+  });
+};
+
+const loadDOCX = async (filePath: string): Promise<LangchainDocument[]> => {
+  const result = await mammoth.extractRawText({ path: filePath });
+
+  return [
+    new Document({
+      pageContent: result.value,
+      metadata: {
+        source: filePath,
+      },
+    }),
+  ];
+};
+
+const loadPPTX = async (filePath: string): Promise<LangchainDocument[]> => {
+  const json = await pptxToJson(filePath);
+
+  const pieces: string[] = [];
+
+  for (const slide of json.slides ?? []) {
+    pieces.push(`# Slide ${slide.number}`);
+
+    for (const shape of slide.shapes ?? []) {
+      if (shape.text) {
+        pieces.push(shape.text);
+      }
+    }
+
+    if (slide.notes) {
+      pieces.push("Notes:");
+      pieces.push(slide.notes);
+    }
+
+    pieces.push(""); // Add blank line between slides
+  }
+
+  return [
+    new Document({
+      pageContent: pieces.join("\n").trim(),
+      metadata: {
+        source: filePath,
+        slideCount: json.slides?.length ?? 0,
+      },
+    }),
+  ];
+};
+
 const convertExcelToCSV = async (filePath: string): Promise<string | null> => {
   const csvPath = filePath.replace(/\.(xlsx|xls)$/, ".csv");
 
   try {
-    const excelStats = statSync(filePath);
-    const csvStats = statSync(csvPath);
+    const [excelStats, csvStats] = await Promise.all([
+      fs.stat(filePath),
+      fs.stat(csvPath),
+    ]);
     const doesCsvExist = csvStats.mtime > excelStats.mtime;
     if (doesCsvExist) {
       SHOULD_SHOW_ALL_LOGS &&
@@ -218,7 +317,7 @@ const convertExcelToCSV = async (filePath: string): Promise<string | null> => {
       });
     });
 
-    writeFileSync(csvPath, csvContent);
+    await fs.writeFile(csvPath, csvContent);
     return csvContent;
   } catch (error) {
     const errorMessage = `Error processing ${path.basename(filePath)}: ${error}\n\nThe error above may be a red herring. A more common reason for this function failing is that the Excel file is open. Make sure to close it if you do have it open.`;
@@ -242,22 +341,44 @@ export const fetchDataFiles = async () => {
   console.log(`Retrieving data files from ${dataDirectoryPath}`);
 
   // LangChainJS doesn't have an xlsx loader (though the Python package does, so we might get one in the JS version in the future). For now, we convert Excel files to CSV.
-  const files = readdirSync(dataDirectoryPath);
+  const files = await fs.readdir(dataDirectoryPath);
   for (const file of files) {
     if (file.match(/\.(xlsx|xls)$/)) {
       await convertExcelToCSV(path.join(dataDirectoryPath, file));
     }
   }
 
-  const directoryLoader = new DirectoryLoader(dataDirectoryPath, {
-    ".pdf": (path: string) => new PDFLoader(path),
-    ".pptx": (path: string) => new PPTXLoader(path),
-    ".docx": (path: string) => new DocxLoader(path),
-    ".csv": (path: string) => new CSVLoader(path),
-  });
+  const documents: LangchainDocument[] = [];
+
+  for (const file of files) {
+    const filePath = path.join(dataDirectoryPath, file);
+
+    try {
+      if (file.endsWith(".pdf")) {
+        const pdfDocs = await loadPDF(filePath);
+        documents.push(...pdfDocs);
+        console.log(`Loaded PDF: ${file}`);
+      } else if (file.endsWith(".csv")) {
+        const csvDocs = await loadCSV(filePath);
+        documents.push(...csvDocs);
+        console.log(`Loaded CSV: ${file}`);
+      } else if (file.endsWith(".docx")) {
+        const docxDocs = await loadDOCX(filePath);
+        documents.push(...docxDocs);
+        console.log(`Loaded DOCX: ${file}`);
+      } else if (file.endsWith(".pptx")) {
+        const pptxDocs = await loadPPTX(filePath);
+        documents.push(...pptxDocs);
+        console.log(`Loaded PPTX: ${file}`);
+      }
+    } catch (error) {
+      console.error(`Error loading file ${file}:`, error);
+      // We continue loading other files even if one fails
+    }
+  }
 
   // Update cache
-  cachedDocuments = await directoryLoader.load();
+  cachedDocuments = documents;
   lastCacheTime = currentTime;
 
   return cachedDocuments;

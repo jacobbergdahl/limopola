@@ -112,6 +112,7 @@ import {
 import { HideableUI } from "@/components/HideableUi";
 import { ReasoningOverview } from "@/components/reasoning/ReasoningOverview";
 import { GenericSectionChoiceContainer } from "@/components/sections/GenericSectionChoiceContainer";
+import { ProcessedBody } from "@/general/apiHelper";
 
 // I know, I know, this file is too long. It should, and will, be refactored 🙏
 // ... (maybe)
@@ -216,7 +217,8 @@ export default function Home() {
       model === MODEL.LocalOllama ||
       model === MODEL.Azure ||
       model === MODEL.OpenAiCompatibleApi) &&
-    !isUsingCustomTextGeneratingWrapper;
+    !isUsingCustomTextGeneratingWrapper &&
+    !ALL_OPEN_AI_REASONING_MODELS.includes(model);
   const shouldShowTopP =
     selectedModelType === MODEL_TYPE.Text &&
     model !== MODEL.LocalLlm &&
@@ -227,21 +229,24 @@ export default function Home() {
       model === MODEL.LocalOllama ||
       model === MODEL.Azure ||
       model === MODEL.OpenAiCompatibleApi) &&
-    !isUsingCustomTextGeneratingWrapper;
+    !isUsingCustomTextGeneratingWrapper &&
+    !ALL_OPEN_AI_REASONING_MODELS.includes(model);
   const shouldShowFrequencyPenalty =
     selectedModelType === MODEL_TYPE.Text &&
     (ALL_OPEN_AI_MODELS.includes(model) ||
       ALL_MISTRAL_MODELS.includes(model) ||
       model === MODEL.Azure ||
       model === MODEL.OpenAiCompatibleApi) &&
-    !isUsingCustomTextGeneratingWrapper;
+    !isUsingCustomTextGeneratingWrapper &&
+    !ALL_OPEN_AI_REASONING_MODELS.includes(model);
   const shouldShowPresencePenalty =
     selectedModelType === MODEL_TYPE.Text &&
     (ALL_OPEN_AI_MODELS.includes(model) ||
       ALL_MISTRAL_MODELS.includes(model) ||
       model === MODEL.Azure ||
       model === MODEL.OpenAiCompatibleApi) &&
-    !isUsingCustomTextGeneratingWrapper;
+    !isUsingCustomTextGeneratingWrapper &&
+    !ALL_OPEN_AI_REASONING_MODELS.includes(model);
   const shouldShowVoiceSettings = selectedModelType === MODEL_TYPE.Audio;
   const shouldShowRequestedNumberOfTokens = false;
   const shouldShowMaxNumberOfTokens =
@@ -392,47 +397,38 @@ export default function Home() {
     return contextWithPrompt;
   };
 
-  const getRequestBody = (prompt: string) => {
-    if (selectedModelType === MODEL_TYPE.Text) {
-      return JSON.stringify({
-        message: prompt,
-        temperature: technicalTemperature,
-        model: model,
-        frequencyPenalty: technicalFrequencyPenalty,
-        presencePenalty: technicalPresencePenalty,
-        topP: technicalTopP,
-        requestedNumberOfTokens: requestedNumberOfTokens,
-        maxNumberOfTokens: shouldShowMaxNumberOfTokens
-          ? maxNumberOfTokens
-          : undefined,
-        isTemperatureDefault: isTemperatureDefault,
-        isTopPDefault: isTopPDefault,
-        isFrequencyPenaltyDefault: isFrequencyPenaltyDefault,
-        isPresencePenaltyDefault: isPresencePenaltyDefault,
-        urlsToScrape: urlsToScrape,
-        isUsingSimilaritySearch: isUsingSimilaritySearch,
-        isGivingAiSearchAccess:
-          model !== MODEL.TransformersSentimentAnalysis
-            ? isGivingAiSearchAccess
-            : false,
-      });
-    } else if (selectedModelType === MODEL_TYPE.Audio) {
-      return JSON.stringify({
-        message: prompt,
-        model: model,
-        voiceStability: technicalVoiceStability,
-        voiceSimilarityBoost: technicalVoiceSimilarityBoost,
-      });
-    }
-
-    return JSON.stringify({
+  const getRequestBody = (prompt: string): string => {
+    const body: ProcessedBody = {
       message: prompt,
+      model: model,
+      temperature: technicalTemperature,
+      frequencyPenalty: technicalFrequencyPenalty,
+      presencePenalty: technicalPresencePenalty,
+      topP: technicalTopP,
+      requestedNumberOfTokens: requestedNumberOfTokens,
+      maxNumberOfTokens: shouldShowMaxNumberOfTokens
+        ? maxNumberOfTokens
+        : undefined,
+      urlsToScrape: urlsToScrape,
+      isUsingSimilaritySearch: isUsingSimilaritySearch,
+      isGivingAiSearchAccess:
+        model !== MODEL.TransformersSentimentAnalysis
+          ? isGivingAiSearchAccess
+          : false,
+      shouldAskBeforeSearching: undefined,
+      returnEmptyStringIfNoSearch: undefined,
+      returnOnlineSearchResultsWithoutAskingLLM: undefined,
       numberOfImages: numberOfImagesToGenerate,
       imageSize: model === MODEL.Dalle2 ? imageSizeDallE2 : imageSizeDallE3,
-      model: model,
       aspectRatio: imageAspectRatio,
       fluxMode: fluxMode,
-    });
+      voiceStability: technicalVoiceStability,
+      voiceSimilarityBoost: technicalVoiceSimilarityBoost,
+      reasoningEffort: reasoningEffort,
+      reasoningVerbosity: reasoningVerbosity,
+    };
+
+    return JSON.stringify(body);
   };
 
   const scrollToBottom = () => {
@@ -602,12 +598,7 @@ export default function Home() {
     setIsLoading(true);
 
     const finalPrompt = getFinalPrompt(prompt);
-
-    const body = JSON.stringify({
-      message: finalPrompt,
-      temperature: technicalTemperature,
-      model: model,
-    });
+    const body = getRequestBody(finalPrompt);
 
     prettyLog(`Asking the backend to call API model ${model}.`);
 
