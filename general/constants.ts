@@ -46,6 +46,7 @@ export enum MODEL {
   Imagen4Ultra = "imagen-4-ultra",
   Imagen4Fast = "imagen-4-fast",
   Seedream3 = "seedream-3",
+  Seedream4 = "seedream-4",
   RecraftV3Svg = "recraft-v3-svg",
   StableDiffusionSdXl = "stable-diffusion-xl", // full name: stable-diffusion-xl-base-1.0
   DeepSeek_67b = "deepseek-67b-base",
@@ -69,8 +70,6 @@ export enum MODEL {
   TextToPokemon = "text-to-pokemon",
   AnimateDiff = "animate-diff",
   ElevenLabs = "eleven-labs",
-  PalmTextBison001 = "text-bison-001",
-  PalmChatBison001 = "chat-bison-001",
   FactChecker = "gpt-4-fact-checker",
   WebRetriever = "gpt-4-web-retriever",
   GptDataReader = "gpt-data-reader",
@@ -82,6 +81,8 @@ export enum MODEL {
   WebLlm = "web-llm",
   TransformersSentimentAnalysis = "t-sentiment-analysis",
   TransformersText2Text = "t-text2text",
+  Gemini3Pro = "gemini-3-pro-preview",
+  Gemini3ProImage = "gemini-3-pro-image-preview",
   Debug = "debug",
 }
 
@@ -245,6 +246,14 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
         status: MODEL_STATUS.Full,
         information: "An image generation model by ByteDance.",
         learnMoreUrl: "https://replicate.com/bytedance/seedream-3/",
+        apiKey: MODEL_API_KEY.Replicate,
+      };
+    case MODEL.Seedream4:
+      return {
+        status: MODEL_STATUS.Full,
+        information:
+          "An advanced image generation model by ByteDance with support for multi-image generation and custom sizing.",
+        learnMoreUrl: "https://replicate.com/bytedance/seedream-4/",
         apiKey: MODEL_API_KEY.Replicate,
       };
     case MODEL.RecraftV3Svg:
@@ -431,24 +440,6 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
         apiKey: MODEL_API_KEY.Anthropic,
         mdNote:
           "Uses RAG and Claude to retrieve data from files in the data folder. Can read PDF, Word, PowerPoint, Excel, and CSV files.",
-      };
-    case MODEL.PalmChatBison001:
-      return {
-        status: MODEL_STATUS.Partial,
-        information: `Google PaLM model for chatting. Optimized for multi-turn chats (dialogues). Not using the API fully correctly yet, but the memory still seems to work well.`,
-        learnMoreUrl: "https://developers.generativeai.google/models/language",
-        apiKey: MODEL_API_KEY.Google,
-        mdNote:
-          "Google PaLM. No longer available in the `main` branch due to a rough dependency clash. To use Google's API's, run `git checkout google-generativelanguage && npm install`.",
-      };
-    case MODEL.PalmTextBison001:
-      return {
-        status: MODEL_STATUS.Full,
-        information: `Google PaLM model for generating text. Does not work well with multi-turn chats (e.g., the memory feature), but is great for accomplishing tasks like writing code.`,
-        learnMoreUrl: "https://developers.generativeai.google/models/language",
-        apiKey: MODEL_API_KEY.Google,
-        mdNote:
-          "Google PaLM. No longer available in the `main` branch due to a rough dependency clash. To use Google's API's, run `git checkout google-generativelanguage && npm install`.",
       };
     case MODEL.Azure:
       return {
@@ -651,6 +642,21 @@ export const getModelInformation = (model: MODEL): ModelInformation => {
         learnMoreUrl: "https://platform.openai.com/docs/models/o1",
         apiKey: MODEL_API_KEY.OpenAi,
       };
+    case MODEL.Gemini3Pro:
+      return {
+        status: MODEL_STATUS.Full,
+        information:
+          "Gemini 3 Pro is Google's most intelligent model family, built on state-of-the-art reasoning. Best for complex tasks requiring broad world knowledge and advanced reasoning across modalities.",
+        learnMoreUrl: "https://ai.google.dev/gemini-api/docs/gemini-3",
+        apiKey: MODEL_API_KEY.Google,
+      };
+    case MODEL.Gemini3ProImage:
+      return {
+        status: MODEL_STATUS.Full,
+        information: "Gemini 3 Pro Image is Google's premier image generation.",
+        learnMoreUrl: "https://ai.google.dev/gemini-api/docs/gemini-3",
+        apiKey: MODEL_API_KEY.Google,
+      };
   }
 
   return {
@@ -704,13 +710,12 @@ export const ALL_TEXT_MODELS = [
   MODEL.DevstralSmall,
   MODEL.OpenMistralNemo,
   MODEL.OpenCodestralMamba,
+  MODEL.Gemini3Pro,
   MODEL.LocalLlm,
   MODEL.LocalOllama,
   MODEL.OpenAiCompatibleApi,
   MODEL.TransformersSentimentAnalysis,
   MODEL.TransformersText2Text,
-  MODEL.PalmTextBison001,
-  MODEL.PalmChatBison001,
   MODEL.Debug,
 ];
 
@@ -738,7 +743,9 @@ export const ALL_IMAGE_MODELS = [
   ...ALL_FLUX_MODELS,
   ...ALL_IMAGEN_MODELS,
   MODEL.Seedream3,
+  MODEL.Seedream4,
   MODEL.RecraftV3Svg,
+  MODEL.Gemini3ProImage,
 ];
 
 export const ALL_OPEN_AI_REASONING_MODELS = [
@@ -878,6 +885,12 @@ export enum IMAGE_SIZE_DALL_E_3 {
   Three = "1024x1792",
 }
 
+export enum IMAGE_SIZE_GEMINI_3_PRO {
+  One = "1K",
+  Two = "2K",
+  Three = "4K",
+}
+
 export enum IMAGE_ASPECT_RATIO {
   Landscape = "16:9",
   Portrait = "9:16",
@@ -886,6 +899,22 @@ export enum IMAGE_ASPECT_RATIO {
   PhotoPrint = "2:3",
   PhotoPrintAlt = "3:2",
 }
+
+export enum IMAGE_ASPECT_RATIO_GEMINI_3_PRO {
+  Landscape = "16:9",
+  Portrait = "9:16",
+  Square = "1:1",
+  Vertical = "3:4",
+  Horizontal = "4:3",
+}
+
+export const ALL_IMAGE_ASPECT_RATIOS_GEMINI_3_PRO = [
+  IMAGE_ASPECT_RATIO_GEMINI_3_PRO.Landscape,
+  IMAGE_ASPECT_RATIO_GEMINI_3_PRO.Portrait,
+  IMAGE_ASPECT_RATIO_GEMINI_3_PRO.Square,
+  IMAGE_ASPECT_RATIO_GEMINI_3_PRO.Vertical,
+  IMAGE_ASPECT_RATIO_GEMINI_3_PRO.Horizontal,
+];
 
 export const ALL_IMAGE_ASPECT_RATIOS = [
   IMAGE_ASPECT_RATIO.Landscape,
@@ -1035,6 +1064,16 @@ export enum REASONING_EFFORT {
   Medium = "medium",
   High = "high",
 }
+
+export enum REASONING_EFFORT_GEMINI_3_PRO {
+  Low = "low",
+  High = "high",
+}
+
+export const ALL_REASONING_EFFORTS_GEMINI_3_PRO = [
+  REASONING_EFFORT_GEMINI_3_PRO.Low,
+  REASONING_EFFORT_GEMINI_3_PRO.High,
+];
 
 export enum VERBOSITY {
   Low = "low",

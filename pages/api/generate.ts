@@ -20,7 +20,6 @@ import { llamaLocal } from "./aiModels/llamaLocal";
 import { elevenLabs } from "./aiModels/elevenLabs";
 import { factChecker } from "./aiWrappers/factChecker";
 import { NextApiRequest, NextApiResponse } from "next";
-import { palm } from "./aiModels/palm";
 import { webRetriever } from "./aiWrappers/webRetriever";
 import { dataReader } from "./aiWrappers/dataReader";
 import { webConnector } from "./aiWrappers/webConnector";
@@ -40,6 +39,8 @@ import { openAiReasoning } from "./aiModels/openAiReasoning";
 import { imagen } from "./aiModels/imagen";
 import { seedream } from "./aiModels/seedream";
 import { recraft } from "./aiModels/recraft";
+import { geminiText } from "./aiModels/geminiText";
+import { geminiImage } from "./aiModels/geminiImage";
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
   const processedBody = getProcessedBodyForAiApiCalls(req);
@@ -80,7 +81,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     if (ALL_IMAGEN_MODELS.includes(model)) {
       return imagen(res, message, model, processedBody);
     }
-    if (model === MODEL.Seedream3) {
+    if (model === MODEL.Seedream3 || model === MODEL.Seedream4) {
       return seedream(res, message, model, processedBody);
     }
     if (model === MODEL.RecraftV3Svg) {
@@ -138,9 +139,6 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     ) {
       return transformers(res, message, model, processedBody);
     }
-    if (model === MODEL.PalmChatBison001 || model === MODEL.PalmTextBison001) {
-      return palm(res, message, model, temperature);
-    }
     if (model === MODEL.Azure) {
       return azure(res, message, processedBody);
     }
@@ -155,6 +153,12 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     }
     if (ALL_MISTRAL_MODELS.includes(model)) {
       return mistral(res, message, model, processedBody);
+    }
+    if (model === MODEL.Gemini3Pro) {
+      return geminiText(res, message, model, processedBody);
+    }
+    if (model === MODEL.Gemini3ProImage) {
+      return geminiImage(res, message, model, processedBody);
     }
 
     res.status(STATUS_CODE.NotImplemented).json({
@@ -222,6 +226,9 @@ export const callLlm = async (
   }
   if (ALL_MISTRAL_MODELS.includes(model)) {
     return mistral(res, message, model, processedBody);
+  }
+  if (model === MODEL.Gemini3Pro) {
+    return geminiText(res, message, model, processedBody);
   }
 
   throw new Error("The selected AI model cannot be used for this operation.");

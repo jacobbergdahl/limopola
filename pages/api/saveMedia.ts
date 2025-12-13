@@ -6,7 +6,7 @@ const IMAGES_SAVED_IN_DIRECTORY = "public/ai-images";
 const IMAGES_ACCESSED_THROUGH_DIRECTORY = "ai-images";
 
 const getRandomString = (length: number = 12): string => {
-  return Math.random().toString(36).slice(-length);
+  return Math.random().toString(36).substring(2).slice(-length);
 };
 
 export const saveMedia = async (

@@ -16,12 +16,16 @@ import {
   STATUS_CODE,
   TEXTAREA_STYLE,
   ALL_IMAGE_ASPECT_RATIOS,
+  ALL_IMAGE_ASPECT_RATIOS_GEMINI_3_PRO,
+  IMAGE_ASPECT_RATIO,
+  IMAGE_ASPECT_RATIO_GEMINI_3_PRO,
   ALL_FLUX_MODES,
   ALL_FLUX_MODELS,
   ALL_MISTRAL_MODELS,
   ALL_IMAGEN_MODELS,
   ALL_OPEN_AI_REASONING_MODELS,
   REASONING_EFFORT,
+  ALL_REASONING_EFFORTS_GEMINI_3_PRO,
   VERBOSITY,
 } from "../general/constants";
 import {
@@ -41,8 +45,10 @@ import {
   fluxModeAtom,
   frequencyPenaltyAtom,
   imageAspectRatioAtom,
+  imageAspectRatioGemini3ProAtom,
   imageSizeDallE2Atom,
   imageSizeDallE3Atom,
+  imageSizeGemini3ProAtom,
   inputModeAtom,
   isContextModalOpenAtom,
   isFrequencyPenaltyDefaultAtom,
@@ -59,6 +65,7 @@ import {
   numberOfImagesToGenerateAtom,
   presencePenaltyAtom,
   reasoningEffortAtom,
+  reasoningEffortGemini3ProAtom,
   reasoningVerbosityAtom,
   requestedNumberOfTokensAtom,
   technicalFrequencyPenaltyAtom,
@@ -102,6 +109,7 @@ import { MaxNumberOfTokens } from "../components/sections/MaxNumberOfTokens";
 import TextArea from "../components/TextArea";
 import { AgentOverview } from "../components/agents/AgentOverview";
 import { ImageSizeDallE3 } from "../components/sections/ImageSizeDallE3";
+import { ImageSizeGemini3Pro } from "../components/sections/ImageSizeGemini3Pro";
 import { UrlsToScrape } from "../components/sections/UrlsToScrape";
 import { SimilaritySearch } from "../components/sections/SimilaritySearch";
 import { SearchAccess } from "../components/sections/SearchAccess";
@@ -148,7 +156,13 @@ export default function Home() {
   );
   const [imageSizeDallE2, setImageSizeDallE2] = useAtom(imageSizeDallE2Atom);
   const [imageSizeDallE3, setImageSizeDallE3] = useAtom(imageSizeDallE3Atom);
+  const [imageSizeGemini3Pro, setImageSizeGemini3Pro] = useAtom(
+    imageSizeGemini3ProAtom
+  );
   const [imageAspectRatio, setImageAspectRatio] = useAtom(imageAspectRatioAtom);
+  const [imageAspectRatioGemini3Pro, setImageAspectRatioGemini3Pro] = useAtom(
+    imageAspectRatioGemini3ProAtom
+  );
   const [fluxMode, setFluxMode] = useAtom(fluxModeAtom);
   const [requestedNumberOfTokens, setRequestedNumberOfTokens] = useAtom(
     requestedNumberOfTokensAtom
@@ -187,6 +201,9 @@ export default function Home() {
     isGivingAiSearchAccessAtom
   );
   const [reasoningEffort, setReasoningEffort] = useAtom(reasoningEffortAtom);
+  const [reasoningEffortGemini3Pro, setReasoningEffortGemini3Pro] = useAtom(
+    reasoningEffortGemini3ProAtom
+  );
   const [reasoningVerbosity, setReasoningVerbosity] = useAtom(
     reasoningVerbosityAtom
   );
@@ -211,12 +228,11 @@ export default function Home() {
       ALL_OPEN_AI_MODELS.includes(model) ||
       ALL_MISTRAL_MODELS.includes(model) ||
       ALL_ANTHROPIC_MODELS.includes(model) ||
-      model === MODEL.PalmChatBison001 ||
-      model === MODEL.PalmTextBison001 ||
       model === MODEL.LocalLlm ||
       model === MODEL.LocalOllama ||
       model === MODEL.Azure ||
-      model === MODEL.OpenAiCompatibleApi) &&
+      model === MODEL.OpenAiCompatibleApi ||
+      model === MODEL.Gemini3Pro) &&
     !isUsingCustomTextGeneratingWrapper &&
     !ALL_OPEN_AI_REASONING_MODELS.includes(model);
   const shouldShowTopP =
@@ -272,23 +288,32 @@ export default function Home() {
     selectedModelType !== MODEL_TYPE.Image;
   const shouldShowNumberOfImages =
     selectedModelType === MODEL_TYPE.Image &&
-    (model === MODEL.Dalle2 || model === MODEL.FluxSchnell);
+    (model === MODEL.Dalle2 ||
+      model === MODEL.FluxSchnell ||
+      model === MODEL.Gemini3ProImage);
   const shouldShowImageSizeDallE2 = model === MODEL.Dalle2;
   const shouldShowImageSizeDallE3 = model === MODEL.Dalle3;
+  const shouldShowImageSizeGemini3Pro = model === MODEL.Gemini3ProImage;
   const shouldShowImageAspectRatio =
-    ALL_FLUX_MODELS.includes(model) ||
-    ALL_IMAGEN_MODELS.includes(model) ||
-    model === MODEL.Seedream3 ||
-    model === MODEL.RecraftV3Svg;
+    (ALL_FLUX_MODELS.includes(model) ||
+      ALL_IMAGEN_MODELS.includes(model) ||
+      model === MODEL.Seedream3 ||
+      model === MODEL.Seedream4 ||
+      model === MODEL.RecraftV3Svg) &&
+    model !== MODEL.Gemini3ProImage;
+  const shouldShowImageAspectRatioGemini3Pro = model === MODEL.Gemini3ProImage;
   const shouldShowFluxMode = model === MODEL.Flux11ProUltra;
   const shouldShowSimilaritySearch = model === MODEL.WebRetriever;
   const shouldShowAiSearchAccess =
     selectedModelType === MODEL_TYPE.Text &&
     inputMode === INPUT_MODE.Chat &&
     model !== MODEL.TransformersSentimentAnalysis &&
-    !isUsingCustomTextGeneratingWrapper;
+    !isUsingCustomTextGeneratingWrapper &&
+    // Google has a built-in search tool which we should enable later
+    model !== MODEL.Gemini3Pro;
   const shouldShowReasoningEffort =
     ALL_OPEN_AI_REASONING_MODELS.includes(model);
+  const shouldShowReasoningEffortGemini3Pro = model === MODEL.Gemini3Pro;
   const shouldShowVerbosity =
     model === MODEL.Gpt5 ||
     model === MODEL.Gpt5_mini ||
@@ -419,12 +444,22 @@ export default function Home() {
       returnEmptyStringIfNoSearch: undefined,
       returnOnlineSearchResultsWithoutAskingLLM: undefined,
       numberOfImages: numberOfImagesToGenerate,
-      imageSize: model === MODEL.Dalle2 ? imageSizeDallE2 : imageSizeDallE3,
-      aspectRatio: imageAspectRatio,
+      imageSize:
+        model === MODEL.Dalle2
+          ? imageSizeDallE2
+          : model === MODEL.Gemini3ProImage
+            ? imageSizeGemini3Pro
+            : imageSizeDallE3,
+      aspectRatio: (model === MODEL.Gemini3ProImage
+        ? imageAspectRatioGemini3Pro
+        : imageAspectRatio) as
+        | IMAGE_ASPECT_RATIO
+        | IMAGE_ASPECT_RATIO_GEMINI_3_PRO,
       fluxMode: fluxMode,
       voiceStability: technicalVoiceStability,
       voiceSimilarityBoost: technicalVoiceSimilarityBoost,
       reasoningEffort: reasoningEffort,
+      reasoningEffortGemini3Pro: reasoningEffortGemini3Pro,
       reasoningVerbosity: reasoningVerbosity,
     };
 
@@ -1087,6 +1122,19 @@ export default function Home() {
                   />
                 </div>
               )}
+              {shouldShowReasoningEffortGemini3Pro && (
+                <div className={styles.section}>
+                  <GenericSectionChoiceContainer
+                    title="Thinking level"
+                    selectedButton={reasoningEffortGemini3Pro}
+                    buttonTexts={ALL_REASONING_EFFORTS_GEMINI_3_PRO}
+                    handleButtonClick={setReasoningEffortGemini3Pro}
+                    additionalInformation={
+                      "Controls the maximum depth of the model's internal reasoning process. High maximizes reasoning depth but may take longer. Low minimizes latency and cost for simpler tasks."
+                    }
+                  />
+                </div>
+              )}
               {shouldShowVerbosity && (
                 <div className={styles.section}>
                   <GenericSectionChoiceContainer
@@ -1187,6 +1235,14 @@ export default function Home() {
                   />
                 </div>
               )}
+              {shouldShowImageSizeGemini3Pro && (
+                <div className={styles.section}>
+                  <ImageSizeGemini3Pro
+                    imageSize={imageSizeGemini3Pro}
+                    setImageSize={setImageSizeGemini3Pro}
+                  />
+                </div>
+              )}
               {shouldShowFluxMode && (
                 <div className={styles.section}>
                   <GenericSectionChoiceContainer
@@ -1204,6 +1260,16 @@ export default function Home() {
                     selectedButton={imageAspectRatio}
                     buttonTexts={ALL_IMAGE_ASPECT_RATIOS}
                     handleButtonClick={setImageAspectRatio}
+                  />
+                </div>
+              )}
+              {shouldShowImageAspectRatioGemini3Pro && (
+                <div className={styles.section}>
+                  <GenericSectionChoiceContainer
+                    title="Image aspect ratio"
+                    selectedButton={imageAspectRatioGemini3Pro}
+                    buttonTexts={ALL_IMAGE_ASPECT_RATIOS_GEMINI_3_PRO}
+                    handleButtonClick={setImageAspectRatioGemini3Pro}
                   />
                 </div>
               )}

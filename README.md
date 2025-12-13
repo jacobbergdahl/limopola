@@ -67,7 +67,7 @@ Create a `.env` file from the `.env.example` file, and add API keys. There are i
 - `REPLICATE_API_KEY`: Used for several API's. These API's are free to use for a while, but eventually you'll be asked to pay to continue using them. Generate the API key for free at [https://replicate.com/account](https://replicate.com/account).
 - `ELEVEN_LABS_API_KEY`: Used to generate text-to-speech. This API is also free to use for a while. Generate the API key at [https://docs.elevenlabs.io/api-reference/quick-start/authentication](https://docs.elevenlabs.io/api-reference/quick-start/authentication).
 - `SERP_API_KEY`: Used by LLMs to perform online searches. Has a free tier. Generate the API key at [https://serpapi.com/manage-api-key](https://serpapi.com/manage-api-key?utm_source=limopola).
-- `GOOGLE_API_KEY`: _Not currently in use on the main branch_. Used for Google's text-to-speech LLMs (PaLM). This API is also free to use for a while, but may be region-locked. Generate the API key at [https://makersuite.google.com/app/apikey](https://makersuite.google.com/app/apikey).
+- `GOOGLE_API_KEY`: Used for Google's LLMs. This API might be free to use for a while for some of Google's weaker models. Generate the API key at [https://aistudio.google.com/api-keys](https://aistudio.google.com/api-keys).
 - `AZURE_API_KEY`: Used for Azure OpenAI. You can run any LLM supported by Azure OpenAI by configuring `AZURE_MODEL_ID`, `AZURE_ENDPOINT`, and `AZURE_API_VERSION` in your `.env` file.
 - `MISTRAL_API_KEY`: Used for Mistral's API. Generate the API key at [https://console.mistral.ai/api-keys](https://console.mistral.ai/api-keys).
 
@@ -85,72 +85,71 @@ This is a list of models currently included in this AI interface. More models wi
 
 Note that the actual number of supported models is probably over a million. `local-node-llama-cpp` and `local-ollama` allow you to run essentially any open-source LLM, `azure` lets you run any LLM provided by Azure OpenAI, and `openai-compatible-api` lets you point to any OpenAI-compatible endpoint. See `env.example` for reference on configuring `azure` and `openai-compatible-api`.
 
-| Model                     | Type  | API Source |
-| ------------------------- | ----- | ---------- |
-| gpt-4.1                   | Text  | OpenAI     |
-| gpt-4.1-mini              | Text  | OpenAI     |
-| gpt-4.1-nano              | Text  | OpenAI     |
-| gpt-4                     | Text  | OpenAI     |
-| gpt-4o                    | Text  | OpenAI     |
-| chatgpt-4o-latest         | Text  | OpenAI     |
-| gpt-4-32k                 | Text  | OpenAI     |
-| gpt-4-turbo               | Text  | OpenAI     |
-| gpt-4o-mini               | Text  | OpenAI     |
-| gpt-5                     | Text  | OpenAI     |
-| gpt-5-mini                | Text  | OpenAI     |
-| gpt-5-nano                | Text  | OpenAI     |
-| o4-mini                   | Text  | OpenAI     |
-| o3                        | Text  | OpenAI     |
-| o3-mini                   | Text  | OpenAI     |
-| o1                        | Text  | OpenAI     |
-| claude-opus-4-20250514    | Text  | Anthropic  |
-| claude-sonnet-4-20250514  | Text  | Anthropic  |
-| claude-3-7-sonnet-latest  | Text  | Anthropic  |
-| claude-3-5-sonnet-latest  | Text  | Anthropic  |
-| claude-3-5-haiku-latest   | Text  | Anthropic  |
-| dall-e                    | Image | OpenAI     |
-| dall-e-3                  | Image | OpenAI     |
-| flux-1.1-pro-ultra        | Image | Replicate  |
-| flux-1.1-pro              | Image | Replicate  |
-| flux-schnell              | Image | Replicate  |
-| imagen-4                  | Image | Replicate  |
-| imagen-4-ultra            | Image | Replicate  |
-| imagen-4-fast             | Image | Replicate  |
-| seedream-3                | Image | Replicate  |
-| recraft-v3-svg            | Image | Replicate  |
-| stable-diffusion-xl       | Image | Replicate  |
-| deepseek-67b-base         | Text  | Replicate  |
-| llama-3-70b-instruct      | Text  | Replicate  |
-| llama-3-8b-instruct       | Text  | Replicate  |
-| llama-2-70b               | Text  | Replicate  |
-| llama-2-13b               | Text  | Replicate  |
-| llama-2-70b-chat          | Text  | Replicate  |
-| llama-2-13b-chat          | Text  | Replicate  |
-| codellama-34b             | Text  | Replicate  |
-| mistral-large-latest      | Text  | Mistral    |
-| mistral-small-latest      | Text  | Mistral    |
-| mistral-saba-latest       | Text  | Mistral    |
-| ministral-3b-latest       | Text  | Mistral    |
-| ministral-8b-latest       | Text  | Mistral    |
-| mistral-moderation-latest | Text  | Mistral    |
-| codestral-latest          | Text  | Mistral    |
-| devstral-small-latest     | Text  | Mistral    |
-| open-mistral-nemo         | Text  | Mistral    |
-| open-codestral-mamba      | Text  | Mistral    |
-| text-to-pokemon           | Image | Replicate  |
-| animate-diff              | Video | Replicate  |
-| eleven-labs               | Audio | ElevenLabs |
-| text-bison-001\*          | Text  | Google     |
-| chat-bison-001\*          | Text  | Google     |
-| azure                     | Text  | Azure      |
-| openai-compatible-api     | Text  | Any        |
-| local-node-llama-cpp      | Text  | None       |
-| local-ollama              | Text  | None       |
-| web-llm                   | Text  | None       |
-| t-sentiment-analysis      | Text  | None       |
-| t-text2text               | Text  | None       |
-
-\* Google PaLM. No longer available in the `main` branch due to a rough dependency clash. To use Google's API's, run `git checkout google-generativelanguage && npm install`.
+| Model                      | Type  | API Source |
+| -------------------------- | ----- | ---------- |
+| gpt-4.1                    | Text  | OpenAI     |
+| gpt-4.1-mini               | Text  | OpenAI     |
+| gpt-4.1-nano               | Text  | OpenAI     |
+| gpt-4                      | Text  | OpenAI     |
+| gpt-4o                     | Text  | OpenAI     |
+| chatgpt-4o-latest          | Text  | OpenAI     |
+| gpt-4-32k                  | Text  | OpenAI     |
+| gpt-4-turbo                | Text  | OpenAI     |
+| gpt-4o-mini                | Text  | OpenAI     |
+| gpt-5                      | Text  | OpenAI     |
+| gpt-5-mini                 | Text  | OpenAI     |
+| gpt-5-nano                 | Text  | OpenAI     |
+| o4-mini                    | Text  | OpenAI     |
+| o3                         | Text  | OpenAI     |
+| o3-mini                    | Text  | OpenAI     |
+| o1                         | Text  | OpenAI     |
+| claude-opus-4-20250514     | Text  | Anthropic  |
+| claude-sonnet-4-20250514   | Text  | Anthropic  |
+| claude-3-7-sonnet-latest   | Text  | Anthropic  |
+| claude-3-5-sonnet-latest   | Text  | Anthropic  |
+| claude-3-5-haiku-latest    | Text  | Anthropic  |
+| dall-e                     | Image | OpenAI     |
+| dall-e-3                   | Image | OpenAI     |
+| flux-1.1-pro-ultra         | Image | Replicate  |
+| flux-1.1-pro               | Image | Replicate  |
+| flux-schnell               | Image | Replicate  |
+| imagen-4                   | Image | Replicate  |
+| imagen-4-ultra             | Image | Replicate  |
+| imagen-4-fast              | Image | Replicate  |
+| seedream-3                 | Image | Replicate  |
+| seedream-4                 | Image | Replicate  |
+| recraft-v3-svg             | Image | Replicate  |
+| stable-diffusion-xl        | Image | Replicate  |
+| deepseek-67b-base          | Text  | Replicate  |
+| llama-3-70b-instruct       | Text  | Replicate  |
+| llama-3-8b-instruct        | Text  | Replicate  |
+| llama-2-70b                | Text  | Replicate  |
+| llama-2-13b                | Text  | Replicate  |
+| llama-2-70b-chat           | Text  | Replicate  |
+| llama-2-13b-chat           | Text  | Replicate  |
+| codellama-34b              | Text  | Replicate  |
+| gemini-3-pro-preview       | Text  | Google     |
+| gemini-3-pro-image-preview | Image | Google     |
+| mistral-large-latest       | Text  | Mistral    |
+| mistral-small-latest       | Text  | Mistral    |
+| mistral-saba-latest        | Text  | Mistral    |
+| ministral-3b-latest        | Text  | Mistral    |
+| ministral-8b-latest        | Text  | Mistral    |
+| mistral-moderation-latest  | Text  | Mistral    |
+| codestral-latest           | Text  | Mistral    |
+| devstral-small-latest      | Text  | Mistral    |
+| open-mistral-nemo          | Text  | Mistral    |
+| open-codestral-mamba       | Text  | Mistral    |
+| text-to-pokemon            | Image | Replicate  |
+| animate-diff               | Video | Replicate  |
+| eleven-labs                | Audio | ElevenLabs |
+| azure                      | Text  | Azure      |
+| local-node-llama-cpp       | Text  | None       |
+| local-ollama               | Text  | None       |
+| openai-compatible-api      | Text  | Any        |
+| web-llm                    | Text  | None       |
+| t-sentiment-analysis       | Text  | None       |
+| t-text2text                | Text  | None       |
 
 ### Custom wrappers of AI models
 

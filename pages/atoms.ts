@@ -17,14 +17,17 @@ import {
   DEFAULT_VOICE_STABILITY,
   FLUX_MODE,
   IMAGE_ASPECT_RATIO,
+  IMAGE_ASPECT_RATIO_GEMINI_3_PRO,
   IMAGE_SIZE_DALL_E_2,
   IMAGE_SIZE_DALL_E_3,
+  IMAGE_SIZE_GEMINI_3_PRO,
   INPUT_MODE,
   IS_DEBUGGING,
   MEMORY,
   MODEL,
   Message,
   REASONING_EFFORT,
+  REASONING_EFFORT_GEMINI_3_PRO,
   REASONING_ONLINE_SEARCH,
   TEXTAREA_STYLE,
   THEME,
@@ -67,9 +70,17 @@ export const imageSizeDallE3Atom = atomWithStorage(
   "IMAGE_SIZE_DALL_E_3",
   IMAGE_SIZE_DALL_E_3.One
 );
+export const imageSizeGemini3ProAtom = atomWithStorage(
+  "IMAGE_SIZE_GEMINI_3_PRO",
+  IMAGE_SIZE_GEMINI_3_PRO.One
+);
 export const imageAspectRatioAtom = atomWithStorage(
   "IMAGE_ASPECT_RATIO",
   IMAGE_ASPECT_RATIO.Landscape
+);
+export const imageAspectRatioGemini3ProAtom = atomWithStorage(
+  "IMAGE_ASPECT_RATIO_GEMINI_3_PRO",
+  IMAGE_ASPECT_RATIO_GEMINI_3_PRO.Landscape
 );
 export const fluxModeAtom = atomWithStorage("FLUX_MODE", FLUX_MODE.Normal);
 export const requestedNumberOfTokensAtom = atomWithStorage(
@@ -156,6 +167,10 @@ export const themeAtom = atomWithStorage("THEME", THEME.Default);
 export const reasoningEffortAtom = atomWithStorage(
   "REASONING_EFFORT",
   REASONING_EFFORT.Medium
+);
+export const reasoningEffortGemini3ProAtom = atomWithStorage(
+  "REASONING_EFFORT_GEMINI_3_PRO",
+  REASONING_EFFORT_GEMINI_3_PRO.High
 );
 export const reasoningVerbosityAtom = atomWithStorage(
   "REASONING_VERBOSITY",

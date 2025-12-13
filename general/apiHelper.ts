@@ -4,10 +4,12 @@ import {
   DEFAULT_TECHNICAL_VOICE_STABILITY,
   FLUX_MODE,
   IMAGE_ASPECT_RATIO,
+  IMAGE_ASPECT_RATIO_GEMINI_3_PRO,
   IMAGE_SIZE_DALL_E_2,
   IMAGE_SIZE_DALL_E_3,
   MODEL,
   REASONING_EFFORT,
+  REASONING_EFFORT_GEMINI_3_PRO,
   VERBOSITY,
 } from "./constants";
 
@@ -30,9 +32,10 @@ export type ProcessedBody = {
   shouldAskBeforeSearching: boolean | undefined;
   returnEmptyStringIfNoSearch: boolean | undefined;
   returnOnlineSearchResultsWithoutAskingLLM: boolean | undefined;
-  aspectRatio: IMAGE_ASPECT_RATIO | undefined;
+  aspectRatio: IMAGE_ASPECT_RATIO | IMAGE_ASPECT_RATIO_GEMINI_3_PRO | undefined;
   fluxMode: FLUX_MODE | undefined;
   reasoningEffort: REASONING_EFFORT | undefined;
+  reasoningEffortGemini3Pro: REASONING_EFFORT_GEMINI_3_PRO | undefined;
   reasoningVerbosity: VERBOSITY | undefined;
 };
 
@@ -71,6 +74,7 @@ export const getProcessedBodyForAiApiCalls = (
   const aspectRatio = req.body.aspectRatio;
   const fluxMode = req.body.fluxMode;
   const reasoningEffort = req.body.reasoningEffort;
+  const reasoningEffortGemini3Pro = req.body.reasoningEffortGemini3Pro;
   const reasoningVerbosity = req.body.reasoningVerbosity;
 
   return {
@@ -99,6 +103,7 @@ export const getProcessedBodyForAiApiCalls = (
     aspectRatio,
     fluxMode,
     reasoningEffort,
+    reasoningEffortGemini3Pro,
     reasoningVerbosity,
   } as ProcessedBody;
 };
